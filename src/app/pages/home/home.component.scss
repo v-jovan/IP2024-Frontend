@@ -1,0 +1,10 @@
+.home-page {
+  &__header {
+    padding-bottom: 6rem;
+  }
+  &__content {
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+  }
+}

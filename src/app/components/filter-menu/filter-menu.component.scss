@@ -1,0 +1,15 @@
+.filter-menu {
+  width: 20rem;
+  &__button {
+    .p-button {
+      width: 100%;
+    }
+    margin-bottom: 2rem;
+  }
+  &__categories {
+    .p-tree {
+      border: none;
+      padding: 0;
+    }
+  }
+}

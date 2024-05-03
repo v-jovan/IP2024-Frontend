@@ -1,1 +1,113 @@
-<p>login works!</p>
+<p-button
+  label="Prijava"
+  i18n-label="@@login.openDialog"
+  icon="pi pi-user"
+  (onClick)="showDialog()"
+></p-button>
+<p-dialog
+  header="Dobrodošli!"
+  i18n-header="@@login.dialogHeader"
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [dismissableMask]="true"
+>
+  <div class="login-dialog">
+    <img src="https://placehold.co/200x480" alt="Hero image" />
+    <p-divider layout="vertical" />
+    <p-tabView>
+      <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
+        <div class="login-dialog__login-content">
+          <p-inputGroup>
+            <input
+              pInputText
+              placeholder="Email"
+              i18n-placeholder="@@login.email"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-envelope"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              type="password"
+              placeholder="Lozinka"
+              i18n-placeholder="@@login.password"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-lock"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-button label="Prijava" i18n-label="@@login.login"></p-button>
+          <small
+            class="login-dialog__login-content--info"
+            i18n="@@login.noAccountFull"
+          >
+            Nemate nalog?
+            <a href="#">Napravite nalog!</a>
+          </small>
+        </div>
+      </p-tabPanel>
+      <p-tabPanel header="Registracija" i18n-header="@@login.tabs.register">
+        <div class="login-dialog__login-content">
+          <p-inputGroup>
+            <input
+              pInputText
+              placeholder="Ime i prezime"
+              i18n-placeholder="@@login.fullName"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              placeholder="Email"
+              i18n-placeholder="@@login.email"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-envelope"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              type="password"
+              placeholder="Lozinka"
+              i18n-placeholder="@@login.password"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-lock"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              type="password"
+              placeholder="Ponovljena lozinka"
+              i18n-placeholder="@@login.repeatPassword"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-lock"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-button
+            label="Registracija"
+            i18n-label="@@login.register"
+          ></p-button>
+          <small
+            class="login-dialog__login-content--info"
+            i18n="@@login.alreadyHasAccount"
+          >
+            Imate nalog?
+            <a href="#">Prijavite se.</a>
+          </small>
+        </div>
+      </p-tabPanel>
+    </p-tabView>
+  </div>
+</p-dialog>

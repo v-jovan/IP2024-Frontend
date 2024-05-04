@@ -1,20 +1,30 @@
 .login-dialog {
   display: flex;
 
+  img {
+    object-fit: contain;
+  }
+
   &__login-content {
-    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: flex-end;
     gap: 1.5rem;
 
     &--info {
-      margin-top: 1rem;
+      position: absolute;
+      bottom: 2rem;
       align-self: center;
-      a:visited {
-        color: unset;
+      span {
+        font-weight: bold;
+        text-decoration: underline;
+        cursor: pointer;
       }
     }
+  }
+
+  .p-tabview .p-tabview-nav li {
+    width: 50%;
+    box-sizing: border-box;
   }
 }

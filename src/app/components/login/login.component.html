@@ -15,9 +15,9 @@
   [dismissableMask]="true"
 >
   <div class="login-dialog">
-    <img src="https://placehold.co/200x480" alt="Hero image" />
+    <img src="https://placehold.co/200x450" alt="Hero image" />
     <p-divider layout="vertical" />
-    <p-tabView>
+    <p-tabView [(activeIndex)]="activeIndex">
       <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
         <div class="login-dialog__login-content">
           <p-inputGroup>
@@ -47,7 +47,7 @@
             i18n="@@login.noAccountFull"
           >
             Nemate nalog?
-            <a href="#">Napravite nalog!</a>
+            <span (click)="goToRegister()">Napravite nalog!</span>
           </small>
         </div>
       </p-tabPanel>
@@ -61,6 +61,16 @@
             />
             <p-inputGroupAddon>
               <i class="pi pi-user"></i>
+            </p-inputGroupAddon>
+          </p-inputGroup>
+          <p-inputGroup>
+            <input
+              pInputText
+              placeholder="Korisničko ime"
+              i18n-placeholder="@@login.username"
+            />
+            <p-inputGroupAddon>
+              <i class="pi pi-key"></i>
             </p-inputGroupAddon>
           </p-inputGroup>
           <p-inputGroup>
@@ -84,17 +94,6 @@
               <i class="pi pi-lock"></i>
             </p-inputGroupAddon>
           </p-inputGroup>
-          <p-inputGroup>
-            <input
-              pInputText
-              type="password"
-              placeholder="Ponovljena lozinka"
-              i18n-placeholder="@@login.repeatPassword"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-lock"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
           <p-button
             label="Registracija"
             i18n-label="@@login.register"
@@ -104,7 +103,7 @@
             i18n="@@login.alreadyHasAccount"
           >
             Imate nalog?
-            <a href="#">Prijavite se.</a>
+            <span (click)="goToLogin()">Prijavite se.</span>
           </small>
         </div>
       </p-tabPanel>

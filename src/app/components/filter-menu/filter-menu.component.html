@@ -1,13 +1,17 @@
 <div class="filter-menu">
-  <div class="filter-menu__button">
-    <p-button
-      icon="pi pi-filter"
-      label="Filteri"
-      [outlined]="true"
-      (click)="toggleTree()"
-    ></p-button>
+  <div class="filter-menu__content">
+    <div class="filter-menu__button">
+      <p-button
+        icon="pi pi-filter"
+        label="Filteri"
+        i18n-lable="@@filter.filters"
+        [outlined]="true"
+        (click)="toggleTree()"
+      ></p-button>
+    </div>
+    <div class="filter-menu__categories">
+      <p-tree [value]="categories"></p-tree>
+    </div>
   </div>
-  <div class="filter-menu__categories">
-    <p-tree [value]="categories"></p-tree>
-  </div>
+  <p-divider type="solid" layout="vertical"></p-divider>
 </div>

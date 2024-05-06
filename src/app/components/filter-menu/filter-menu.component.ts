@@ -2,11 +2,12 @@ import { Component, ViewEncapsulation } from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TreeModule } from 'primeng/tree';
+import { DividerModule } from 'primeng/divider';
 
 @Component({
   selector: 'app-filter-menu',
   standalone: true,
-  imports: [ButtonModule, TreeModule],
+  imports: [ButtonModule, TreeModule, DividerModule],
   templateUrl: './filter-menu.component.html',
   styleUrl: './filter-menu.component.scss',
   encapsulation: ViewEncapsulation.None

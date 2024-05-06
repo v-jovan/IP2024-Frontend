@@ -1,0 +1,25 @@
+<div class="program">
+  <p-card styleClass="program__card">
+    <ng-template pTemplate="header">
+      <p-galleria
+        [value]="program.images"
+        [circular]="true"
+        [showItemNavigators]="true"
+        [showThumbnails]="false"
+      >
+        <ng-template pTemplate="item" let-item>
+          <img [src]="item" />
+        </ng-template>
+      </p-galleria>
+    </ng-template>
+    <ng-template pTemplate="content" (click)="openDetails(program.id)">
+      <div class="program__content">
+        <div class="program__content--info" (click)="goToDetails(program.id)">
+          <strong>{{ program.name }}</strong>
+          <div>{{ program.price }} {{ program.currency }}</div>
+        </div>
+        <p-button icon="pi pi-cart-plus" (click)="addToCart()"></p-button>
+      </div>
+    </ng-template>
+  </p-card>
+</div>

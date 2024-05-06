@@ -1,5 +1,11 @@
 .filter-menu {
-  width: 20rem;
+  width: 18rem;
+  height: 100%;
+  display: flex;
+  &__content {
+    width: 100%;
+    min-height: 30rem;
+  }
   &__button {
     .p-button {
       width: 100%;

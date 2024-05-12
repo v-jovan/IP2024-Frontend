@@ -12,9 +12,10 @@
     }
 
     &--search {
-      .p-inputtext {
-        width: 35rem;
-      }
+      // .p-inputtext {
+      //   max-width: 35rem;
+      //   width: 100%;
+      // } TODO: replace this with autocomplete
     }
     &--actions {
       display: flex;

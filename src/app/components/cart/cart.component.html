@@ -1,16 +1,13 @@
 <p-button
+  class="button-allignment"
   label="Korpa"
   i18n-label="@@cart.cartButton"
   icon="pi pi-shopping-cart"
   [badge]="numberOfItems"
-  badgeClass="p-badge-danger"
+  badgeClass="p-badge-warning"
   (onClick)="showCart()"
 ></p-button>
-<p-sidebar
-  [(visible)]="sidebarVisible"
-  position="right"
-  class="cart"
->
+<p-sidebar [(visible)]="sidebarVisible" position="right" class="cart">
   <ng-template pTemplate="header">
     <span i18n="@@cart.header" class="cart__header">
       Korpa: {{ cartItems.length }} proizvod/a
@@ -33,7 +30,7 @@
             icon="pi pi-times"
             [rounded]="true"
             [text]="true"
-            severity="danger "
+            severity="danger"
             (onClick)="removeFromCart(item.id)"
           ></p-button>
         </div>
@@ -46,11 +43,8 @@
         <span i18n="@@cart.total">Ukupno:</span>
         <span>{{ total }} KM</span>
       </div>
-      <p-button
-        label="Naruči"
-        i18n-label="@@cart.order"
-        (onClick)="order()"
-      ></p-button>
+      <p-button label="Naruči" i18n-label="@@cart.order" (onClick)="order()">
+      </p-button>
       <small i18n="@@cart.tax">PDV je obračunat u cijeni.</small>
     </div>
   </ng-template>

@@ -1,19 +1,14 @@
+@import 'variables';
 .home-page {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  &__header {
-    padding-bottom: 6rem;
-  }
+  height: calc(
+    100vh - $header-height - 4rem
+  ); // 4rem is the padding of the main container
   &__container {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
-  }
-  &__sidebar {
-    width: 20rem;
-    flex-shrink: 0;
-    height: 100%;
   }
   &__content {
     display: flex;
@@ -21,6 +16,7 @@
     flex-wrap: wrap;
     flex-grow: 1;
     align-items: flex-start;
+    align-content: flex-start;
     overflow-y: auto;
   }
 }

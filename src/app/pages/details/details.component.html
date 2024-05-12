@@ -1,0 +1,73 @@
+<div class="details">
+  <div class="details__back">
+    <p-button
+      icon="pi pi-arrow-left"
+      label="Nazad"
+      i18n-label="@@details.back"
+      [text]="true"
+    />
+  </div>
+  <div class="details__content">
+    <div class="details__content--gallery">
+      <p-galleria
+        [value]="images"
+        [showItemNavigators]="true"
+        [responsiveOptions]="responsiveOptions"
+        [showThumbnails]="false"
+        [showIndicators]="true"
+        [showIndicatorsOnItem]="false"
+        [circular]="true"
+        [autoPlay]="true"
+      >
+        <ng-template pTemplate="item" let-item>
+          <img [src]="item.source" class="preview__main" />
+        </ng-template>
+        <ng-template pTemplate="thumbnail" let-item>
+          <img [src]="item.source" class="preview__mini" />
+        </ng-template>
+        <ng-template pTemplate="caption" let-item>
+          <p i18n="@@details.categoryFull">Kategorija: {{ product.category.name }}</p>
+        </ng-template>
+      </p-galleria>
+    </div>
+    <div class="details__content--table">
+      <div class="details__content--table-title">
+        <div>
+          <h1>Random title</h1>
+          <div>{{ product.price }} {{ product.currency }}</div>
+        </div>
+        <p-button label="Dodaj u korpu" icon="pi pi-plus"></p-button>
+      </div>
+      <p-divider />
+      @if (product.description) {
+        <p-scrollPanel styleClass="details__content--table-description">
+          <p>{{ product.description }}</p>
+        </p-scrollPanel>
+      }
+      <table>
+        <tr>
+          <td i18n="@@details.specs.duration">Duration</td>
+          <td>{{ product.duration | convertMinutes }}</td>
+        </tr>
+        <tr>
+          <td i18n="@@details.specs.difficultyLevel">Difficulty level</td>
+          <td>{{ product.name }}</td>
+        </tr>
+        <tr>
+          <td i18n="@@details.specs.instructor">Instructor</td>
+          <td>{{ product.instructor.name }}</td>
+        </tr>
+        <tr>
+          <td i18n="@@details.specs.location">Location</td>
+          <td>{{ product.location.name }}</td>
+        </tr>
+        <!-- <tr>
+          <td i18n="@@details.specs.category">Kategorija</td>
+          <td>
+            <p-tag [rounded]="true" [value]="product.category.name" />
+          </td>
+        </tr> -->
+      </table>
+    </div>
+  </div>
+</div>

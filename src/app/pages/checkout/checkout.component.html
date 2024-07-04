@@ -1,0 +1,87 @@
+<div class="checkout">
+  <p-stepper [linear]="true">
+    <p-stepperPanel header="Korpa i Lični podaci" i18n-header="@@checkout.data">
+      <ng-template
+        pTemplate="content"
+        let-nextCallback="nextCallback"
+        let-index="index"
+      >
+        <div class="checkout__personal-info">
+          <input placeholder="First Name" type="text" pInputText />
+          <input placeholder="Last Name" type="text" pInputText />
+          <input placeholder="Nesto jos" type="text" pInputText />
+          <p-dropdown
+            [options]="countries"
+            [(ngModel)]="selectedCountry"
+            optionLabel="name"
+            placeholder="Select a Country"
+          >
+            <ng-template pTemplate="selectedItem">
+              @if (selectedCountry) {
+                <div>
+                  <img
+                    src="/assets/flag_placeholder.png"
+                    [class]="'flag flag-' + selectedCountry.code.toLowerCase()"
+                    style="width: 1.25rem"
+                  />
+                  <span>{{ selectedCountry.name }}</span>
+                </div>
+              }
+            </ng-template>
+            <ng-template let-country pTemplate="item">
+              <div>
+                <img
+                  src="/assets/flag_placeholder.png"
+                  [class]="'flag flag-' + country.code.toLowerCase()"
+                  style="width: 1.25rem"
+                />
+                <span>{{ country.name }}</span>
+              </div>
+            </ng-template>
+          </p-dropdown>
+        </div>
+        <p-button
+          label="Next"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()"
+        />
+      </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Plaćanje" i18n="@@checkout.pay">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-nextCallback="nextCallback"
+        let-index="index"
+      >
+        <div>Content II</div>
+        <p-button
+          label="Back"
+          icon="pi pi-arrow-left"
+          (onClick)="prevCallback.emit()"
+        />
+        <p-button
+          label="Next"
+          icon="pi pi-arrow-right"
+          iconPos="right"
+          (onClick)="nextCallback.emit()"
+        />
+      </ng-template>
+    </p-stepperPanel>
+    <p-stepperPanel header="Završavanje" i18n="@@checkout.finish">
+      <ng-template
+        pTemplate="content"
+        let-prevCallback="prevCallback"
+        let-index="index"
+      >
+        <div>Content III</div>
+        <p-button
+          label="Back"
+          icon="pi pi-arrow-left"
+          (onClick)="prevCallback.emit()"
+        />
+      </ng-template>
+    </p-stepperPanel>
+  </p-stepper>
+</div>

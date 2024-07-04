@@ -11,12 +11,13 @@
     flex-grow: 1;
   }
   &__content {
+    padding-left: 1rem;
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     flex-grow: 1;
-    align-items: flex-start;
     align-content: flex-start;
     overflow-y: auto;
+    gap: 2rem;
   }
 }

@@ -4,13 +4,13 @@ span.flag {
   display: inline-block;
 }
 img.flag {
-  width: 30px;
+  width: 1.25rem;
 }
 .flag {
-  background: url(https://primefaces.org/cdn/primeng/images/flag/flags_responsive.png)
+  background: url('./flags_responsive.png')
     no-repeat;
   background-size: 100%;
-  vertical-align: middle;
+  margin-right: 0.5rem;
 }
 .flag-ad {
   background-position: 0 0.413223%;

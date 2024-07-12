@@ -24,7 +24,12 @@
     ],
     "baseUrl": "./",
     "paths": {
-      "@pipes/*": ["src/app/pipes/*"]
+      "@pipes/*": [
+        "src/app/pipes/*"
+      ],
+      "@components/*": [
+        "src/app/components/*"
+      ]
     }
   },
   "angularCompilerOptions": {

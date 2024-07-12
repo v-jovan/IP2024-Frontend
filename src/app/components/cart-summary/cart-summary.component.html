@@ -1,0 +1,17 @@
+<div class="cart__summary">
+  <h3>Your Cart</h3>
+  @for (item of cartItems; track item.name) {
+    <div class="cart__item">
+      <div class="item-info">
+        <span>{{ item.name }}</span>
+      </div>
+      <div class="item-total">
+        {{ item.price }} {{ currency }}
+      </div>
+    </div>
+  }
+  <div class="cart__total">
+    <span>Total:</span>
+    <span>{{ getTotal() }} {{ currency }}</span>
+  </div>
+</div>

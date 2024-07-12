@@ -1,51 +1,22 @@
 <div class="checkout">
   <p-stepper [linear]="true">
-    <p-stepperPanel header="Korpa i Lični podaci" i18n-header="@@checkout.data">
+    <p-stepperPanel header="Korpa i lični podaci" i18n-header="@@checkout.data">
       <ng-template
         pTemplate="content"
         let-nextCallback="nextCallback"
         let-index="index"
       >
-        <div class="checkout__personal-info">
-          <input placeholder="First Name" type="text" pInputText />
-          <input placeholder="Last Name" type="text" pInputText />
-          <input placeholder="Nesto jos" type="text" pInputText />
-          <p-dropdown
-            [options]="countries"
-            [(ngModel)]="selectedCountry"
-            optionLabel="name"
-            placeholder="Select a Country"
-          >
-            <ng-template pTemplate="selectedItem">
-              @if (selectedCountry) {
-                <div>
-                  <img
-                    src="/assets/flag_placeholder.png"
-                    [class]="'flag flag-' + selectedCountry.code.toLowerCase()"
-                    style="width: 1.25rem"
-                  />
-                  <span>{{ selectedCountry.name }}</span>
-                </div>
-              }
-            </ng-template>
-            <ng-template let-country pTemplate="item">
-              <div>
-                <img
-                  src="/assets/flag_placeholder.png"
-                  [class]="'flag flag-' + country.code.toLowerCase()"
-                  style="width: 1.25rem"
-                />
-                <span>{{ country.name }}</span>
-              </div>
-            </ng-template>
-          </p-dropdown>
+        <div class="checkout__info">
+          <personal-info-form [form]="addressForm" [countries]="countries" class="info-form" />
+          <cart-summary class="info-cart" />
         </div>
         <p-button
-          label="Next"
+          label="Dalje"
+          i18n-label="@@checkout.next"
           icon="pi pi-arrow-right"
           iconPos="right"
-          (onClick)="nextCallback.emit()"
-        />
+          (onClick)="goNext(nextCallback)"
+        ></p-button>
       </ng-template>
     </p-stepperPanel>
     <p-stepperPanel header="Plaćanje" i18n="@@checkout.pay">
@@ -69,7 +40,7 @@
         />
       </ng-template>
     </p-stepperPanel>
-    <p-stepperPanel header="Završavanje" i18n="@@checkout.finish">
+    <p-stepperPanel header="Završavanje" i18n-header="@@checkout.finish">
       <ng-template
         pTemplate="content"
         let-prevCallback="prevCallback"

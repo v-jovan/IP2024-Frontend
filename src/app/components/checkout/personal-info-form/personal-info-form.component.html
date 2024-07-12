@@ -1,0 +1,96 @@
+<form [formGroup]="form" class="address">
+  <h3 i18n="@@checkout.address">Adresa</h3>
+  <input
+    placeholder="Ime"
+    i18n-placeholder="@@checkout.firstName"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('firstName')?.invalid && getControl('firstName')?.touched
+    }"
+    type="text"
+    formControlName="firstName"
+    pInputText
+  />
+  <input
+    placeholder="Prezime"
+    i18n-placeholder="@@checkout.lastName"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('lastName')?.invalid && getControl('lastName')?.touched
+    }"
+    type="text"
+    formControlName="lastName"
+    pInputText
+  />
+  <input
+    placeholder="E-Mail"
+    i18n-placeholder="@@checkout.lastName"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('email')?.invalid && getControl('email')?.touched
+    }"
+    type="email"
+    formControlName="email"
+    pInputText
+  />
+  <input
+    placeholder="Ulica i broj"
+    i18n-placeholder="@@checkout.userAddress"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('street')?.invalid && getControl('street')?.touched
+    }"
+    type="text"
+    formControlName="street"
+    pInputText
+  />
+  <input
+    placeholder="Grad"
+    i18n-placeholder="@@checkout.city"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('city')?.invalid && getControl('city')?.touched
+    }"
+    type="text"
+    formControlName="city"
+    pInputText
+  />
+  <input
+    placeholder="Poštanski broj"
+    i18n-placeholder="@@checkout.zip"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('zip')?.invalid && getControl('zip')?.touched
+    }"
+    type="number"
+    formControlName="zip"
+    pattern="[0-9]*"
+    pInputText
+  />
+  <input
+    placeholder="Broj telefona (opcionalno)"
+    i18n-placeholder="@@checkout.phone"
+    type="tel"
+    formControlName="phone"
+    pInputText
+  />
+  <p-dropdown
+    [options]="countries"
+    formControlName="country"
+    [ngClass]="{
+      'ng-invalid ng-dirty':
+        getControl('country')?.invalid && getControl('country')?.touched
+    }"
+    optionLabel="name"
+    optionValue="code"
+    placeholder="Država"
+    i18n-placeholder="@@checkout.country"
+  >
+    <ng-template let-country pTemplate="selectedItem">
+      <country-item [country]="country" />
+    </ng-template>
+    <ng-template let-country pTemplate="item">
+      <country-item [country]="country" />
+    </ng-template>
+  </p-dropdown>
+</form>

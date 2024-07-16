@@ -4,8 +4,7 @@
     placeholder="Ime"
     i18n-placeholder="@@checkout.firstName"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('firstName')?.invalid && getControl('firstName')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('firstName')
     }"
     type="text"
     formControlName="firstName"
@@ -15,8 +14,7 @@
     placeholder="Prezime"
     i18n-placeholder="@@checkout.lastName"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('lastName')?.invalid && getControl('lastName')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('lastName')
     }"
     type="text"
     formControlName="lastName"
@@ -26,8 +24,7 @@
     placeholder="E-Mail"
     i18n-placeholder="@@checkout.lastName"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('email')?.invalid && getControl('email')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('email')
     }"
     type="email"
     formControlName="email"
@@ -37,8 +34,7 @@
     placeholder="Ulica i broj"
     i18n-placeholder="@@checkout.userAddress"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('street')?.invalid && getControl('street')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('street')
     }"
     type="text"
     formControlName="street"
@@ -48,8 +44,7 @@
     placeholder="Grad"
     i18n-placeholder="@@checkout.city"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('city')?.invalid && getControl('city')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('city')
     }"
     type="text"
     formControlName="city"
@@ -59,8 +54,7 @@
     placeholder="Poštanski broj"
     i18n-placeholder="@@checkout.zip"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('zip')?.invalid && getControl('zip')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('zip')
     }"
     type="number"
     formControlName="zip"
@@ -78,8 +72,7 @@
     [options]="countries"
     formControlName="country"
     [ngClass]="{
-      'ng-invalid ng-dirty':
-        getControl('country')?.invalid && getControl('country')?.touched
+      'ng-invalid ng-dirty': isFieldInvalid('country')
     }"
     optionLabel="name"
     optionValue="code"

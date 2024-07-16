@@ -16,7 +16,7 @@
       <div class="program__content">
         <div class="program__content--info" (click)="goToDetails(program.id)">
           <strong>{{ program.name }}</strong>
-          <div>{{ program.price }} {{ program.currency }}</div>
+          <div>{{ program.price | currency }}</div>
         </div>
         <p-button icon="pi pi-cart-plus" (click)="addToCart()"></p-button>
       </div>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { TableModule } from 'primeng/table';
 import { CurrencyPipe } from '@angular/common';
 
@@ -9,10 +9,9 @@ import { CurrencyPipe } from '@angular/common';
   templateUrl: './finish.component.html',
   styleUrl: './finish.component.scss'
 })
-export class FinishComponent {
+export class FinishComponent implements OnInit {
   products!: any[];
-
-  constructor() {
+  ngOnInit(): void {
     this.products = [
       {
         name: 'Product 1',

@@ -6,6 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TagModule } from 'primeng/tag';
 import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-details',
@@ -18,7 +19,8 @@ import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
     DividerModule,
     ScrollPanelModule,
     TagModule,
-    ConvertMinutesPipe
+    ConvertMinutesPipe,
+    CurrencyPipe
   ],
   encapsulation: ViewEncapsulation.None
 })
@@ -77,7 +79,7 @@ export class DetailsComponent implements OnInit {
     description:
       'Description for Product 1 with id 1 and price 100 BAM and name Product 1 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, varius velit. Sed sit amet urna at nulla eleifend pharetra at at nunc. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec    eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, varius velit. Sed sit amet urna at nulla eleifend pharetra at at nunc. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. djd sfsdfosdfjosdf',
     instructor: {
-      name: 'Milan Celic'
+      name: 'Milan Ćelić'
     },
     location: {
       name: 'Sarajevo'

@@ -23,7 +23,7 @@
           />
           <div class="cart__card--content">
             <h3>{{ item.name }}</h3>
-            <p>{{ item.price }} RSD</p>
+            <p>{{ item.price | currency }}</p>
           </div>
           <p-button
             icon="pi pi-times"
@@ -40,7 +40,7 @@
     <div class="cart__footer">
       <div class="cart__footer--total">
         <span i18n="@@cart.total">Ukupno:</span>
-        <span>{{ total }} KM</span>
+        <span>{{ total | currency }}</span>
       </div>
       <p-button label="Naruči" i18n-label="@@cart.order" (onClick)="order()">
       </p-button>

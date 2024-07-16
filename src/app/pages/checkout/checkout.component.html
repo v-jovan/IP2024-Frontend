@@ -56,7 +56,12 @@
         let-index="index"
       >
         <finish />
-        <p-button label="Početna" icon="pi pi-home" (onClick)="goToHome()" />
+        <p-button
+          label="Početna"
+          i18n-label="@@finish.home"
+          icon="pi pi-home"
+          (onClick)="goToHome()"
+        />
       </ng-template>
     </p-stepperPanel>
   </p-stepper>

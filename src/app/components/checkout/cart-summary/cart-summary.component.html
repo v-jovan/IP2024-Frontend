@@ -1,5 +1,5 @@
 <div class="cart__summary">
-  <h3>Your Cart</h3>
+  <h3 i18n="@@cart.title">Vaša korpa</h3>
   @for (item of cartItems; track item.name) {
     <div class="cart__item">
       <div class="item-info">
@@ -11,7 +11,7 @@
     </div>
   }
   <div class="cart__total">
-    <span>Total:</span>
+    <span i18n="@@cart.total">Ukupno:</span>
     <span>{{ getTotal() | currency }}</span>
   </div>
 </div>

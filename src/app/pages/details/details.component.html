@@ -26,7 +26,9 @@
           <img [src]="item.source" class="preview__mini" />
         </ng-template>
         <ng-template pTemplate="caption" let-item>
-          <p i18n="@@details.categoryFull">Kategorija: {{ product.category.name }}</p>
+          <p i18n="@@details.categoryFull">
+            Kategorija: {{ product.category.name }}
+          </p>
         </ng-template>
       </p-galleria>
     </div>
@@ -34,7 +36,7 @@
       <div class="details__content--table-title">
         <div>
           <h1>Random title</h1>
-          <div>{{ product.price }} {{ product.currency }}</div>
+          <div>{{ product.price | currency }}</div>
         </div>
         <p-button label="Dodaj u korpu" icon="pi pi-plus"></p-button>
       </div>
@@ -46,27 +48,21 @@
       }
       <table>
         <tr>
-          <td i18n="@@details.specs.duration">Duration</td>
+          <td i18n="@@details.specs.duration">Trajanje</td>
           <td>{{ product.duration | convertMinutes }}</td>
         </tr>
         <tr>
-          <td i18n="@@details.specs.difficultyLevel">Difficulty level</td>
+          <td i18n="@@details.specs.difficultyLevel">Nivo težine</td>
           <td>{{ product.name }}</td>
         </tr>
         <tr>
-          <td i18n="@@details.specs.instructor">Instructor</td>
+          <td i18n="@@details.specs.instructor">Trener</td>
           <td>{{ product.instructor.name }}</td>
         </tr>
         <tr>
-          <td i18n="@@details.specs.location">Location</td>
+          <td i18n="@@details.specs.location">Lokacija</td>
           <td>{{ product.location.name }}</td>
         </tr>
-        <!-- <tr>
-          <td i18n="@@details.specs.category">Kategorija</td>
-          <td>
-            <p-tag [rounded]="true" [value]="product.category.name" />
-          </td>
-        </tr> -->
       </table>
     </div>
   </div>

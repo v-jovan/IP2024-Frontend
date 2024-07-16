@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { StepperModule } from 'primeng/stepper';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -6,7 +6,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { CartSummaryComponent } from '@components/cart-summary/cart-summary.component';
+import { CartSummaryComponent } from '@components/checkout/cart-summary/cart-summary.component';
 import {
   FormBuilder,
   FormGroup,
@@ -17,7 +17,7 @@ import { EventEmitter } from '@angular/core';
 import { CountryItemComponent } from '@components/util/country-item/country-item.component';
 import { PersonalInfoFormComponent } from '../../components/checkout/personal-info-form/personal-info-form.component';
 import { CreditCardFormComponent } from '../../components/checkout/credit-card-form/credit-card-form.component';
-import { FinishComponent } from "../../components/checkout/finish/finish.component";
+import { FinishComponent } from '../../components/checkout/finish/finish.component';
 
 interface Country {
   name: string;
@@ -41,15 +41,16 @@ interface Country {
     PersonalInfoFormComponent,
     CreditCardFormComponent,
     FinishComponent
-],
+  ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
-export class CheckoutComponent {
-  countries: Country[];
-  addressForm: FormGroup;
-  creditCardForm: FormGroup;
-  constructor(private formBuilder: FormBuilder) {
+export class CheckoutComponent implements OnInit {
+  countries!: Country[];
+  addressForm!: FormGroup;
+  creditCardForm!: FormGroup;
+  constructor(private formBuilder: FormBuilder) {}
+  ngOnInit(): void {
     this.countries = [
       { name: 'Australia', code: 'AU' },
       { name: 'Brazil', code: 'BR' },

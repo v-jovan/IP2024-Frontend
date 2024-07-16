@@ -19,7 +19,11 @@
         />
       </p-inputGroup>
       @if (isFieldInvalid('cardNumber')) {
-        <small for="cardNumber" class="p-error" i18n="@@payment.cardNumberError">
+        <small
+          for="cardNumber"
+          class="p-error"
+          i18n="@@payment.cardNumberError"
+        >
           Unesite ispravan broj kartice
         </small>
       }
@@ -42,7 +46,11 @@
         />
       </p-inputGroup>
       @if (isFieldInvalid('cardHolder')) {
-        <small for="cardHolder" class="p-error" i18n="@@payment.cardHolderError">
+        <small
+          for="cardHolder"
+          class="p-error"
+          i18n="@@payment.cardHolderError"
+        >
           Unesite ispravno ime nosioca kartice
         </small>
       }
@@ -67,7 +75,11 @@
           />
         </p-inputGroup>
         @if (isFieldInvalid('expiryDate')) {
-          <small for="expiryDate" class="p-error">
+          <small
+            for="expiryDate"
+            class="p-error"
+            i18n="@@payment.expiryDateError"
+          >
             Unesite ispravan datum isteka
           </small>
         }
@@ -88,7 +100,9 @@
           />
         </p-inputGroup>
         @if (isFieldInvalid('cvv')) {
-          <small for="cvv" class="p-error"> Unesite ispravan CVV </small>
+          <small for="cvv" class="p-error" i18n="@@payment.cvvError">
+            Unesite ispravan CVV
+          </small>
         }
       </div>
     </div>

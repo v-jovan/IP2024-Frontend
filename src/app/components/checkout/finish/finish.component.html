@@ -1,15 +1,16 @@
 <div class="finish">
   <div class="finish__header">
-    <h1>HVALA NA VAŠOJ NARUDŽBI!</h1>
-    <p>
-      Vaša narudžba je uspešno završena. Uskoro ćete dobiti potvrdu na Vašu E-Mail adresu.
+    <h1 i18n="@@finish.header">HVALA NA VAŠOJ NARUDŽBI!</h1>
+    <p i18n="@@finish.subheader">
+      Vaša narudžba je uspešno završena. Uskoro ćete dobiti potvrdu na Vašu
+      E-Mail adresu.
     </p>
   </div>
   <p-table [value]="products">
     <ng-template pTemplate="header">
       <tr>
-        <th>Naziv</th>
-        <th>Cijena</th>
+        <th i18n="@@finish.name">Naziv</th>
+        <th i18n="@@finish.price">Cijena</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-product>
@@ -20,14 +21,13 @@
     </ng-template>
     <ng-template pTemplate="footer">
       <tr>
-        <td>UKUPNO</td>
+        <td i18n="@@finish.total">UKUPNO</td>
         <td>{{ getSum() | currency }}</td>
       </tr>
     </ng-template>
   </p-table>
-  <p class="finish__footer">
+  <p class="finish__footer" i18n="@@finish.footer">
     Ukoliko imate bilo kakvih pitanja, slobodno nas kontaktirajte na
-    <a href="mailto:abc@abc.com">mejl nase korisnicke sluzbe</a>
+    <a href="mailto:abc@abc.com">E-Mail</a>.
   </p>
-
 </div>

@@ -4,11 +4,12 @@ import { SidebarModule } from 'primeng/sidebar';
 import { CardModule } from 'primeng/card';
 import { CartItem } from '../../../models/interfaces';
 import { BadgeModule } from 'primeng/badge';
+import { CurrencyPipe } from '@angular/common';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [ButtonModule, SidebarModule, CardModule, BadgeModule],
+  imports: [ButtonModule, SidebarModule, CardModule, BadgeModule, CurrencyPipe],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
   encapsulation: ViewEncapsulation.None

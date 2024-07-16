@@ -1,0 +1,33 @@
+<div class="finish">
+  <div class="finish__header">
+    <h1>HVALA NA VAŠOJ NARUDŽBI!</h1>
+    <p>
+      Vaša narudžba je uspešno završena. Uskoro ćete dobiti potvrdu na Vašu E-Mail adresu.
+    </p>
+  </div>
+  <p-table [value]="products">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Naziv</th>
+        <th>Cijena</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-product>
+      <tr>
+        <td>{{ product.name }}</td>
+        <td>{{ product.price | currency }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <tr>
+        <td>UKUPNO</td>
+        <td>{{ getSum() | currency }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <p class="finish__footer">
+    Ukoliko imate bilo kakvih pitanja, slobodno nas kontaktirajte na
+    <a href="mailto:abc@abc.com">mejl nase korisnicke sluzbe</a>
+  </p>
+
+</div>

@@ -7,7 +7,11 @@
         let-index="index"
       >
         <div class="checkout__info">
-          <personal-info-form [form]="addressForm" [countries]="countries" class="info-form" />
+          <personal-info-form
+            [form]="addressForm"
+            [countries]="countries"
+            class="info-form"
+          />
           <cart-summary class="info-cart" />
         </div>
         <p-button
@@ -15,7 +19,7 @@
           i18n-label="@@checkout.next"
           icon="pi pi-arrow-right"
           iconPos="right"
-          (onClick)="goNext(nextCallback)"
+          (onClick)="goNext(nextCallback, addressForm)"
         ></p-button>
       </ng-template>
     </p-stepperPanel>
@@ -26,32 +30,33 @@
         let-nextCallback="nextCallback"
         let-index="index"
       >
-        <div>Content II</div>
-        <p-button
-          label="Back"
-          icon="pi pi-arrow-left"
-          (onClick)="prevCallback.emit()"
-        />
-        <p-button
-          label="Next"
-          icon="pi pi-arrow-right"
-          iconPos="right"
-          (onClick)="nextCallback.emit()"
-        />
+        <credit-card-form [form]="creditCardForm" class="info-form" />
+        <div class="checkout__navigation">
+          <p-button
+            label="Nazad"
+            icon="pi pi-arrow-left"
+            (onClick)="goBack(prevCallback)"
+          />
+          <p-button
+            label="Dalje"
+            icon="pi pi-arrow-right"
+            iconPos="right"
+            (onClick)="goNext(nextCallback, creditCardForm)"
+          />
+        </div>
       </ng-template>
     </p-stepperPanel>
-    <p-stepperPanel header="Završavanje" i18n-header="@@checkout.finish">
+    <p-stepperPanel
+      header="Završavanje narudžbe"
+      i18n-header="@@checkout.finish"
+    >
       <ng-template
         pTemplate="content"
         let-prevCallback="prevCallback"
         let-index="index"
       >
-        <div>Content III</div>
-        <p-button
-          label="Back"
-          icon="pi pi-arrow-left"
-          (onClick)="prevCallback.emit()"
-        />
+        <finish />
+        <p-button label="Početna" icon="pi pi-home" (onClick)="goToHome()" />
       </ng-template>
     </p-stepperPanel>
   </p-stepper>

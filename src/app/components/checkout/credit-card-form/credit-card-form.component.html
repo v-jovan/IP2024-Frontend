@@ -1,0 +1,96 @@
+<div class="credit-card">
+  <h3 i18n="@@payment.title">Informacije o plaćanju</h3>
+  <form [formGroup]="form" class="credit-card__fields">
+    <div>
+      <p-inputGroup>
+        <p-inputGroupAddon>
+          <i class="pi pi-credit-card"></i>
+        </p-inputGroupAddon>
+        <p-inputMask
+          id="cardNumber"
+          mask="9999 9999 9999 9999"
+          i18n-placeholder="@@payment.cardNumber"
+          placeholder="Broj kartice"
+          formControlName="cardNumber"
+          class="full-width"
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('cardNumber')
+          }"
+        />
+      </p-inputGroup>
+      @if (isFieldInvalid('cardNumber')) {
+        <small for="cardNumber" class="p-error" i18n="@@payment.cardNumberError">
+          Unesite ispravan broj kartice
+        </small>
+      }
+    </div>
+    <div>
+      <p-inputGroup class="credit-card__holder">
+        <p-inputGroupAddon>
+          <i class="pi pi-user"></i>
+        </p-inputGroupAddon>
+        <input
+          id="cardHolder"
+          type="text"
+          i18n-placeholder="@@payment.cardHolder"
+          placeholder="Nosilac kartice"
+          pInputText
+          formControlName="cardHolder"
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('cardHolder')
+          }"
+        />
+      </p-inputGroup>
+      @if (isFieldInvalid('cardHolder')) {
+        <small for="cardHolder" class="p-error" i18n="@@payment.cardHolderError">
+          Unesite ispravno ime nosioca kartice
+        </small>
+      }
+    </div>
+    <div class="credit-card__date-and-cvv">
+      <div>
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-calendar"></i>
+          </p-inputGroupAddon>
+          <p-inputMask
+            id="expiryDate"
+            mask="99/9999"
+            i18n-placeholder="@@payment.expiryDate"
+            placeholder="Datum isteka"
+            formControlName="expiryDate"
+            slotChar="mm/yyyy"
+            class="full-width"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('expiryDate')
+            }"
+          />
+        </p-inputGroup>
+        @if (isFieldInvalid('expiryDate')) {
+          <small for="expiryDate" class="p-error">
+            Unesite ispravan datum isteka
+          </small>
+        }
+      </div>
+      <div>
+        <p-inputGroup>
+          <p-inputGroupAddon>
+            <i class="pi pi-lock"></i>
+          </p-inputGroupAddon>
+          <p-inputMask
+            mask="999"
+            placeholder="CVV"
+            formControlName="cvv"
+            class="full-width"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('cvv')
+            }"
+          />
+        </p-inputGroup>
+        @if (isFieldInvalid('cvv')) {
+          <small for="cvv" class="p-error"> Unesite ispravan CVV </small>
+        }
+      </div>
+    </div>
+  </form>
+</div>

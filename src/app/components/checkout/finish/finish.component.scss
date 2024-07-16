@@ -1,0 +1,12 @@
+.finish {
+  &__header {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  &__footer {
+    margin: 2rem 0;
+  }
+}

@@ -7,14 +7,21 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CartSummaryComponent } from '@components/cart-summary/cart-summary.component';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  ReactiveFormsModule
+} from '@angular/forms';
 import { EventEmitter } from '@angular/core';
 import { CountryItemComponent } from '@components/util/country-item/country-item.component';
-import { PersonalInfoFormComponent } from "../../components/checkout/personal-info-form/personal-info-form.component";
+import { PersonalInfoFormComponent } from '../../components/checkout/personal-info-form/personal-info-form.component';
+import { CreditCardFormComponent } from '../../components/checkout/credit-card-form/credit-card-form.component';
+import { FinishComponent } from "../../components/checkout/finish/finish.component";
 
 interface Country {
-  name: string,
-  code: string
+  name: string;
+  code: string;
 }
 
 @Component({
@@ -31,14 +38,17 @@ interface Country {
     CartSummaryComponent,
     ReactiveFormsModule,
     CountryItemComponent,
-    PersonalInfoFormComponent
-  ],
+    PersonalInfoFormComponent,
+    CreditCardFormComponent,
+    FinishComponent
+],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent {
   countries: Country[];
   addressForm: FormGroup;
+  creditCardForm: FormGroup;
   constructor(private formBuilder: FormBuilder) {
     this.countries = [
       { name: 'Australia', code: 'AU' },
@@ -62,13 +72,29 @@ export class CheckoutComponent {
       phone: [''],
       country: [null, Validators.required]
     });
+    this.creditCardForm = this.formBuilder.group({
+      cardNumber: ['', [Validators.required]],
+      cardHolder: ['', Validators.required],
+      expiryDate: ['', Validators.required],
+      cvv: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]]
+    });
   }
 
-  goNext(nextCallback: EventEmitter<void>) {
-    if (this.addressForm.valid) {
-      nextCallback.emit();
-    } else {
-      this.addressForm.markAllAsTouched();
-    }
+  goNext(nextCallback: EventEmitter<void>, form: FormGroup) {
+    // if (form.valid) {
+    //   nextCallback.emit();
+    // } else {
+    //   form.markAllAsTouched();
+    // }
+    // temp just to open the next step
+    nextCallback.emit();
+  }
+
+  goBack(backCallback: EventEmitter<void>) {
+    backCallback.emit();
+  }
+
+  goToHome() {
+    // go to home
   }
 }

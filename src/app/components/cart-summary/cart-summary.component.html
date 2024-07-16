@@ -6,12 +6,12 @@
         <span>{{ item.name }}</span>
       </div>
       <div class="item-total">
-        {{ item.price }} {{ currency }}
+        {{ item.price | currency }}
       </div>
     </div>
   }
   <div class="cart__total">
     <span>Total:</span>
-    <span>{{ getTotal() }} {{ currency }}</span>
+    <span>{{ getTotal() | currency }}</span>
   </div>
 </div>

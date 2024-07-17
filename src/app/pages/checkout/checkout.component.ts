@@ -18,6 +18,7 @@ import { CountryItemComponent } from '@components/util/country-item/country-item
 import { PersonalInfoFormComponent } from '../../components/checkout/personal-info-form/personal-info-form.component';
 import { CreditCardFormComponent } from '../../components/checkout/credit-card-form/credit-card-form.component';
 import { FinishComponent } from '../../components/checkout/finish/finish.component';
+import { Router } from '@angular/router';
 
 interface Country {
   name: string;
@@ -49,7 +50,10 @@ export class CheckoutComponent implements OnInit {
   countries!: Country[];
   addressForm!: FormGroup;
   creditCardForm!: FormGroup;
-  constructor(private formBuilder: FormBuilder) {}
+  constructor(
+    private formBuilder: FormBuilder,
+    private router: Router
+  ) {}
   ngOnInit(): void {
     this.countries = [
       { name: 'Australia', code: 'AU' },
@@ -96,6 +100,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   goToHome() {
-    // go to home
+    this.router.navigate(['/']);
   }
 }

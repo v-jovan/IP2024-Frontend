@@ -35,6 +35,9 @@
         </div>
       </p-card>
     }
+    @if (cartItems.length === 0) {
+      <p class="cart__empty" i18n="@@cart.empty">Korpa je prazna.</p>
+    }
   </ng-template>
   <ng-template pTemplate="footer">
     <div class="cart__footer">
@@ -42,8 +45,7 @@
         <span i18n="@@cart.total">Ukupno:</span>
         <span>{{ total | currency }}</span>
       </div>
-      <p-button label="Naruči" i18n-label="@@cart.order" (onClick)="order()">
-      </p-button>
+      <p-button label="Naruči" i18n-label="@@cart.order" (onClick)="order()" />
       <small i18n="@@cart.tax">PDV je obračunat u cijeni.</small>
     </div>
   </ng-template>

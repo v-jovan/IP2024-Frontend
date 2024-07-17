@@ -5,6 +5,7 @@ import { CardModule } from 'primeng/card';
 import { CartItem } from '../../../models/interfaces';
 import { BadgeModule } from 'primeng/badge';
 import { CurrencyPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
@@ -15,6 +16,7 @@ import { CurrencyPipe } from '@angular/common';
   encapsulation: ViewEncapsulation.None
 })
 export class CartComponent {
+  constructor(private router: Router) {}
   sidebarVisible: boolean = false;
   cartItems: CartItem[] = [
     {
@@ -44,7 +46,8 @@ export class CartComponent {
     this.cartItems = this.cartItems.filter((item) => item.id !== id);
   }
   order() {
-    alert('Order placed successfully');
+    this.sidebarVisible = false;
+    this.router.navigate(['/checkout']);
   }
   get total(): number {
     return this.cartItems.reduce((acc, item) => acc + item.price, 0);

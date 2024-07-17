@@ -1,7 +1,7 @@
 <header class="header">
   <p-toolbar styleClass="header__toolbar">
     <ng-template pTemplate="start">
-      <img src="/assets/hero.png" alt="Logo" class="header__toolbar--logo" />
+      <img src="/assets/hero.png" alt="Logo" class="header__toolbar--logo" (click)="goToHome()" />
     </ng-template>
     <ng-template pTemplate="center">
       <span class="p-input-icon-left header__toolbar--search">

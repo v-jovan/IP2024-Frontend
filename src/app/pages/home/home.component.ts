@@ -3,22 +3,22 @@ import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header.component';
 import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
-import { LoginComponent } from "../../components/login/login.component";
-import { ProgramCardComponent } from "../../components/program-card/program-card.component";
+import { LoginComponent } from '../../components/login/login.component';
+import { ProgramCardComponent } from '../../components/program-card/program-card.component';
 
 @Component({
-    selector: 'app-home',
-    standalone: true,
-    templateUrl: './home.component.html',
-    styleUrl: './home.component.scss',
-    imports: [
-        CheckboxModule,
-        FormsModule,
-        HeaderComponent,
-        FilterMenuComponent,
-        LoginComponent,
-        ProgramCardComponent
-    ]
+  selector: 'app-home',
+  standalone: true,
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
+  imports: [
+    CheckboxModule,
+    FormsModule,
+    HeaderComponent,
+    FilterMenuComponent,
+    LoginComponent,
+    ProgramCardComponent
+  ]
 })
 export class HomeComponent {
   checked: boolean = false;

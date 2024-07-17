@@ -6,7 +6,7 @@ import { DividerModule } from 'primeng/divider';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TagModule } from 'primeng/tag';
 import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
-import { CurrencyPipe } from '@angular/common';
+import { CurrencyPipe, Location } from '@angular/common';
 
 @Component({
   selector: 'app-details',
@@ -89,8 +89,15 @@ export class DetailsComponent implements OnInit {
     }
   };
 
-  constructor(private route: ActivatedRoute) {}
+  constructor(
+    private route: ActivatedRoute,
+    private location: Location
+  ) {}
   ngOnInit(): void {
     this.programId = this.route.snapshot.paramMap.get('id') as string;
+  }
+
+  goBack() {
+    this.location.back();
   }
 }

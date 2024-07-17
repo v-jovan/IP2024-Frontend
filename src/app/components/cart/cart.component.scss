@@ -4,6 +4,10 @@
     font-size: 1.5rem;
     margin: 1rem;
   }
+
+  &__empty {
+    text-align: center;
+  }
   &__card {
     display: flex;
     align-items: flex-start;

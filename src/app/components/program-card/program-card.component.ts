@@ -4,6 +4,7 @@ import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
 import { FitnessProgram } from '../../../models/interfaces';
 import { CurrencyPipe } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-program-card',
@@ -24,14 +25,12 @@ export class ProgramCardComponent {
       'https://placehold.co/500x500'
     ]
   };
+  constructor(private router: Router) {}
 
   addToCart() {
     alert('Adding to cart');
   }
   goToDetails(id: number) {
-    alert('Going to details of program with id: ' + id);
-  }
-  openDetails(id: number) {
-    alert('Opening details of program with id: ' + id);
+    this.router.navigate(['/program-details', id]);
   }
 }

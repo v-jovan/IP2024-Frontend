@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CheckboxModule } from 'primeng/checkbox';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../components/header/header.component';
+import { SearchHeaderComponent } from '@components/search-header/search-header.component';
 import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
 import { LoginComponent } from '../../components/login/login.component';
 import { ProgramCardComponent } from '../../components/program-card/program-card.component';
@@ -14,7 +14,7 @@ import { ProgramCardComponent } from '../../components/program-card/program-card
   imports: [
     CheckboxModule,
     FormsModule,
-    HeaderComponent,
+    SearchHeaderComponent,
     FilterMenuComponent,
     LoginComponent,
     ProgramCardComponent

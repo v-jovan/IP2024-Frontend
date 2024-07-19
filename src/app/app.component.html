@@ -1,7 +1,9 @@
 <div class="main">
-  <div class="main__header">
-    <app-header />
-  </div>
+  @if (showHeader) {
+    <div class="main__header">
+      <app-search-header />
+    </div>
+  }
   <div class="main__content">
     <router-outlet />
   </div>

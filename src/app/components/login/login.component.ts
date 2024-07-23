@@ -7,6 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { TabViewModule } from 'primeng/tabview';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -25,11 +26,17 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
+/**
+ * Represents the LoginComponent class.
+ * This component is responsible for handling the login functionality.
+ */
 export class LoginComponent {
   activeIndex: number = 0;
   visible: boolean = false;
   username: string = '';
   password!: string;
+
+  constructor(private router: Router) {}
 
   showDialog() {
     this.visible = true;
@@ -45,5 +52,9 @@ export class LoginComponent {
 
   goToLogin() {
     this.activeIndex = 0;
+  }
+
+  goToRegisterPage() {
+    this.router.navigate(['/register']);
   }
 }

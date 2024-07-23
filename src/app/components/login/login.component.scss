@@ -1,28 +1,62 @@
+/**
+ * Styles for the login dialog component.
+ */
 .login-dialog {
   display: flex;
 
+  /**
+   * Styles for the image within the login dialog.
+   */
   img {
     object-fit: contain;
   }
 
-  &__login-content {
+  /**
+   * Styles for the content within the login dialog.
+   */
+  &__content {
     display: flex;
     flex-direction: column;
-    align-items: flex-end;
     gap: 1.5rem;
+    min-width: 20rem;
+    margin-top: 3rem;
 
+    /**
+     * Styles for the info section within the login dialog content.
+     */
     &--info {
       position: absolute;
       bottom: 2rem;
       align-self: center;
+
+      /**
+       * Styles for the span element within the info section.
+       */
       span {
         font-weight: bold;
         text-decoration: underline;
         cursor: pointer;
       }
     }
+
+    /**
+     * Styles for the login section within the login dialog content.
+     */
+    &--login {
+      align-items: flex-end;
+    }
+
+    /**
+     * Styles for the register section within the login dialog content.
+     */
+    &--register {
+      align-items: center;
+    }
   }
 
+  /**
+   * Styles for the tabview navigation within the login dialog.
+   */
   .p-tabview .p-tabview-nav li {
     width: 50%;
     box-sizing: border-box;

@@ -19,7 +19,7 @@
     <p-divider layout="vertical" />
     <p-tabView [(activeIndex)]="activeIndex">
       <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
-        <div class="login-dialog__login-content">
+        <div class="login-dialog__content login-dialog__content--login">
           <p-inputGroup>
             <input
               pInputText
@@ -43,7 +43,7 @@
           </p-inputGroup>
           <p-button label="Prijava" i18n-label="@@login.login"></p-button>
           <small
-            class="login-dialog__login-content--info"
+            class="login-dialog__content--info"
             i18n="@@login.noAccountFull"
           >
             Nemate nalog?
@@ -52,54 +52,24 @@
         </div>
       </p-tabPanel>
       <p-tabPanel header="Registracija" i18n-header="@@login.tabs.register">
-        <div class="login-dialog__login-content">
-          <p-inputGroup>
-            <input
-              pInputText
-              placeholder="Ime i prezime"
-              i18n-placeholder="@@login.fullName"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-user"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
-          <p-inputGroup>
-            <input
-              pInputText
-              placeholder="Korisničko ime"
-              i18n-placeholder="@@login.username"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-key"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
-          <p-inputGroup>
-            <input
-              pInputText
-              placeholder="Email"
-              i18n-placeholder="@@login.email"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-envelope"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
-          <p-inputGroup>
-            <input
-              pInputText
-              type="password"
-              placeholder="Lozinka"
-              i18n-placeholder="@@login.password"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-lock"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
+        <div class="login-dialog__content login-dialog__content--register">
+          <div>
+            <div>
+              <b i18n="@@login.registerText">Nemate profil? Registrujte se!</b>
+            </div>
+            <small i18n="@@login.registerInfo">
+              Registrujte se i pridružite se zajednici.
+            </small>
+          </div>
           <p-button
             label="Registracija"
             i18n-label="@@login.register"
+            icon="pi pi-external-link"
+            iconPos="right"
+            (click)="goToRegisterPage()"
           ></p-button>
           <small
-            class="login-dialog__login-content--info"
+            class="login-dialog__content--info"
             i18n="@@login.alreadyHasAccount"
           >
             Imate nalog?

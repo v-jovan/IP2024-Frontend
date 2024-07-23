@@ -1,0 +1,24 @@
+<div class="image-upload">
+  <div
+    class="image-upload__avatar"
+    [style.width.px]="width"
+    [style.height.px]="height"
+    (click)="fileInput.click()"
+  >
+    @if (imageUrl) {
+      <img [src]="imageUrl" alt="User Avatar" />
+    } @else {
+      <i class="pi pi-user"></i>
+    }
+  </div>
+  <input
+    type="file"
+    #fileInput
+    (change)="onFileSelected($event)"
+    accept="image/*"
+  />
+  <button (click)="uploadImage()">Upload Image</button>
+  @if (uploadResponse) {
+    <p>Upload response: {{ uploadResponse }}</p>
+  }
+</div>

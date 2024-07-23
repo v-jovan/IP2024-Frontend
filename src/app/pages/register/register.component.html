@@ -1,1 +1,115 @@
-<p>register works!</p>
+<div class="register">
+  <div class="register__header">
+    <div class="register__header--logo">
+      <img src="assets/logo.svg" alt="logo" />
+    </div>
+    <h2 i18n="@@registration.title">REGISTRACIJA</h2>
+    <small i18n="@@registration.description">
+      Molimo Vas da popunite sledeće informacije kako biste se registrovali.<br />Sva
+      polja osim slike su obavezna.
+    </small>
+  </div>
+  <form [formGroup]="registerForm" class="register__form">
+    <image-uploader />
+    <div class="register__form--name">
+      <p-inputGroup>
+        <p-inputGroupAddon>
+          <i class="pi pi-user"></i>
+        </p-inputGroupAddon>
+        <input
+          formControlName="firstName"
+          pInputText
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('firstName')
+          }"
+          placeholder="Ime"
+          i18n-placeholder="@@register.firstName"
+        />
+      </p-inputGroup>
+      <p-inputGroup>
+        <p-inputGroupAddon>
+          <i class="pi pi-user"></i>
+        </p-inputGroupAddon>
+        <input
+          formControlName="lastName"
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('lastName')
+          }"
+          pInputText
+          placeholder="Prezime"
+          i18n-placeholder="@@register.lastName"
+        />
+      </p-inputGroup>
+    </div>
+    <p-inputGroup>
+      <p-inputGroupAddon>
+        <i class="pi pi-key"></i>
+      </p-inputGroupAddon>
+      <input
+        formControlName="username"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('username') || usernameTaken
+        }"
+        pInputText
+        placeholder="Korisničko ime"
+        i18n-placeholder="@@login.username"
+      />
+      <button
+        type="button"
+        pButton
+        [icon]="buttonIcon"
+        [class]="buttonClass"
+        (click)="checkUsername()"
+      ></button>
+    </p-inputGroup>
+    <p-inputGroup>
+      <p-inputGroupAddon>
+        <i class="pi pi-envelope"></i>
+      </p-inputGroupAddon>
+      <input
+        formControlName="email"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('email')
+        }"
+        pInputText
+        placeholder="Email"
+        i18n-placeholder="@@login.email"
+      />
+    </p-inputGroup>
+    <p-inputGroup>
+      <p-inputGroupAddon>
+        <i class="pi pi-lock"></i>
+      </p-inputGroupAddon>
+      <input
+        formControlName="password"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('password')
+        }"
+        pInputText
+        type="password"
+        placeholder="Lozinka"
+        i18n-placeholder="@@login.password"
+      />
+    </p-inputGroup>
+    <p-dropdown
+      [options]="cities"
+      optionLabel="name"
+      optionValue="id"
+      [editable]="true"
+      formControlName="city"
+      [ngClass]="{
+        'ng-invalid ng-dirty': isFieldInvalid('city')
+      }"
+      i18n-placeholder="@@register.city"
+      placeholder="Grad"
+    />
+    <div class="register__form--register">
+      <p-button
+        label="Registracija"
+        i18n-label="@@login.register"
+        (onClick)="register()"
+      ></p-button>
+    </div>
+  </form>
+  <div class="register__footer"></div>
+</div>

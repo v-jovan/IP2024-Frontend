@@ -6,7 +6,7 @@ import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
-import { FormUtilsService } from 'src/app/services/form-utils.service';
+import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 
 @Component({
   selector: 'credit-card-form',
@@ -29,6 +29,6 @@ export class CreditCardFormComponent {
   constructor(private formUtils: FormUtilsService) {}
 
   isFieldInvalid(controlName: string): boolean {
-    return this.formUtils.isFieldInvalid(this.form, controlName);
+    return this.formUtils.isTouchedAndInvalid(this.form, controlName);
   }
 }

@@ -9,8 +9,13 @@ export class FormUtilsService {
     return form.get(controlName);
   }
 
-  isFieldInvalid(form: FormGroup, controlName: string): boolean {
+  isTouchedAndInvalid(form: FormGroup, controlName: string): boolean {
     const field = this.getControl(form, controlName);
     return (field?.touched && field?.invalid) || false;
+  }
+
+  isInvalid(form: FormGroup, controlName: string): boolean {
+    const field = this.getControl(form, controlName);
+    return field?.invalid || false;
   }
 }

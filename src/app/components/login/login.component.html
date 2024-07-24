@@ -19,12 +19,16 @@
     <p-divider layout="vertical" />
     <p-tabView [(activeIndex)]="activeIndex">
       <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
-        <div class="login-dialog__content login-dialog__content--login">
+        <form [formGroup]="loginForm" class="login-dialog__content login-dialog__content--login">
           <p-inputGroup>
             <input
               pInputText
               placeholder="Email"
               i18n-placeholder="@@login.email"
+              formControlName="email"
+              [ngClass]="{
+                'ng-invalid ng-dirty': isFieldInvalid('email')
+              }"
             />
             <p-inputGroupAddon>
               <i class="pi pi-envelope"></i>
@@ -36,12 +40,20 @@
               type="password"
               placeholder="Lozinka"
               i18n-placeholder="@@login.password"
+              formControlName="password"
+              [ngClass]="{
+                'ng-invalid ng-dirty': isFieldInvalid('password')
+              }"
             />
             <p-inputGroupAddon>
               <i class="pi pi-lock"></i>
             </p-inputGroupAddon>
           </p-inputGroup>
-          <p-button label="Prijava" i18n-label="@@login.login"></p-button>
+          <p-button
+            label="Prijava"
+            i18n-label="@@login.login"
+            (onClick)="login()"
+          ></p-button>
           <small
             class="login-dialog__content--info"
             i18n="@@login.noAccountFull"
@@ -49,7 +61,7 @@
             Nemate nalog?
             <span (click)="goToRegister()">Napravite nalog!</span>
           </small>
-        </div>
+        </form>
       </p-tabPanel>
       <p-tabPanel header="Registracija" i18n-header="@@login.tabs.register">
         <div class="login-dialog__content login-dialog__content--register">

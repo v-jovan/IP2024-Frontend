@@ -7,7 +7,7 @@ import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { FormUtilsService } from 'src/app/services/form-utils.service';
+import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 import { ImageUploaderComponent } from '../../components/image-uploader/image-uploader.component';
 
 @Component({
@@ -74,12 +74,18 @@ export class RegisterComponent {
   }
 
   isFieldInvalid(controlName: string): boolean {
-    return this.formUtils.isFieldInvalid(this.registerForm, controlName);
+    return this.formUtils.isInvalid(this.registerForm, controlName);
   }
 
   register(): void {
     if (this.registerForm.valid && !this.usernameTaken) {
-      console.log('Registering user:', this.registerForm.value);
+
+      try {
+        
+      }
+      catch (error) {
+        console.error('Error registering user');
+      }
     } else {
       this.registerForm.markAllAsTouched();
     }

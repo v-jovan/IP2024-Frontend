@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { Component, Input } from '@angular/core';
+import { UploadService } from 'src/app/services/Upload/upload.service';
 
 @Component({
   selector: 'image-uploader',
@@ -14,6 +15,8 @@ export class ImageUploaderComponent {
   imageUrl: string | ArrayBuffer | null = null;
   uploadResponse: string | null = null;
   selectedFile: File | null = null;
+
+  constructor(private uploadService: UploadService) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -36,18 +39,21 @@ export class ImageUploaderComponent {
       formData.append('userId', '1'); // Pretpostavljeni ID korisnika
 
       try {
-        const response = await axios.post(
-          'http://localhost:8080/api/upload',
-          formData,
-          {
-            headers: {
-              'Content-Type': 'multipart/form-data',
-              Authorization:
-                'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNzIxNjkyMTk4LCJleHAiOjE3MjE2OTU3OTh9.nwSPIMUoG5r7zQScfJGryH1nD9x5pfH_se_BiOZOny0'
-            }
-          }
-        );
-        this.uploadResponse = response.data;
+        // const response = await axios.post(
+        //   'http://localhost:8080/api/upload',
+        //   formData,
+        //   {
+        //     headers: {
+        //       'Content-Type': 'multipart/form-data',
+        //       // Authorization:
+        //       //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNzIxNjkyMTk4LCJleHAiOjE3MjE2OTU3OTh9.nwSPIMUoG5r7zQScfJGryH1nD9x5pfH_se_BiOZOny0'
+        //     }
+        //   }
+        // );
+        // this.uploadResponse = response.data;
+        const response = await this.uploadService.uploadImage(formData);
+        // this.uploadResponse = response.message;
+        console.log('Upload successful:', response);
       } catch (error) {
         console.error('Error uploading image', error);
       }

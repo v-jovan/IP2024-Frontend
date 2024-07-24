@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { CountryItemComponent } from '@components/util/country-item/country-item.component';
 import { FormGroup } from '@angular/forms';
-import { FormUtilsService } from 'src/app/services/form-utils.service';
+import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 
 @Component({
   selector: 'personal-info-form',
@@ -28,6 +28,6 @@ export class PersonalInfoFormComponent {
 
   constructor(private formUtils: FormUtilsService) {}
   isFieldInvalid(controlName: string): boolean {
-    return this.formUtils.isFieldInvalid(this.form, controlName);
+    return this.formUtils.isTouchedAndInvalid(this.form, controlName);
   }
 }

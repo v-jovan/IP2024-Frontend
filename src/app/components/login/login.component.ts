@@ -12,8 +12,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { Router } from '@angular/router';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 import { AuthService } from 'src/app/services/Auth/auth.service';
-import { Store } from '@ngrx/store';
-import * as TokenActions from 'src/app/store/auth/auth.actions';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 
 @Component({
   selector: 'app-login',
@@ -50,7 +49,7 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private formUtils: FormUtilsService,
     private authService: AuthService,
-    private store: Store
+    private tokenStore: TokenStoreService
   ) {}
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -68,7 +67,7 @@ export class LoginComponent implements OnInit {
         };
         const response = await this.authService.login(loginData);
         console.log('Login successful, JWT:', response.token, response);
-        this.store.dispatch(TokenActions.setToken({ token: response.token }));
+        this.tokenStore.setToken(response.token);
       } catch (error) {
         console.error('Login failed', error);
       }

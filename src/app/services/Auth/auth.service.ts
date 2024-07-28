@@ -7,11 +7,20 @@ import { JwtResponse } from 'src/app/interfaces/jwt-response';
 @Injectable({
   providedIn: 'root'
 })
+
+/**
+ * Service responsible for handling authentication-related operations.
+ */
 export class AuthService {
   private authURL = '/auth';
 
   constructor(private apiService: ApiService) {}
 
+  /**
+   * Logs in the user with the provided login credentials.
+   * @param data - The login request data.
+   * @returns A promise that resolves to a JwtResponse object.
+   */
   async login(data: LoginRequest): Promise<JwtResponse> {
     const response = await this.apiService.axios.post<JwtResponse>(
       `${this.authURL}/login`,
@@ -21,12 +30,34 @@ export class AuthService {
     return response.data;
   }
 
+  /**
+   * Signs up the user with the provided signup data.
+   * @param data - The signup request data.
+   * @returns A promise that resolves to a JwtResponse object.
+   */
   async signup(data: SignupRequest): Promise<JwtResponse> {
     const response = await this.apiService.axios.post<JwtResponse>(
       `${this.authURL}/signup`,
       data
     );
 
+    return response.data;
+  }
+
+  /**
+   * Activates the user account with the provided activation token.
+   * @param token - The activation token.
+   * @returns A promise that resolves to a string indicating the result of the activation.
+   */
+  async activateAccount(token: string): Promise<string> {
+    const response = await this.apiService.axios.get(
+      `${this.authURL}/activate`,
+      {
+        params: { token },
+        responseType: 'text'
+      }
+    );
+    
     return response.data;
   }
 }

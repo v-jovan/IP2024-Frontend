@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
 import axios, { AxiosInstance } from 'axios';
-import { selectToken } from '../store/auth/auth.selector';
+import { TokenStoreService } from '../store/TokenStore/token-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +9,7 @@ export class ApiService {
   private axiosInstance: AxiosInstance;
   private excludedUrls = ['/auth', '/uploads'];
 
-  constructor(private store: Store) {
+  constructor(private tokenStore: TokenStoreService) {
     this.axiosInstance = axios.create({
       baseURL: 'http://localhost:8080',
       timeout: 1000
@@ -23,7 +22,7 @@ export class ApiService {
     // Set up the request interceptor
     this.axiosInstance.interceptors.request.use(
       async (config) => {
-        const token = await this.getToken();
+        const token = this.tokenStore.getToken(); // Get the token from the local storage
         const isExcludedUrl = this.excludedUrls.some((url) =>
           config.url?.startsWith(url)
         );
@@ -50,15 +49,6 @@ export class ApiService {
         return Promise.reject(error);
       }
     );
-  }
-
-  // Method to get token from the store
-  private getToken(): Promise<string | null> {
-    return new Promise((resolve) => {
-      this.store.select(selectToken).subscribe((token) => {
-        resolve(token);
-      });
-    });
   }
 
   get axios() {

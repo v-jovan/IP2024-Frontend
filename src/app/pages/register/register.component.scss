@@ -5,10 +5,13 @@
   flex-direction: column;
 
   &__header {
-    // margin-top: 1.5rem;
     display: flex;
     flex-direction: column;
     text-align: center;
+    
+    h2 {
+      text-transform: uppercase;
+    }
 
     &--logo {
       align-self: center;

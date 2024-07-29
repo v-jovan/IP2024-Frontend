@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SearchHeaderComponent } from './components/search-header/search-header.component';
+import { LoaderComponent } from '@components/util/loader/loader.component';
+import { ToastModule } from 'primeng/toast';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet, SearchHeaderComponent]
+  imports: [RouterOutlet, SearchHeaderComponent, ToastModule, LoaderComponent]
 })
 export class AppComponent implements OnInit {
   title = 'IP2024Frontend';

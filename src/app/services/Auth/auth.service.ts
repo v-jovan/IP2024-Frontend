@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
-import { SignupRequest } from 'src/app/interfaces/signup-request';
-import { LoginRequest } from 'src/app/interfaces/login-request';
-import { JwtResponse } from 'src/app/interfaces/jwt-response';
+import { SignupRequest } from 'src/app/interfaces/requests/signup-request';
+import { LoginRequest } from 'src/app/interfaces/requests/login-request';
+import { JwtResponse } from 'src/app/interfaces/responses/jwt-response';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +57,16 @@ export class AuthService {
         responseType: 'text'
       }
     );
-    
+
+    return response.data;
+  }
+
+  async checkUsername(username: string): Promise<boolean> {
+    const response = await this.apiService.axios.post<boolean>(
+      `${this.authURL}/check-username`,
+      { username }
+    );
+
     return response.data;
   }
 }

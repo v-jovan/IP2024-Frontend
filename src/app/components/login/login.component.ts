@@ -62,11 +62,10 @@ export class LoginComponent implements OnInit {
     if (this.loginForm.valid) {
       try {
         const loginData = {
-          email: this.loginForm.get('email')?.value,
+          emailOrUsername: this.loginForm.get('email')?.value,
           password: this.loginForm.get('password')?.value
         };
         const response = await this.authService.login(loginData);
-        console.log('Login successful, JWT:', response.token, response);
         this.tokenStore.setToken(response.token);
       } catch (error) {
         console.error('Login failed', error);

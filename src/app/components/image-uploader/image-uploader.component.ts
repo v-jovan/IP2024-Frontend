@@ -1,6 +1,6 @@
-import axios from 'axios';
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { UploadService } from 'src/app/services/Upload/upload.service';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'image-uploader',
@@ -12,11 +12,16 @@ import { UploadService } from 'src/app/services/Upload/upload.service';
 export class ImageUploaderComponent {
   @Input() width: number = 150;
   @Input() height: number = 150;
-  imageUrl: string | ArrayBuffer | null = null;
-  uploadResponse: string | null = null;
-  selectedFile: File | null = null;
+  @Output() imageUploaded = new EventEmitter<String>();
 
-  constructor(private uploadService: UploadService) {}
+  imageUrl: string | ArrayBuffer | null = null;
+  selectedFile: File | null = null;
+  showRemoveButton = false;
+
+  constructor(
+    private uploadService: UploadService,
+    private messageService: MessageService
+  ) {}
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -28,35 +33,33 @@ export class ImageUploaderComponent {
       };
       reader.readAsDataURL(file);
     }
-    console.log('File selected:', file);
-    console.log('Image URL:', this.imageUrl);
   }
 
-  async uploadImage(): Promise<void> {
+  async uploadImage(): Promise<String | null> {
     if (this.selectedFile) {
       const formData = new FormData();
       formData.append('file', this.selectedFile);
-      formData.append('userId', '1'); // Pretpostavljeni ID korisnika
 
       try {
-        // const response = await axios.post(
-        //   'http://localhost:8080/api/upload',
-        //   formData,
-        //   {
-        //     headers: {
-        //       'Content-Type': 'multipart/form-data',
-        //       // Authorization:
-        //       //   'Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiXSwic3ViIjoiYWRtaW5AYWRtaW4uY29tIiwiaWF0IjoxNzIxNjkyMTk4LCJleHAiOjE3MjE2OTU3OTh9.nwSPIMUoG5r7zQScfJGryH1nD9x5pfH_se_BiOZOny0'
-        //     }
-        //   }
-        // );
-        // this.uploadResponse = response.data;
         const response = await this.uploadService.uploadImage(formData);
-        // this.uploadResponse = response.message;
-        console.log('Upload successful:', response);
+        return response;
       } catch (error) {
-        console.error('Error uploading image', error);
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Greška',
+          detail:
+            'Došlo je do greške prilikom postavljanja slike. Molimo pokušajte ponovo.'
+        });
       }
     }
+    return null;
+  }
+
+  removeImage(event: Event): void {
+    event.stopPropagation();
+    this.imageUploaded.emit('');
+    this.imageUrl = null;
+    this.selectedFile = null;
+    this.showRemoveButton = false;
   }
 }

@@ -9,6 +9,10 @@ body {
   padding: 0;
 }
 
+.error-text {
+  color: var(--red-500);
+}
+
 /* Order */
 @layer reset, primeng;
 

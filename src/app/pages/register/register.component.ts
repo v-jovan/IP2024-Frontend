@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
@@ -9,6 +9,13 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 import { ImageUploaderComponent } from '../../components/image-uploader/image-uploader.component';
+import { AuthService } from 'src/app/services/Auth/auth.service';
+import { LoaderService } from 'src/app/services/Loader/loader.service';
+import { CityService } from 'src/app/services/City/city.service';
+import { MessageService } from 'primeng/api';
+import { City } from 'src/app/interfaces/misc/city';
+import { AxiosError } from 'axios';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-register',
@@ -26,68 +33,142 @@ import { ImageUploaderComponent } from '../../components/image-uploader/image-up
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
-export class RegisterComponent {
-  constructor(
-    private fb: FormBuilder,
-    private formUtils: FormUtilsService
-  ) {}
-
+export class RegisterComponent implements OnInit {
+  cities: City[] = [];
+  buttonIcon: string = 'pi pi-sync';
+  buttonClass: string = '';
   usernameTaken: boolean = false;
 
   registerForm: FormGroup = this.fb.group({
     firstName: ['', Validators.required],
     lastName: ['', Validators.required],
-    username: ['', Validators.required],
+    username: [
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.pattern(/^(?!\d)[a-zA-Z0-9]/)
+      ]
+    ],
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-    city: [null, Validators.required]
+    password: ['', [Validators.required, Validators.minLength(5)]],
+    cityId: [null, Validators.required],
+    avatarUrl: ['']
   });
-  cities: any[] = [
-    { name: 'Pariz', id: 1 },
-    { name: 'London', id: 2 },
-    { name: 'New York', id: 3 },
-    { name: 'Tokyo', id: 4 },
-    { name: 'Berlin', id: 5 }
-  ];
-  buttonIcon: string = 'pi pi-sync';
-  buttonClass: string = '';
+
+  @ViewChild(ImageUploaderComponent) imageUploader!: ImageUploaderComponent;
+
+  constructor(
+    private fb: FormBuilder,
+    private formUtils: FormUtilsService,
+    private authService: AuthService,
+    private cityService: CityService,
+    private messageService: MessageService,
+    private loaderService: LoaderService,
+    private errorInterceptor: ErrorInterceptorService
+  ) {}
+
+  async ngOnInit(): Promise<void> {
+    this.loaderService.show();
+    try {
+      this.cities = await this.cityService.getCities();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    } finally {
+      this.loaderService.hide();
+    }
+  }
 
   get username() {
     return this.registerForm.get('username')?.value;
   }
 
-  checkUsername(): void {
+  get selectedCity() {
+    return this.registerForm.get('cityId')?.value;
+  }
+
+  async checkUsername(): Promise<void> {
     if (!this.username) {
+      this.messageService.add({
+        severity: 'info',
+        summary: 'Unesite korisničko ime',
+        detail: 'Nakon unosa provjerite dostupnost korisničkog imena'
+      });
       return;
     }
+
     this.buttonIcon = 'pi pi-spin pi-spinner';
     this.buttonClass = '';
-    setTimeout(() => {
-      const taken = Math.random() > 0.5;
-      this.usernameTaken = taken;
-      this.buttonIcon = taken ? 'pi pi-times' : 'pi pi-check';
-      this.buttonClass = taken ? 'p-button-danger' : 'p-button-success';
-      console.log(
-        `Username ${this.username} is ${taken ? 'taken' : 'available'}`
-      );
-    }, 1000);
+
+    try {
+      this.usernameTaken = await this.authService.checkUsername(this.username);
+      if (this.usernameTaken) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Korisničko ime zauzeto',
+          detail: 'Odaberite drugo korisničko ime'
+        });
+      }
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    } finally {
+      this.setButtonProperties(this.usernameTaken);
+    }
+  }
+
+  setButtonProperties(usernameTaken: boolean): void {
+    this.buttonIcon = usernameTaken ? 'pi pi-times' : 'pi pi-check';
+    this.buttonClass = usernameTaken ? 'p-button-danger' : 'p-button-success';
   }
 
   isFieldInvalid(controlName: string): boolean {
-    return this.formUtils.isInvalid(this.registerForm, controlName);
+    return this.formUtils.isTouchedAndInvalid(this.registerForm, controlName);
   }
 
-  register(): void {
+  async register(): Promise<void> {
     if (this.registerForm.valid && !this.usernameTaken) {
+      this.loaderService.show();
 
       try {
-        
-      }
-      catch (error) {
-        console.error('Error registering user');
+        const imageUrl = await this.imageUploader.uploadImage();
+        if (imageUrl) {
+          this.registerForm.patchValue({ avatarUrl: imageUrl });
+        }
+
+        const signupData = this.registerForm.value;
+        let city = this.cities.find(city => city.id === this.registerForm.value.cityId);
+
+        if (!city) {
+          try {
+            const newCity: City = await this.cityService.createCity({ name: this.registerForm.value.cityId });
+            signupData.cityId = newCity?.id;
+          } catch (error) {
+            this.errorInterceptor.handleError(error as AxiosError);
+          }
+        }
+
+        await this.authService.signup(signupData);
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Registracija uspješna',
+          detail: 'Molimo provjerite svoj email za aktivaciju naloga.'
+        });
+      } catch (error) {
+        this.errorInterceptor.handleError(error as AxiosError);
+      } finally {
+        this.loaderService.hide();
       }
     } else {
       this.registerForm.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Neispravni podaci',
+        detail: 'Molimo ispravite neispravne podatke u formi.'
+      });
     }
+  }
+
+  onImageUploaded(imageUrl: string): void {
+    this.registerForm.patchValue({ avatarUrl: imageUrl });
   }
 }

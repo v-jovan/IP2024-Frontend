@@ -3,14 +3,14 @@
     <div class="register__header--logo">
       <img src="assets/logo.svg" alt="logo" />
     </div>
-    <h2 i18n="@@registration.title">REGISTRACIJA</h2>
+    <h2 i18n="@@registration.title">Registracija</h2>
     <small i18n="@@registration.description">
       Molimo Vas da popunite sledeće informacije kako biste se registrovali.<br />Sva
       polja osim slike su obavezna.
     </small>
   </div>
   <form [formGroup]="registerForm" class="register__form">
-    <image-uploader />
+    <image-uploader (imageUploaded)="onImageUploaded($event.toString())" />
     <div class="register__form--name">
       <p-inputGroup>
         <p-inputGroupAddon>
@@ -24,6 +24,7 @@
           }"
           placeholder="Ime"
           i18n-placeholder="@@register.firstName"
+          autocomplete="given-name"
         />
       </p-inputGroup>
       <p-inputGroup>
@@ -38,6 +39,7 @@
           pInputText
           placeholder="Prezime"
           i18n-placeholder="@@register.lastName"
+          autocomplete="family-name"
         />
       </p-inputGroup>
     </div>
@@ -53,6 +55,7 @@
         pInputText
         placeholder="Korisničko ime"
         i18n-placeholder="@@login.username"
+        autocomplete="username"
       />
       <button
         type="button"
@@ -74,6 +77,7 @@
         pInputText
         placeholder="Email"
         i18n-placeholder="@@login.email"
+        autocomplete="email"
       />
     </p-inputGroup>
     <p-inputGroup>
@@ -89,6 +93,7 @@
         type="password"
         placeholder="Lozinka"
         i18n-placeholder="@@login.password"
+        autocomplete="new-password"
       />
     </p-inputGroup>
     <p-dropdown
@@ -96,9 +101,9 @@
       optionLabel="name"
       optionValue="id"
       [editable]="true"
-      formControlName="city"
+      formControlName="cityId"
       [ngClass]="{
-        'ng-invalid ng-dirty': isFieldInvalid('city')
+        'ng-invalid ng-dirty': isFieldInvalid('cityId')
       }"
       i18n-placeholder="@@register.city"
       placeholder="Grad"
@@ -107,7 +112,7 @@
       <p-button
         label="Registracija"
         i18n-label="@@login.register"
-        (onClick)="register()"
+        (click)="register()"
       ></p-button>
     </div>
   </form>

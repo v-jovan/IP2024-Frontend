@@ -4,9 +4,15 @@
     [style.width.px]="width"
     [style.height.px]="height"
     (click)="fileInput.click()"
+    (mouseenter)="showRemoveButton = true"
+    (mouseleave)="showRemoveButton = false"
   >
     @if (imageUrl) {
       <img [src]="imageUrl" alt="User Avatar" />
+      @if (showRemoveButton) {}
+      <div class="remove-button" (click)="removeImage($event)">
+        <i class="pi pi-times"></i>
+      </div>
     } @else {
       <i class="pi pi-user"></i>
     }
@@ -17,8 +23,8 @@
     (change)="onFileSelected($event)"
     accept="image/*"
   />
-  <button (click)="uploadImage()">Upload Image</button>
-  @if (uploadResponse) {
-    <p>Upload response: {{ uploadResponse }}</p>
-  }
+  <button
+    type="button"
+    (click)="uploadImage()"
+    > upload </button>
 </div>

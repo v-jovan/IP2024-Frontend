@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { AxiosError } from 'axios';
 
 @Injectable({
   providedIn: 'root'
 })
+// this is not a classically defined interceptor, but it is a service that
+// handles errors as an interceptor would do (for HTTP requests using HTTPInterceptor)
 export class ErrorInterceptorService {
   constructor(private messageService: MessageService) {}
 
@@ -67,6 +68,15 @@ export class ErrorInterceptorService {
           detail:
             errorResponse.data?.message ||
             'Korisnik sa ovim emailom već postoji.'
+        });
+        break;
+      case 503:
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Greška u slanju emaila',
+          detail:
+            errorResponse.data?.message ||
+            'Došlo je do greške prilikom slanja emaila. Molimo pokušajte kasnije.'
         });
         break;
       case 500:

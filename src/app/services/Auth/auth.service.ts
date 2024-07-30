@@ -53,14 +53,18 @@ export class AuthService {
     const response = await this.apiService.axios.get(
       `${this.authURL}/activate`,
       {
-        params: { token },
-        responseType: 'text'
+        params: { token }
       }
     );
 
     return response.data;
   }
 
+  /**
+   * Checks if a username is available.
+   * @param username - The username to check.
+   * @returns A Promise that resolves to a boolean indicating if the username is available.
+   */
   async checkUsername(username: string): Promise<boolean> {
     const response = await this.apiService.axios.post<boolean>(
       `${this.authURL}/check-username`,

@@ -14,7 +14,6 @@ import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { CityService } from 'src/app/services/City/city.service';
 import { MessageService } from 'primeng/api';
 import { City } from 'src/app/interfaces/misc/city';
-import { AxiosError } from 'axios';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
@@ -53,7 +52,7 @@ export class RegisterComponent implements OnInit {
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(5)]],
     cityId: [null, Validators.required],
-    avatarUrl: ['']
+    avatarUrl: [null]
   });
 
   @ViewChild(ImageUploaderComponent) imageUploader!: ImageUploaderComponent;
@@ -87,6 +86,11 @@ export class RegisterComponent implements OnInit {
     return this.registerForm.get('cityId')?.value;
   }
 
+  /**
+   * Checks the availability of the username and displays a message accordingly.
+   * If the username is not provided, an info message is displayed.
+   * If the username is taken, an error message is displayed.
+   */
   async checkUsername(): Promise<void> {
     if (!this.username) {
       this.messageService.add({
@@ -125,6 +129,11 @@ export class RegisterComponent implements OnInit {
     return this.formUtils.isTouchedAndInvalid(this.registerForm, controlName);
   }
 
+  /**
+   * Registers a user.
+   *
+   * @returns A Promise that resolves when the registration is successful.
+   */
   async register(): Promise<void> {
     if (this.registerForm.valid && !this.usernameTaken) {
       this.loaderService.show();
@@ -136,15 +145,15 @@ export class RegisterComponent implements OnInit {
         }
 
         const signupData = this.registerForm.value;
-        let city = this.cities.find(city => city.id === this.registerForm.value.cityId);
+        let city = this.cities.find(
+          (city) => city.id === this.registerForm.value.cityId
+        );
 
         if (!city) {
-          try {
-            const newCity: City = await this.cityService.createCity({ name: this.registerForm.value.cityId });
-            signupData.cityId = newCity?.id;
-          } catch (error) {
-            this.errorInterceptor.handleError(error as AxiosError);
-          }
+          const newCity: City = await this.cityService.createCity({
+            name: this.registerForm.value.cityId
+          });
+          signupData.cityId = newCity?.id;
         }
 
         await this.authService.signup(signupData);

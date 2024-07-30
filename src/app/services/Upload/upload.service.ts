@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
-import { UploadResponse } from 'src/app/interfaces/responses/upload-response';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
-import { AxiosError } from 'axios';
 
 @Injectable({
   providedIn: 'root'

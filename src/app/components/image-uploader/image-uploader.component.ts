@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 export class ImageUploaderComponent {
   @Input() width: number = 150;
   @Input() height: number = 150;
-  @Output() imageUploaded = new EventEmitter<String>();
+  @Output() imageUploaded = new EventEmitter<String | null>();
 
   imageUrl: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;
@@ -57,7 +57,7 @@ export class ImageUploaderComponent {
 
   removeImage(event: Event): void {
     event.stopPropagation();
-    this.imageUploaded.emit('');
+    this.imageUploaded.emit(null);
     this.imageUrl = null;
     this.selectedFile = null;
     this.showRemoveButton = false;

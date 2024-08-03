@@ -12,7 +12,7 @@ import { MessageService } from 'primeng/api';
 export class ImageUploaderComponent {
   @Input() width: number = 150;
   @Input() height: number = 150;
-  @Output() imageUploaded = new EventEmitter<String | null>();
+  @Output() imageUploaded = new EventEmitter<string | null>();
 
   imageUrl: string | ArrayBuffer | null = null;
   selectedFile: File | null = null;

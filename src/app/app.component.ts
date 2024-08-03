@@ -3,30 +3,46 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { SearchHeaderComponent } from './components/search-header/search-header.component';
 import { LoaderComponent } from '@components/util/loader/loader.component';
 import { ToastModule } from 'primeng/toast';
+import { CommonModule } from '@angular/common';
+import { PrimeNGConfig } from 'primeng/api';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
-  imports: [RouterOutlet, SearchHeaderComponent, ToastModule, LoaderComponent]
+  imports: [
+    RouterOutlet,
+    SearchHeaderComponent,
+    ToastModule,
+    LoaderComponent,
+    CommonModule
+  ]
 })
 export class AppComponent implements OnInit {
   title = 'IP2024Frontend';
   doNotShowHeaderOn = ['checkout', 'register', 'dashboard']; // Paths where header should not be shown
   showHeader = true;
 
-  constructor(private router: Router) {}
+  constructor(
+    private primengConfig: PrimeNGConfig,
+    private router: Router
+  ) {}
 
   /**
    * Initializes the component and subscribes to router events to determine whether to hide the header or not.
    */
   ngOnInit(): void {
+    this.primengConfig.ripple = true; // Enable ripple effect for PrimeNG components
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationEnd) {
         this.showHeader = !this.shouldHideHeader(event.url); // Determine whether to hide header or not
       }
     });
+  }
+
+  isDashboard(): boolean {
+    return this.router.url.startsWith('/dashboard');
   }
 
   /**

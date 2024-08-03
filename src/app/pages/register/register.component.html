@@ -10,7 +10,7 @@
     </small>
   </div>
   <form [formGroup]="registerForm" class="register__form">
-    <image-uploader (imageUploaded)="onImageUploaded($event.toString())" />
+    <image-uploader (imageUploaded)="onImageUploaded($event)" />
     <div class="register__form--name">
       <p-inputGroup>
         <p-inputGroupAddon>

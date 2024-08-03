@@ -177,7 +177,9 @@ export class RegisterComponent implements OnInit {
     }
   }
 
-  onImageUploaded(imageUrl: string): void {
-    this.registerForm.patchValue({ avatarUrl: imageUrl });
+  onImageUploaded(imageUrl: string | null): void {
+    if (imageUrl) {
+      this.registerForm.patchValue({ avatarUrl: imageUrl });
+    }
   }
 }

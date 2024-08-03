@@ -5,6 +5,13 @@
   width: 100%;
   padding: 2rem;
 
+  &.dashboard-mode {
+    max-width: none;
+    padding: 0;
+    margin: 0;
+    height: 100vh;
+  }
+
   &__header {
     height: $header-height;
   }

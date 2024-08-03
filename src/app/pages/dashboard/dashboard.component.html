@@ -1,0 +1,61 @@
+<div class="dashboard">
+  <div class="dashboard__sidebar" [class.hidden]="isSidebarHidden">
+    <img src="assets/logo.svg" alt="logo" class="dashboard__sidebar--logo" />
+    <p-menu #sideMenu [model]="sidebarItems"></p-menu>
+  </div>
+
+  <div class="dashboard__container" [class.expanded]="isSidebarHidden">
+    <p-toolbar styleClass="dashboard__toolbar">
+      <ng-template pTemplate="left">
+        <p-button
+          icon="pi pi-bars"
+          [text]="true"
+          severity="secondary"
+          size="large"
+          (click)="toggleSidebar()"
+        ></p-button>
+      </ng-template>
+      <ng-template pTemplate="center">
+        <p-breadcrumb
+          class="dashboard__toolbar--center"
+          [model]="breadcrumbItems"
+          [home]="home"
+        />
+      </ng-template>
+      <ng-template pTemplate="end">
+        <div class="dashboard__toolbar--right">
+          <p-button
+            icon="pi pi-home"
+            [text]="true"
+            severity="secondary"
+            size="large"
+            (click)="navigateHome()"
+          ></p-button>
+          <p-button
+            icon="pi pi-info-circle"
+            [text]="true"
+            severity="secondary"
+            size="large"
+            (click)="navigateHome()"
+          ></p-button>
+          <p-avatar
+            icon="pi pi-user"
+            shape="circle"
+            size="large"
+            class="clickable"
+            (click)="userMenu.toggle($event)"
+          ></p-avatar>
+        </div>
+      </ng-template>
+    </p-toolbar>
+    <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+
+    <div class="dashboard__content">
+      <router-outlet></router-outlet>
+    </div>
+
+    <div class="dashboard__footer">
+      <small>© 2024 Internet programiranje 2024. Sva prava zadržana.</small>
+    </div>
+  </div>
+</div>

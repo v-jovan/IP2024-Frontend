@@ -4,6 +4,7 @@ import { DetailsComponent } from './pages/details/details.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { ActivationComponent } from './pages/activation/activation.component';
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'auth/activate', component: ActivationComponent },
   { path: 'program-details/:id', component: DetailsComponent },
   { path: 'checkout', component: CheckoutComponent },
-  { path: 'register', component: RegisterComponent }
+  { path: 'register', component: RegisterComponent },
+  { path: 'dashboard', component: DashboardComponent }
 ];

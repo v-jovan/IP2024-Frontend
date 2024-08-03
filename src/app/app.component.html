@@ -1,4 +1,4 @@
-<div class="main">
+<div class="main" [ngClass]="{ 'dashboard-mode': isDashboard() }">
   @if (showHeader) {
     <div class="main__header">
       <app-search-header />

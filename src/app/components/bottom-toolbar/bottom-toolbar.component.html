@@ -1,0 +1,16 @@
+<div class="bottom-toolbar">
+  <p-button
+    [label]="discardLabel"
+    severity="danger"
+    size="small"
+    [outlined]="true"
+    (onClick)="onDiscard.emit()"
+    [disabled]="disableDiscard"
+  ></p-button>
+  <p-button
+    [label]="saveLabel"
+    size="small"
+    (onClick)="onSave.emit()"
+    [disabled]="disableSave"
+  ></p-button>
+</div>

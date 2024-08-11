@@ -63,3 +63,18 @@ body {
     display: none;
   }
 }
+
+.toolbar {
+  padding: 0 2rem 3rem 0;
+  @media (min-width: 850px) {
+    position: absolute;
+    bottom: 0;
+    width: 95%;
+  }
+  @media (max-width: 850px) {
+    padding: 2rem 0 1rem;
+    .p-element {
+      width: 100%;
+    }
+  }
+}

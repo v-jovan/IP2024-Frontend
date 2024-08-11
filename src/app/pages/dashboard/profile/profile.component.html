@@ -9,7 +9,8 @@
         [width]="200"
         [height]="200"
         [showOverlay]="false"
-        (imageUploaded)="onImageUploaded($event)"
+        [image]="userData?.avatarUrl"
+        (imageUploaded)="onImageUploaded()"
       ></image-uploader>
       <div class="profile__buttons">
         <p-button
@@ -25,18 +26,18 @@
           [outlined]="true"
           icon="pi pi-trash"
           size="small"
-          (onClick)="imageUploader.clearImage()"
+          (onClick)="clearImage()"
         />
       </div>
     </div>
     <p-divider type="dotted" layout="vertical" class="desktop-only"></p-divider>
-    <div class="profile__data">
+    <form [formGroup]="userDataForm" class="profile__data">
       <div class="profile__data--username">
         <input
           pInputText
           id="username"
+          formControlName="username"
           aria-describedby="username-help"
-          [disabled]="true"
         />
         <small id="username-help" i18n="@@profile.username">
           Korisničko ime ne može biti promijenjeno.
@@ -45,12 +46,14 @@
       <div class="profile__data--name">
         <input
           id="firstName"
+          formControlName="firstName"
           pInputText
           autocomplete="given-name"
           placeholder="Ime"
         />
         <input
           id="lastName"
+          formControlName="lastName"
           pInputText
           autocomplete="family-name"
           placeholder="Prezime"
@@ -59,6 +62,7 @@
       <div class="profile__data--email">
         <input
           id="email"
+          formControlName="email"
           pInputText
           autocomplete="email"
           placeholder="E-Mail"
@@ -66,10 +70,12 @@
       </div>
       <div class="profile__data--city">
         <p-dropdown
+          [options]="cities"
           optionLabel="name"
           optionValue="id"
           [editable]="true"
           autocomplete="city"
+          formControlName="cityId"
           i18n-placeholder="@@profile.city"
           placeholder="Grad"
         />
@@ -77,12 +83,20 @@
       <div class="profile__data--biography">
         <textarea
           id="bio"
+          formControlName="biography"
           pInputTextarea
           placeholder="Biografija"
           i18n-placeholder="@@profile.bio"
+          maxlength="500"
         >
         </textarea>
       </div>
-    </div>
+    </form>
+  </div>
+  <div class="profile__footer toolbar">
+    <bottom-toolbar
+      (onSave)="saveChanges()"
+      (onDiscard)="discardChanges()"
+    ></bottom-toolbar>
   </div>
 </div>

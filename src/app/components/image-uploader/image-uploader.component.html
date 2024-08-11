@@ -1,18 +1,20 @@
 <div class="image-upload">
   <div
     class="image-upload__avatar"
+    [ngClass]="{ clickable: showOverlay }"
     [style.width.px]="width"
     [style.height.px]="height"
-    (click)="fileInput.click()"
+    (click)="onAvatarClick()"
     (mouseenter)="showRemoveButton = true"
     (mouseleave)="showRemoveButton = false"
   >
     @if (imageUrl) {
       <img [src]="imageUrl" alt="User Avatar" />
-      @if (showRemoveButton) {}
-      <div class="remove-button" (click)="removeImage($event)">
-        <i class="pi pi-times"></i>
-      </div>
+      @if (showRemoveButton && showOverlay) {
+        <div class="remove-button" (click)="removeImage($event)">
+          <i class="pi pi-times"></i>
+        </div>
+      }
     } @else {
       <i class="pi pi-user"></i>
     }

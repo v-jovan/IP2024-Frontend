@@ -80,22 +80,31 @@
         autocomplete="email"
       />
     </p-inputGroup>
-    <p-inputGroup>
-      <p-inputGroupAddon>
-        <i class="pi pi-lock"></i>
-      </p-inputGroupAddon>
-      <input
-        formControlName="password"
-        [ngClass]="{
-          'ng-invalid ng-dirty': isFieldInvalid('password')
-        }"
-        pInputText
-        type="password"
-        placeholder="Lozinka"
-        i18n-placeholder="@@login.password"
-        autocomplete="new-password"
-      />
-    </p-inputGroup>
+    <p-password
+      class="register__form--password"
+      formControlName="password"
+      placeholder="Lozinka"
+      i18n-placeholder="@@login.password"
+      [ngClass]="{
+        'ng-invalid ng-dirty': isFieldInvalid('password')
+      }"
+      [toggleMask]="true"
+      promptLabel="Unesite lozinku"
+      weakLabel="Prejednostavna lozinka"
+      mediumLabel="Srednja kompleksnost lozinke"
+      strongLabel="Kompleksna lozinka"
+    >
+      <ng-template pTemplate="footer">
+        <p-divider />
+        <p class="password__suggestion">Preporuke</p>
+        <ul class="password_suggestions">
+          <li>Bar jedno malo slovo</li>
+          <li>Bar jedno veliko slovo</li>
+          <li>Bar jedna cifra ili znak</li>
+          <li>Minimalno 8 karaktera</li>
+        </ul>
+      </ng-template>
+    </p-password>
     <p-dropdown
       [options]="cities"
       optionLabel="name"

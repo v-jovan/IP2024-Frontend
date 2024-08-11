@@ -1,0 +1,88 @@
+<div class="profile dashboard-card">
+  <div class="profile__header">
+    <h2 i18n="@@profile.title">Profil</h2>
+  </div>
+  <div class="profile__content">
+    <div class="profile__image">
+      <image-uploader
+        #imageUploader
+        [width]="200"
+        [height]="200"
+        [showOverlay]="false"
+        (imageUploaded)="onImageUploaded($event)"
+      ></image-uploader>
+      <div class="profile__buttons">
+        <p-button
+          label="Promijeni"
+          [outlined]="true"
+          icon="pi pi-upload"
+          size="small"
+          (onClick)="imageUploader.triggerFileInput()"
+        />
+        <p-button
+          label="Obriši"
+          severity="danger"
+          [outlined]="true"
+          icon="pi pi-trash"
+          size="small"
+          (onClick)="imageUploader.clearImage()"
+        />
+      </div>
+    </div>
+    <p-divider type="dotted" layout="vertical" class="desktop-only"></p-divider>
+    <div class="profile__data">
+      <div class="profile__data--username">
+        <input
+          pInputText
+          id="username"
+          aria-describedby="username-help"
+          [disabled]="true"
+        />
+        <small id="username-help" i18n="@@profile.username">
+          Korisničko ime ne može biti promijenjeno.
+        </small>
+      </div>
+      <div class="profile__data--name">
+        <input
+          id="firstName"
+          pInputText
+          autocomplete="given-name"
+          placeholder="Ime"
+        />
+        <input
+          id="lastName"
+          pInputText
+          autocomplete="family-name"
+          placeholder="Prezime"
+        />
+      </div>
+      <div class="profile__data--email">
+        <input
+          id="email"
+          pInputText
+          autocomplete="email"
+          placeholder="E-Mail"
+        />
+      </div>
+      <div class="profile__data--city">
+        <p-dropdown
+          optionLabel="name"
+          optionValue="id"
+          [editable]="true"
+          autocomplete="city"
+          i18n-placeholder="@@profile.city"
+          placeholder="Grad"
+        />
+      </div>
+      <div class="profile__data--biography">
+        <textarea
+          id="bio"
+          pInputTextarea
+          placeholder="Biografija"
+          i18n-placeholder="@@profile.bio"
+        >
+        </textarea>
+      </div>
+    </div>
+  </div>
+</div>

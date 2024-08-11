@@ -1,8 +1,57 @@
 <div class="dashboard">
-  <div class="dashboard__sidebar" [class.hidden]="isSidebarHidden">
-    <img src="assets/logo.svg" alt="logo" class="dashboard__sidebar--logo" />
-    <p-menu #sideMenu [model]="sidebarItems"></p-menu>
-  </div>
+  @if (isDesktopSidebar) {
+    <div class="dashboard__sidebar" [class.hidden]="isSidebarHidden">
+      <img src="assets/logo.svg" alt="logo" class="dashboard__sidebar--logo" />
+      <p-menu #sideMenu [model]="sidebarItems">
+        <ng-template pTemplate="item" let-item>
+          <div
+            (click)="selectSidebarItem(item.id)"
+            [ngClass]="{ selected: item.id === selectedSidebarItem }"
+            class="menu-item"
+          >
+            <i [class]="item.icon"></i>
+            <span>{{ item.label }}</span>
+          </div>
+        </ng-template>
+      </p-menu>
+    </div>
+  } @else {
+    <p-sidebar #sidebarRef [(visible)]="mobileSidebar" class="mobile-only">
+      <ng-template pTemplate="headless">
+        <div class="dashboard__mobile">
+          <div class="dashboard__mobile--header">
+            <span class="dashboard__mobile--img">
+              <img src="assets/logo.svg" alt="logo" />
+            </span>
+            <span>
+              <p-button
+                type="button"
+                (onClick)="closeCallback($event)"
+                icon="pi pi-times"
+                rounded="true"
+                outlined="true"
+                styleClass="dashboard__mobile--close"
+              ></p-button>
+            </span>
+          </div>
+          <div class="dashboard__mobile--content">
+            <p-menu #sideMenu [model]="sidebarItems">
+              <ng-template pTemplate="item" let-item>
+                <div
+                  (click)="selectSidebarItem(item.id)"
+                  [ngClass]="{ selected: item.id === selectedSidebarItem }"
+                  class="menu-item"
+                >
+                  <i [class]="item.icon"></i>
+                  <span>{{ item.label }}</span>
+                </div>
+              </ng-template>
+            </p-menu>
+          </div>
+        </div>
+      </ng-template>
+    </p-sidebar>
+  }
 
   <div class="dashboard__container" [class.expanded]="isSidebarHidden">
     <p-toolbar styleClass="dashboard__toolbar">

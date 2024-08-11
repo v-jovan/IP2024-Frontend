@@ -3,7 +3,7 @@ import {
   DEFAULT_CURRENCY_CODE,
 } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideAnimations } from '@angular/platform-browser/animations';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { MessageService } from 'primeng/api';
 
 import { routes } from './app.routes';
@@ -11,7 +11,7 @@ import { routes } from './app.routes';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideAnimations(),
+    provideAnimationsAsync(),
     MessageService,
     { provide: DEFAULT_CURRENCY_CODE, useValue: 'EUR' }
   ]

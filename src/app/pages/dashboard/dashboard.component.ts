@@ -1,13 +1,21 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
-import { Menu, MenuModule } from 'primeng/menu';
+import { MenuModule } from 'primeng/menu';
 import { CommonModule } from '@angular/common';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
+import { Sidebar, SidebarModule } from 'primeng/sidebar';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +27,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
     AvatarGroupModule,
     CommonModule,
     MenuModule,
-    BreadcrumbModule
+    BreadcrumbModule,
+    SidebarModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
@@ -27,12 +36,15 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 })
 export class DashboardComponent implements OnInit {
   isSidebarHidden = false;
+  isDesktopSidebar: boolean = true;
+  mobileSidebar: boolean = false;
   breadcrumbItems: MenuItem[] | undefined;
   home: MenuItem | undefined;
-  userMenuItems: MenuItem[] = [];
-  sidebarItems: MenuItem[] = [];
+  userMenuItems: MenuItem[] | undefined;
+  sidebarItems: MenuItem[] | undefined;
+  selectedSidebarItem: string | null = null;
 
-  @ViewChild('userMenu') userMenu: Menu | undefined;
+  @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
   constructor(private router: Router) {}
 
@@ -47,15 +59,17 @@ export class DashboardComponent implements OnInit {
     ];
     this.sidebarItems = [
       {
+        id: 'programs',
         label: 'Programi',
-        icon: 'pi pi-fw pi-folder',
         items: [
           {
+            id: 'view-programs',
             label: 'Pregled programa',
             icon: 'pi pi-fw pi-list',
             command: () => this.viewPrograms()
           },
           {
+            id: 'create-program',
             label: 'Kreiraj novi program',
             icon: 'pi pi-fw pi-plus',
             command: () => this.createProgram()
@@ -63,90 +77,105 @@ export class DashboardComponent implements OnInit {
         ]
       },
       {
+        id: 'user',
         label: 'Korisnik',
-        icon: 'pi pi-fw pi-user',
         items: [
           {
-            label: 'Dnevnik rada',
-            icon: 'pi pi-fw pi-book',
-            command: () => this.viewDiary()
+            id: 'profile',
+            label: 'Informacije',
+            icon: 'pi pi-fw pi-user',
+            command: () => this.goToProfile()
           },
           {
-            label: 'Statistika rada',
-            icon: 'pi pi-fw pi-chart-line',
-            command: () => this.viewStatistics()
-          }
-        ]
-      },
-      {
-        label: 'Korisnik',
-        icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'Dnevnik rada',
-            icon: 'pi pi-fw pi-book',
-            command: () => this.viewDiary()
-          },
-          {
-            label: 'Statistika rada',
-            icon: 'pi pi-fw pi-chart-line',
-            command: () => this.viewStatistics()
-          }
-        ]
-      },
-      {
-        label: 'Korisnik',
-        icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'Dnevnik rada',
-            icon: 'pi pi-fw pi-book',
-            command: () => this.viewDiary()
-          },
-          {
-            label: 'Statistika rada',
-            icon: 'pi pi-fw pi-chart-line',
-            command: () => this.viewStatistics()
-          }
-        ]
-      },
-      {
-        label: 'Korisnik',
-        icon: 'pi pi-fw pi-user',
-        items: [
-          {
-            label: 'Dnevnik rada',
-            icon: 'pi pi-fw pi-book',
-            command: () => this.viewDiary()
-          },
-          {
-            label: 'Statistika rada',
-            icon: 'pi pi-fw pi-chart-line',
-            command: () => this.viewStatistics()
+            id: 'password',
+            label: 'Lozinka',
+            icon: 'pi pi-fw pi-lock',
+            command: () => this.gotToPassword()
           }
         ]
       }
     ];
-    this.breadcrumbItems = [
-      { label: 'Electronics' },
-      { label: 'Computer' },
-      { label: 'Accessories' },
-      { label: 'Keyboard' },
-      { label: 'Wireless' }
-    ];
-    this.home = { icon: 'pi pi-home', routerLink: '/' };
+    this.home = {
+      icon: 'pi pi-home',
+      routerLink: '/dashboard',
+      command: () => {
+        this.breadcrumbItems = undefined;
+      }
+    };
+
+    // Make all checks and update the sidebar/breadcrumb
+    this.checkWindowWidth();
+    this.updateSelectedSidebarItem(this.router.url);
+    this.updateBreadcrumb();
+
+    // Subscribe to router events
+    this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        )
+      )
+      .subscribe((event: NavigationEnd) => {
+        const url = event.urlAfterRedirects;
+        this.updateSelectedSidebarItem(url);
+        this.updateBreadcrumb();
+        if (!this.isDesktopSidebar) {
+          this.closeCallback(new Event('click'));
+        }
+      });
   }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkWindowWidth();
+  }
+  checkWindowWidth(): void {
+    this.isDesktopSidebar = window.innerWidth > 1060;
+  }
+
+  gotToPassword(): void {
+    this.router.navigate(['dashboard/password']);
+  }
+
+  goToProfile(): void {
+    this.router.navigate(['dashboard/profile']);
+  }
+
+  selectSidebarItem(id: string) {
+    this.selectedSidebarItem = id;
+  }
+
+  updateBreadcrumb() {
+    const item = this.sidebarItems
+      ?.flatMap((group) => group.items)
+      .find((subItem) => subItem?.id === this.selectedSidebarItem);
+    if (item) {
+      this.breadcrumbItems = [{ label: item.label }];
+    }
+  }
+
+  updateSelectedSidebarItem(url: string) {
+    const segments = url.split('/');
+    const dashboardIndex = segments.indexOf('dashboard');
+    if (dashboardIndex !== -1 && segments[dashboardIndex + 1]) {
+      this.selectedSidebarItem = segments[dashboardIndex + 1];
+      return;
+    } else {
+      this.selectedSidebarItem = null;
+    }
+  }
+
   viewPrograms(): void {
-    throw new Error('Method not implemented.');
+    console.log('viewPrograms');
   }
   createProgram(): void {
-    throw new Error('Method not implemented.');
+    console.log('createProgram');
   }
   viewDiary(): void {
-    throw new Error('Method not implemented.');
+    console.log('viewDiary');
   }
   viewStatistics(): void {
-    throw new Error('Method not implemented.');
+    console.log('viewStatistics');
   }
 
   navigateHome() {
@@ -161,6 +190,14 @@ export class DashboardComponent implements OnInit {
     // Implementiraj logout logiku
   }
   toggleSidebar() {
-    this.isSidebarHidden = !this.isSidebarHidden;
+    if (this.isDesktopSidebar) {
+      this.isSidebarHidden = !this.isSidebarHidden;
+    } else {
+      this.mobileSidebar = !this.mobileSidebar;
+    }
+  }
+
+  closeCallback(e: Event): void {
+    this.sidebarRef.close(e);
   }
 }

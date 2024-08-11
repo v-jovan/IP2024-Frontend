@@ -13,9 +13,9 @@ export class UploadService {
     private errorInterceptor: ErrorInterceptorService
   ) {}
 
-  async uploadImage(data: FormData): Promise<String> {
+  async uploadImage(data: FormData): Promise<string> {
     try {
-      const response = await this.apiService.axios.post<String>(
+      const response = await this.apiService.axios.post<string>(
         this.uploadURL,
         data,
         {

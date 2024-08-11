@@ -1,10 +1,12 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
 import { DropdownModule } from 'primeng/dropdown';
+import { PasswordModule } from 'primeng/password';
+import { DividerModule } from 'primeng/divider';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
@@ -27,10 +29,13 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
     InputTextModule,
     DropdownModule,
     ReactiveFormsModule,
-    ImageUploaderComponent
+    ImageUploaderComponent,
+    PasswordModule,
+    DividerModule
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
+  encapsulation: ViewEncapsulation.None
 })
 export class RegisterComponent implements OnInit {
   cities: City[] = [];
@@ -145,7 +150,7 @@ export class RegisterComponent implements OnInit {
         }
 
         const signupData = this.registerForm.value;
-        let city = this.cities.find(
+        const city = this.cities.find(
           (city) => city.id === this.registerForm.value.cityId
         );
 

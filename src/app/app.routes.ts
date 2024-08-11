@@ -1,17 +1,51 @@
 import { Routes } from '@angular/router';
-import { HomeComponent } from './pages/home/home.component';
-import { DetailsComponent } from './pages/details/details.component';
-import { CheckoutComponent } from './pages/checkout/checkout.component';
-import { RegisterComponent } from './pages/register/register.component';
-import { ActivationComponent } from './pages/activation/activation.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
-  { path: 'home', component: HomeComponent },
-  { path: 'auth/activate', component: ActivationComponent },
-  { path: 'program-details/:id', component: DetailsComponent },
-  { path: 'checkout', component: CheckoutComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'dashboard', component: DashboardComponent }
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./pages/home/home.component').then((m) => m.HomeComponent)
+  },
+  {
+    path: 'auth/activate',
+    loadComponent: () =>
+      import('./pages/activation/activation.component').then(
+        (m) => m.ActivationComponent
+      )
+  },
+  {
+    path: 'program-details/:id',
+    loadComponent: () =>
+      import('./pages/details/details.component').then(
+        (m) => m.DetailsComponent
+      )
+  },
+  {
+    path: 'checkout',
+    loadComponent: () =>
+      import('./pages/checkout/checkout.component').then(
+        (m) => m.CheckoutComponent
+      )
+  },
+  {
+    path: 'register',
+    loadComponent: () =>
+      import('./pages/register/register.component').then(
+        (m) => m.RegisterComponent
+      )
+  },
+  {
+    path: 'dashboard',
+    loadComponent: () =>
+      import('./pages/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
+    loadChildren: () =>
+      import('./pages/dashboard/dashboard.routes').then(
+        (m) => m.DASHBOARD_ROUTES
+      ),
+    canActivate: [authGuard]
+  }
 ];

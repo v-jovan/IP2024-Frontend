@@ -1,7 +1,10 @@
 @import 'variables';
 .dashboard {
   display: flex;
-  height: 100vh;
+
+  @media (min-width: 850px) {
+    height: 100vh;
+  }
 
   &__sidebar {
     z-index: 1000;
@@ -24,7 +27,6 @@
       max-width: 10rem;
       margin: 2rem 0;
     }
-
     .p-menu {
       width: 100%;
       border-radius: 0;
@@ -42,6 +44,7 @@
     flex-direction: column;
     flex: 1;
     transition: margin-left 0.3s ease-in-out;
+    min-height: 100vh;
 
     &.expanded {
       margin-left: -16rem;
@@ -54,14 +57,15 @@
     padding: 1.5rem 2rem;
     width: 100%;
 
-    &--left {
-    }
-
     &--center {
       .p-breadcrumb {
         border: none;
         background: none;
         color: var(--primary-color);
+      }
+
+      @media (max-width: 850px) {
+        display: none;
       }
     }
 
@@ -89,5 +93,60 @@
   &__content,
   &__footer {
     background-color: var(--primary-50);
+  }
+
+  &__mobile {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &--header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2rem;
+      gap: 5rem;
+      padding-top: 2rem;
+      flex-shrink: 0;
+      width: 100%;
+    }
+
+    &--img {
+      width: 100%;
+    }
+    &--close {
+      width: 2rem;
+      height: 2rem;
+    }
+
+    &--content {
+      margin-top: 2rem;
+    }
+
+    .p-menu {
+      width: 100%;
+      border-radius: 0;
+      border: none;
+
+      .p-submenu-header {
+        margin-top: 1rem;
+        color: var(--primary-color);
+      }
+    }
+  }
+
+  .menu-item {
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    display: flex;
+    align-items: center;
+
+    i {
+      margin-right: 0.75rem;
+    }
+
+    &.selected {
+      background-color: var(--surface-c);
+    }
   }
 }

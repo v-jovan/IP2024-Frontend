@@ -1,18 +1,19 @@
 import { Injectable } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
 import { TokenStoreService } from '../store/TokenStore/token-store.service';
+import { environment } from '../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private axiosInstance: AxiosInstance;
-  private noTokenUrls = ['/auth', '/upload', '/uploads', '/cities'];
+  private noTokenUrls = environment.noTokenUrls;
 
   constructor(private tokenStore: TokenStoreService) {
     this.axiosInstance = axios.create({
-      baseURL: 'http://localhost:8080',
-      timeout: 5000
+      baseURL: environment.apiUrl,
+      timeout: environment.apiTimeout
     });
 
     this.setupInterceptors();

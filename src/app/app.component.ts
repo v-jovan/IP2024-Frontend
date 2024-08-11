@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
+import { NavigationStart, Router, RouterOutlet } from '@angular/router';
 import { SearchHeaderComponent } from './components/search-header/search-header.component';
 import { LoaderComponent } from '@components/util/loader/loader.component';
 import { ToastModule } from 'primeng/toast';
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.primengConfig.ripple = true; // Enable ripple effect for PrimeNG components
     this.router.events.subscribe((event) => {
-      if (event instanceof NavigationEnd) {
+      if (event instanceof NavigationStart) {
         this.showHeader = !this.shouldHideHeader(event.url); // Determine whether to hide header or not
       }
     });

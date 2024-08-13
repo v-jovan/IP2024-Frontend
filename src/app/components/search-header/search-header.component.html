@@ -1,7 +1,12 @@
 <header class="header">
   <p-toolbar styleClass="header__toolbar">
     <ng-template pTemplate="start">
-      <img src="/assets/logo.svg" alt="Logo" class="header__toolbar--logo" (click)="goToHome()" />
+      <img
+        src="/assets/logo.svg"
+        alt="Logo"
+        class="header__toolbar--logo"
+        (click)="goToHome()"
+      />
     </ng-template>
     <ng-template pTemplate="center">
       <span class="p-input-icon-left header__toolbar--search">
@@ -15,8 +20,20 @@
     </ng-template>
     <ng-template pTemplate="end">
       <div class="header__toolbar--actions">
-        <app-login />
-        <app-cart />
+        @if (userIsLoggedIn) {
+          <p-avatar
+            [image]="userAvatar || undefined"
+            [icon]="!userAvatar ? 'pi pi-user' : undefined"
+            shape="circle"
+            size="large"
+            class="clickable"
+            (click)="userMenu.toggle($event)"
+          ></p-avatar>
+          <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+          <app-cart />
+        } @else {
+          <app-login (loginSuccess)="onLoginSuccess()" />
+        }
       </div>
     </ng-template>
   </p-toolbar>

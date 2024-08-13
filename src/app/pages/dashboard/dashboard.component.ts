@@ -60,15 +60,14 @@ export class DashboardComponent implements OnInit {
   async ngOnInit() {
     try {
       this.userAvatar = await this.userService.getAvatar();
-      console.log(this.userAvatar);
     } catch (error) {
       this.errorInterceptor.handleError(error as AxiosError);
     }
     this.userMenuItems = [
       {
-        label: 'Podešavanja',
-        icon: 'pi pi-cog',
-        command: () => this.goToSettings()
+        label: 'Profil',
+        icon: 'pi pi-user',
+        command: () => this.goToProfile()
       },
       { label: 'Odjava', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
@@ -156,6 +155,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/profile']);
   }
 
+  goToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
   selectSidebarItem(id: string) {
     this.selectedSidebarItem = id;
   }
@@ -195,10 +198,6 @@ export class DashboardComponent implements OnInit {
 
   navigateHome() {
     this.router.navigate(['/home']);
-  }
-
-  goToSettings(): void {
-    this.goToProfile();
   }
 
   logout(): void {

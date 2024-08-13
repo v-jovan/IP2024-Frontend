@@ -1,7 +1,12 @@
 <div class="dashboard">
   @if (isDesktopSidebar) {
     <div class="dashboard__sidebar" [class.hidden]="isSidebarHidden">
-      <img src="assets/logo.svg" alt="logo" class="dashboard__sidebar--logo" />
+      <img
+        src="assets/logo.svg"
+        alt="logo"
+        class="dashboard__sidebar--logo clickable"
+        (click)="goToDashboard()"
+      />
       <p-menu #sideMenu [model]="sidebarItems">
         <ng-template pTemplate="item" let-item>
           <div

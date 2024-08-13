@@ -6,7 +6,13 @@ import { ButtonModule } from 'primeng/button';
 import { LoginComponent } from '@components/login/login.component';
 import { CartComponent } from '@components/cart/cart.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessageService } from 'primeng/api';
+import { MenuItem, MessageService } from 'primeng/api';
+import { MenuModule } from 'primeng/menu';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { AvatarModule } from 'primeng/avatar';
+import { AvatarGroupModule } from 'primeng/avatargroup';
+import { UserService } from 'src/app/services/User/user.service';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-search-header',
@@ -20,21 +26,35 @@ import { MessageService } from 'primeng/api';
     ToolbarModule,
     ButtonModule,
     LoginComponent,
-    CartComponent
+    CartComponent,
+    MenuModule,
+    AvatarModule,
+    AvatarGroupModule
   ]
 })
 export class SearchHeaderComponent implements OnInit {
-  value!: string;
+  userIsLoggedIn: boolean = false;
+  userMenuItems: MenuItem[] | undefined;
+  userAvatar: string | undefined;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private tokenService: TokenStoreService,
+    private userService: UserService,
+    private errorInterceptor: ErrorInterceptorService
   ) {}
 
   @ViewChild(LoginComponent) loginComponent!: LoginComponent;
 
-  ngOnInit(): void {
-    this.value = '';
+  async ngOnInit() {
+    try {
+      this.userAvatar = await this.userService.getAvatar();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+
     this.route.queryParams.subscribe((params) => {
       if (params['activated'] === 'true') {
         this.messageService.add({
@@ -45,6 +65,22 @@ export class SearchHeaderComponent implements OnInit {
         this.loginComponent.showDialog();
       }
     });
+
+    this.userMenuItems = [
+      {
+        label: 'Korisnički panel',
+        icon: 'pi pi-cog',
+        command: () => this.goToDashboard()
+      },
+      {
+        label: 'Profil',
+        icon: 'pi pi-user',
+        command: () => this.goToSettings()
+      },
+      { label: 'Odjava', icon: 'pi pi-sign-out', command: () => this.logout() }
+    ];
+
+    this.userIsLoggedIn = this.tokenService.isLoggedIn();
   }
 
   goToHome() {
@@ -53,5 +89,22 @@ export class SearchHeaderComponent implements OnInit {
 
   openLoginDialog() {
     this.loginComponent.showDialog();
+  }
+
+  goToSettings() {
+    this.router.navigate(['/dashboard/profile']);
+  }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  logout() {
+    this.tokenService.clearToken();
+    this.userIsLoggedIn = false;
+  }
+
+  onLoginSuccess() {
+    this.userIsLoggedIn = true;
   }
 }

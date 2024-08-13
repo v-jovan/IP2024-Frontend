@@ -1,11 +1,19 @@
-<p-button
-  label="Korpa"
-  i18n-label="@@cart.cartButton"
-  icon="pi pi-shopping-cart"
-  [badge]="numberOfItems"
-  badgeClass="p-badge-warning"
-  (onClick)="showCart()"
-></p-button>
+@if (numberOfItems) {
+  <i
+    class="pi pi-shopping-cart clickable"
+    style="font-size: 1.75rem"
+    pBadge
+    [value]="numberOfItems"
+    severity="warning"
+    (click)="showCart()"
+  ></i>
+} @else {
+  <i
+    class="pi pi-shopping-cart clickable"
+    style="font-size: 1.75rem"
+    (click)="showCart()"
+  ></i>
+}
 <p-sidebar [(visible)]="sidebarVisible" position="right" class="cart">
   <ng-template pTemplate="header">
     <span i18n="@@cart.header" class="cart__header">

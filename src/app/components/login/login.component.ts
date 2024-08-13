@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password!: string;
   loginForm!: FormGroup;
+  @Output() loginSuccess = new EventEmitter<void>();
 
   constructor(
     private router: Router,
@@ -67,6 +68,7 @@ export class LoginComponent implements OnInit {
         };
         const response = await this.authService.login(loginData);
         this.tokenStore.setToken(response.token);
+        this.loginSuccess.emit();
       } catch (error) {
         console.error('Login failed', error);
       }

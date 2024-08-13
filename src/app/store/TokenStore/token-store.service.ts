@@ -27,9 +27,9 @@ export class TokenStoreService {
   }
 
   private isTokenValid(token: string | null): boolean {
-    // if (!token) {
-    //   return false;
-    // }
+    if (!token) {
+      return false;
+    }
 
     // try {
     //   const decodedToken = jwtDecode<JwtPayload>(token);

@@ -17,6 +17,7 @@ import { CityService } from 'src/app/services/City/city.service';
 import { MessageService } from 'primeng/api';
 import { City } from 'src/app/interfaces/misc/city';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-register',
@@ -31,7 +32,8 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
     ReactiveFormsModule,
     ImageUploaderComponent,
     PasswordModule,
-    DividerModule
+    DividerModule,
+    DialogModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
@@ -42,6 +44,7 @@ export class RegisterComponent implements OnInit {
   buttonIcon: string = 'pi pi-sync';
   buttonClass: string = '';
   usernameTaken: boolean = false;
+  showDialog: boolean = false;
 
   registerForm: FormGroup = this.fb.group({
     firstName: ['', Validators.required],
@@ -167,6 +170,8 @@ export class RegisterComponent implements OnInit {
           summary: 'Registracija uspješna',
           detail: 'Molimo provjerite svoj email za aktivaciju naloga.'
         });
+        this.registerForm.reset();
+        this.showDialog = true;
       } catch (error) {
         this.errorInterceptor.handleError(error as AxiosError);
       } finally {
@@ -186,5 +191,10 @@ export class RegisterComponent implements OnInit {
     if (imageUrl) {
       this.registerForm.patchValue({ avatarUrl: imageUrl });
     }
+  }
+
+  goToHome(): void {
+    this.showDialog = false;
+    window.location.href = '/';
   }
 }

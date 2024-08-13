@@ -36,7 +36,7 @@ export class AuthService {
    * @returns A promise that resolves to a JwtResponse object.
    */
   async signup(data: SignupRequest): Promise<JwtResponse> {
-    const response = await this.apiService.axios.post<JwtResponse>(
+    const response = await this.apiService.axios.post(
       `${this.authURL}/signup`,
       data
     );

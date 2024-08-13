@@ -23,22 +23,6 @@ import { MessageService } from 'primeng/api';
   ]
 })
 export class HomeComponent implements OnInit {
-  checked: boolean = false;
-
-  constructor(
-    private route: ActivatedRoute,
-    private messageService: MessageService
-  ) {}
-
-  ngOnInit(): void {
-    this.route.queryParams.subscribe((params) => {
-      if (params['activated'] === 'true') {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Nalog aktiviran',
-          detail: 'Uspešno ste aktivirali nalog. Sada se možete prijaviti.'
-        });
-      }
-    });
-  }
+  constructor() {}
+  ngOnInit(): void {}
 }

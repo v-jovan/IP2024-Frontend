@@ -33,40 +33,46 @@
     <p-divider type="dotted" layout="vertical" class="desktop-only"></p-divider>
     <form [formGroup]="userDataForm" class="profile__data">
       <div class="profile__data--username">
-        <input
-          pInputText
-          id="username"
-          formControlName="username"
-          aria-describedby="username-help"
-        />
-        <small id="username-help" i18n="@@profile.username">
-          Korisničko ime ne može biti promijenjeno.
-        </small>
+        <p-floatLabel>
+          <input
+            pInputText
+            id="username"
+            formControlName="username"
+            aria-describedby="username-help"
+          />
+          <label for="username">Username *</label>
+        </p-floatLabel>
       </div>
       <div class="profile__data--name">
-        <input
-          id="firstName"
-          formControlName="firstName"
-          pInputText
-          autocomplete="given-name"
-          placeholder="Ime"
-        />
-        <input
-          id="lastName"
-          formControlName="lastName"
-          pInputText
-          autocomplete="family-name"
-          placeholder="Prezime"
-        />
+        <p-floatLabel>
+          <input
+            id="firstName"
+            formControlName="firstName"
+            pInputText
+            autocomplete="given-name"
+          />
+          <label for="firstName">Ime *</label>
+        </p-floatLabel>
+        <p-floatLabel>
+          <input
+            id="lastName"
+            formControlName="lastName"
+            pInputText
+            autocomplete="family-name"
+          />
+          <label for="lastName">Prezime *</label>
+        </p-floatLabel>
       </div>
       <div class="profile__data--email">
-        <input
-          id="email"
-          formControlName="email"
-          pInputText
-          autocomplete="email"
-          placeholder="E-Mail"
-        />
+        <p-floatLabel>
+          <input
+            id="email"
+            formControlName="email"
+            pInputText
+            autocomplete="email"
+          />
+          <label for="email">E-Mail *</label>
+        </p-floatLabel>
       </div>
       <div class="profile__data--city">
         <p-dropdown
@@ -81,15 +87,17 @@
         />
       </div>
       <div class="profile__data--biography">
-        <textarea
-          id="bio"
-          formControlName="biography"
-          pInputTextarea
-          placeholder="Biografija"
-          i18n-placeholder="@@profile.bio"
-          maxlength="500"
-        >
-        </textarea>
+        <p-floatLabel>
+          <textarea
+            id="bio"
+            formControlName="biography"
+            pInputTextarea
+            i18n-placeholder="@@profile.bio"
+            maxlength="500"
+          >
+          </textarea>
+          <label for="bio">Biografija</label>
+        </p-floatLabel>
       </div>
     </form>
   </div>

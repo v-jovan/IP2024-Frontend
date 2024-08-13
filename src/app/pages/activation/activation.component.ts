@@ -27,15 +27,16 @@ export class ActivationComponent implements OnInit {
     if (token) {
       try {
         await this.authService.activateAccount(token);
+        this.loaderService.hide();
+        this.router.navigate(['/home'], { queryParams: { activated: 'true' } });
       } catch (error) {
         this.messageService.add({
           severity: 'error',
           summary: 'Greška',
           detail: 'Došlo je do greške prilikom aktivacije naloga.'
         });
-      } finally {
         this.loaderService.hide();
-        this.router.navigate(['/home'], { queryParams: { activated: 'true' } });
+        this.router.navigate(['/home']);
       }
     }
   }

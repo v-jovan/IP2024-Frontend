@@ -1,7 +1,26 @@
 <div class="register">
+  <p-dialog
+    header="Aktivacija naloga"
+    [modal]="true"
+    [draggable]="false"
+    [resizable]="false"
+    [closable]="false"
+    [(visible)]="showDialog"
+    [style]="{ width: '25rem' }"
+  >
+    <p>
+      Uspješno! Da biste aktivirali Vaš nalog, kliknite na link u mejl koji smo
+      Vam poslali.
+    </p>
+    <p>
+      Ukoliko niste dobili mejl, molimo Vas da provjerite spam folder ili
+      jednostavno sačekati određeni period.
+    </p>
+    <p>Ovaj prozor možete da zatvorite.</p>
+  </p-dialog>
   <div class="register__header">
     <div class="register__header--logo">
-      <img src="assets/logo.svg" alt="logo" />
+      <img src="assets/logo.svg" class="clickable" (click)="goToHome()" alt="logo" />
     </div>
     <h2 i18n="@@registration.title">Registracija</h2>
     <small i18n="@@registration.description">

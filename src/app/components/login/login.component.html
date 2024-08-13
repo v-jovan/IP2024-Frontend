@@ -19,7 +19,10 @@
     <p-divider layout="vertical" />
     <p-tabView [(activeIndex)]="activeIndex">
       <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
-        <form [formGroup]="loginForm" class="login-dialog__content login-dialog__content--login">
+        <form
+          [formGroup]="loginForm"
+          class="login-dialog__content login-dialog__content--login"
+        >
           <p-inputGroup>
             <input
               pInputText

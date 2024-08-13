@@ -88,7 +88,8 @@
             (click)="navigateHome()"
           ></p-button>
           <p-avatar
-            icon="pi pi-user"
+            [image]="userAvatar || undefined"
+            [icon]="!userAvatar ? 'pi pi-user' : undefined"
             shape="circle"
             size="large"
             class="clickable"

@@ -13,6 +13,7 @@ import { passwordsMatchValidator } from 'src/app/validators/PasswordMatch';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-password',
@@ -22,7 +23,8 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
     ReactiveFormsModule,
     PasswordModule,
     DividerModule,
-    BottomToolbarComponent
+    BottomToolbarComponent,
+    FloatLabelModule
   ],
   templateUrl: './password.component.html',
   styleUrl: './password.component.scss',
@@ -53,12 +55,17 @@ export class PasswordComponent {
         );
         this.messageService.add({
           severity: 'success',
-          summary: 'Uspešno',
+          summary: 'Uspjeh',
           detail: response
         });
         window.location.href = '/dashboard';
       } else {
         this.passwordForm.markAllAsTouched();
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Greška',
+          detail: 'Provjerite ispravnost unijetih podataka'
+        });
       }
     } catch (error) {
       this.errorInterceptor.handleError(error as AxiosError);

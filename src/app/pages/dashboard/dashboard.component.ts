@@ -16,6 +16,9 @@ import { CommonModule } from '@angular/common';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { Sidebar, SidebarModule } from 'primeng/sidebar';
 import { filter } from 'rxjs/operators';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { UserService } from 'src/app/services/User/user.service';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-dashboard',
@@ -43,12 +46,24 @@ export class DashboardComponent implements OnInit {
   userMenuItems: MenuItem[] | undefined;
   sidebarItems: MenuItem[] | undefined;
   selectedSidebarItem: string | null = null;
+  userAvatar: string | undefined;
 
   @ViewChild('sidebarRef') sidebarRef!: Sidebar;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private tokenService: TokenStoreService,
+    private userService: UserService,
+    private errorInterceptor: ErrorInterceptorService
+  ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    try {
+      this.userAvatar = await this.userService.getAvatar();
+      console.log(this.userAvatar);
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
     this.userMenuItems = [
       {
         label: 'Podešavanja',
@@ -183,11 +198,12 @@ export class DashboardComponent implements OnInit {
   }
 
   goToSettings(): void {
-    // Implementiraj logiku za odlazak na stranicu za podešavanje naloga
+    this.goToProfile();
   }
 
   logout(): void {
-    // Implementiraj logout logiku
+    this.tokenService.clearToken();
+    this.navigateHome();
   }
   toggleSidebar() {
     if (this.isDesktopSidebar) {

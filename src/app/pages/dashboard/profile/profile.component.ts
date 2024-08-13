@@ -15,6 +15,7 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
 import { UserService } from 'src/app/services/User/user.service';
 import { UserInfoResponse } from 'src/app/interfaces/responses/user-info-response';
 import { BottomToolbarComponent } from '@components/bottom-toolbar/bottom-toolbar.component';
+import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
   selector: 'app-profile',
@@ -28,7 +29,8 @@ import { BottomToolbarComponent } from '@components/bottom-toolbar/bottom-toolba
     InputTextareaModule,
     FormsModule,
     ReactiveFormsModule,
-    BottomToolbarComponent
+    BottomToolbarComponent,
+    FloatLabelModule
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss',
@@ -62,7 +64,6 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   async ngOnInit(): Promise<void> {
-    this.loaderService.show();
     try {
       this.cities = await this.cityService.getCities();
       this.userData = await this.userService.getUserInfo();
@@ -71,8 +72,6 @@ export class ProfileComponent implements OnInit {
       }
     } catch (error) {
       this.errorInterceptor.handleError(error as AxiosError);
-    } finally {
-      this.loaderService.hide();
     }
   }
 
@@ -89,9 +88,16 @@ export class ProfileComponent implements OnInit {
   }
 
   async saveChanges(): Promise<void> {
+    if (!this.userDataForm.valid) {
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Greška',
+        detail: 'Forma nije validna. Molimo provjerite unos.'
+      });
+      return;
+    }
     this.loaderService.show();
     try {
-
       // This part is for creating/selecting a city
       const updateUserData = this.userDataForm.value;
       const city = this.cities.find(
@@ -116,6 +122,7 @@ export class ProfileComponent implements OnInit {
         summary: 'Uspjeh',
         detail: 'Podaci su uspješno ažurirani'
       });
+      window.location.reload();
     } catch (error) {
       this.errorInterceptor.handleError(error as AxiosError);
     } finally {

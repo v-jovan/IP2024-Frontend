@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
@@ -43,6 +49,7 @@ export class LoginComponent implements OnInit {
   username: string = '';
   password!: string;
   loginForm!: FormGroup;
+
   @Output() loginSuccess = new EventEmitter<void>();
 
   constructor(
@@ -52,6 +59,7 @@ export class LoginComponent implements OnInit {
     private authService: AuthService,
     private tokenStore: TokenStoreService
   ) {}
+
   ngOnInit(): void {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],

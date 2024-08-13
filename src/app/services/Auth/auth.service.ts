@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { SignupRequest } from 'src/app/interfaces/requests/signup-request';
 import { LoginRequest } from 'src/app/interfaces/requests/login-request';
 import { JwtResponse } from 'src/app/interfaces/responses/jwt-response';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,10 @@ import { JwtResponse } from 'src/app/interfaces/responses/jwt-response';
 export class AuthService {
   private authURL = '/auth';
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private tokenService: TokenStoreService
+  ) {}
 
   /**
    * Logs in the user with the provided login credentials.
@@ -69,6 +73,18 @@ export class AuthService {
     const response = await this.apiService.axios.post<boolean>(
       `${this.authURL}/check-username`,
       { username }
+    );
+
+    return response.data;
+  }
+
+  async resendActivationEmail() {
+    const token: string = this.tokenService.getToken() as string;
+    const email: string = this.tokenService.getUserEmail() as string;
+
+    const response = await this.apiService.axios.post(
+      `${this.authURL}/resend-email`,
+      { email, token }
     );
 
     return response.data;

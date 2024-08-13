@@ -11,8 +11,10 @@ import { MenuModule } from 'primeng/menu';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { AvatarModule } from 'primeng/avatar';
 import { AvatarGroupModule } from 'primeng/avatargroup';
+import { DialogModule } from 'primeng/dialog';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { AuthService } from 'src/app/services/Auth/auth.service';
 
 @Component({
   selector: 'app-search-header',
@@ -29,13 +31,17 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
     CartComponent,
     MenuModule,
     AvatarModule,
-    AvatarGroupModule
+    AvatarGroupModule,
+    DialogModule
   ]
 })
 export class SearchHeaderComponent implements OnInit {
   userIsLoggedIn: boolean = false;
   userMenuItems: MenuItem[] | undefined;
   userAvatar: string | undefined;
+  userNotActivated: boolean = false;
+  resendLabel: string = 'Pošalji ponovo';
+  buttonDisabled: boolean = false;
 
   constructor(
     private router: Router,
@@ -43,18 +49,16 @@ export class SearchHeaderComponent implements OnInit {
     private messageService: MessageService,
     private tokenService: TokenStoreService,
     private userService: UserService,
-    private errorInterceptor: ErrorInterceptorService
+    private errorInterceptor: ErrorInterceptorService,
+    private authService: AuthService
   ) {}
 
   @ViewChild(LoginComponent) loginComponent!: LoginComponent;
 
   async ngOnInit() {
-    try {
-      this.userAvatar = await this.userService.getAvatar();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
+    if (this.tokenService.isLoggedIn()) {
+      await this.setAvatar();
     }
-
     this.route.queryParams.subscribe((params) => {
       if (params['activated'] === 'true') {
         this.messageService.add({
@@ -104,7 +108,48 @@ export class SearchHeaderComponent implements OnInit {
     this.userIsLoggedIn = false;
   }
 
-  onLoginSuccess() {
+  async onLoginSuccess() {
     this.userIsLoggedIn = true;
+    await this.setAvatar();
+    await this.checkUserActivation();
+  }
+
+  async setAvatar() {
+    try {
+      this.userAvatar = await this.userService.getAvatar();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+  }
+
+  async checkUserActivation() {
+    try {
+      this.userNotActivated =
+        !((await this.userService.isUserActive()) as boolean);
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+  }
+
+  resendActivationEmail() {
+    try {
+      this.authService.resendActivationEmail();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+
+    this.buttonDisabled = true;
+    let coundown = 30;
+
+    const interval = setInterval(() => {
+      coundown--;
+      this.resendLabel = `Pošalji ponovo (${coundown})`;
+      if (coundown === 0) {
+        clearInterval(interval);
+        this.checkUserActivation();
+        this.resendLabel = 'Pošalji ponovo';
+        this.buttonDisabled = false;
+      }
+    }, 1000);
   }
 }

@@ -40,4 +40,9 @@ export class UserService {
     }
     return response.data;
   }
+
+  async isUserActive() {
+    const response = await this.apiService.axios.get(`${this.userURL}/active`);
+    return response.data;
+  }
 }

@@ -1,4 +1,4 @@
-<header class="header">
+<div class="header">
   <p-toolbar styleClass="header__toolbar">
     <ng-template pTemplate="start">
       <img
@@ -37,4 +37,29 @@
       </div>
     </ng-template>
   </p-toolbar>
-</header>
+</div>
+<p-dialog
+  header="Oh ne..."
+  [(visible)]="userNotActivated"
+  [modal]="true"
+  [closable]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [closable]="false"
+>
+  <p>
+    Vaš nalog nije aktiviran.
+    <br />
+    Prilikom registracije niste otvorili mejl sa akctivacionim linkom.
+    <br />
+    Molimo Vas da proverite Vašu email adresu i aktivirate nalog.
+  </p>
+  <p-footer>
+    <p-button
+      [label]="resendLabel"
+      [disabled]="buttonDisabled"
+      size="small"
+      (onClick)="resendActivationEmail()"
+    ></p-button>
+  </p-footer>
+</p-dialog>

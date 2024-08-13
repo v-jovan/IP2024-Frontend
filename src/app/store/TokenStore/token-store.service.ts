@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
+import { CustomJwtPayload } from 'src/app/interfaces/misc/custom-jwt-payload';
 
 @Injectable({
   providedIn: 'root'
@@ -46,5 +47,15 @@ export class TokenStoreService {
     //   return false;
     // }
     return true;
+  }
+
+  getUserEmail(): string | undefined {
+    const token = this.getToken();
+    if (!token) {
+      return;
+    }
+
+    const decodedToken = jwtDecode<CustomJwtPayload>(token);
+    return decodedToken.email;
   }
 }

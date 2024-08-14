@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { AuthService } from '../services/Auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,10 @@ import { MessageService } from 'primeng/api';
 // this is not a classically defined interceptor, but it is a service that
 // handles errors as an interceptor would do (for HTTP requests using HTTPInterceptor)
 export class ErrorInterceptorService {
-  constructor(private messageService: MessageService) {}
+  constructor(
+    private messageService: MessageService,
+    private authService: AuthService
+  ) {}
 
   handleError(error: AxiosError): void {
     if (error.response) {
@@ -28,6 +32,8 @@ export class ErrorInterceptorService {
   }
 
   private handleErrorResponse(errorResponse: any) {
+    const errorCode = errorResponse.data?.error;
+
     switch (errorResponse.status) {
       case 400:
         this.messageService.add({
@@ -39,13 +45,23 @@ export class ErrorInterceptorService {
         });
         break;
       case 401:
-        this.messageService.add({
-          severity: 'error',
-          summary: 'Neovlašćeno',
-          detail:
-            errorResponse.data?.message ||
-            'Neispravni kredencijali. Pokušajte ponovo.'
-        });
+        if (errorCode && errorCode === 'JWT_EXPIRED') {
+          // Ako je token istekao, odjavi korisnika i preusmeri na homepage
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Istekla sesija',
+            detail: 'Vaša sesija je istekla. Molimo prijavite se ponovo.'
+          });
+          this.authService.logout();
+        } else {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Neovlašćeno',
+            detail:
+              errorResponse.data?.message ||
+              'Neispravni kredencijali. Pokušajte ponovo.'
+          });
+        }
         break;
       case 403:
         this.messageService.add({

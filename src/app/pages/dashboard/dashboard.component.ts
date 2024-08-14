@@ -16,9 +16,9 @@ import { CommonModule } from '@angular/common';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { Sidebar, SidebarModule } from 'primeng/sidebar';
 import { filter } from 'rxjs/operators';
-import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { AuthService } from 'src/app/services/Auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -52,7 +52,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private tokenService: TokenStoreService,
+    private authService: AuthService,
     private userService: UserService,
     private errorInterceptor: ErrorInterceptorService
   ) {}
@@ -201,8 +201,7 @@ export class DashboardComponent implements OnInit {
   }
 
   logout(): void {
-    this.tokenService.clearToken();
-    this.navigateHome();
+    this.authService.logout();
   }
   toggleSidebar() {
     if (this.isDesktopSidebar) {

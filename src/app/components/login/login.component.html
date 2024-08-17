@@ -22,6 +22,7 @@
         <form
           [formGroup]="loginForm"
           class="login-dialog__content login-dialog__content--login"
+          (keydown.enter)="login()"
         >
           <p-inputGroup>
             <input

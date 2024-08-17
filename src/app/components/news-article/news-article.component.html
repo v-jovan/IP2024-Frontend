@@ -1,0 +1,29 @@
+<div class="news">
+  @if (!loading) {
+    <p-carousel
+      [value]="articles"
+      [numVisible]="1"
+      [circular]="true"
+      [showIndicators]="false"
+      autoplayInterval="3000"
+    >
+      <ng-template let-article pTemplate="item">
+        <div
+          class="news_content clickable"
+          [pTooltip]="article.category"
+          [tooltipPosition]="'top'"
+          showDelay="500"
+          (click)="navigateToArticle(article.link)"
+        >
+          <p class="news__title">{{ article.title }}</p>
+          <div class="news__description">{{ article.description }}</div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  } @else {
+    <div class="news__skeleton">
+      <p-skeleton width="80%" height="2rem"></p-skeleton>
+      <p-skeleton width="100%" height="10rem"></p-skeleton>
+    </div>
+  }
+</div>

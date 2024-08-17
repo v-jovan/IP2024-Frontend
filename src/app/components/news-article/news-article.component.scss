@@ -1,0 +1,19 @@
+@import 'variables';
+.news {
+  margin-top: 2rem;
+  background-color: var(--surface-b);
+  border-radius: 1.5rem;
+  width: 17.5rem;
+  min-height: 15rem;
+
+  &__title {
+    font-weight: bold;
+  }
+
+  &__skeleton {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    gap: 2rem;
+  }
+}

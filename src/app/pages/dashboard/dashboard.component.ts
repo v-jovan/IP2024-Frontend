@@ -95,6 +95,12 @@ export class DashboardComponent implements OnInit {
         label: 'Korisnik',
         items: [
           {
+            id: 'daily-exercise',
+            label: 'Dnevne vježbe',
+            icon: 'pi pi-fw pi-calendar',
+            command: () => this.viewDailyExercise()
+          },
+          {
             id: 'profile',
             label: 'Informacije',
             icon: 'pi pi-fw pi-user',
@@ -137,6 +143,9 @@ export class DashboardComponent implements OnInit {
           this.closeCallback(new Event('click'));
         }
       });
+  }
+  viewDailyExercise(): void {
+    this.router.navigate(['dashboard/daily-exercise']);
   }
 
   @HostListener('window:resize', ['$event'])

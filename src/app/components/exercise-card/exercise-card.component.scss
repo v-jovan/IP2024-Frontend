@@ -1,0 +1,33 @@
+@import 'variables';
+
+.exercise-panel {
+  width: $card-width;
+  border-radius: $border-radius;
+  transition: box-shadow 0.2s ease;
+
+  img {
+    border-radius: $border-radius $border-radius 0 0;
+    object-fit: cover;
+  }
+
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: center;
+
+    .p-element {
+      width: 100%;
+    }
+  }
+  .p-card-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .p-card-content {
+    padding: 0;
+  }
+}

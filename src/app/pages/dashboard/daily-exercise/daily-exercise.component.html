@@ -1,0 +1,33 @@
+<div class="exercise dashboard-card">
+  <div class="exercise__header">
+    <h2 i18n="@@exercise.title">Dnevne vježbe</h2>
+  </div>
+  <div class="exercise__content">
+    @for (exercise of exercises; track $index) {
+      <app-exercise-card
+        [exercise]="exercise"
+        (viewDetails)="showExerciseDialog($event)"
+      />
+    }
+  </div>
+</div>
+<p-dialog
+  [header]="exerciseDialogData?.name"
+  [(visible)]="exerciseDialog"
+  [modal]="true"
+  [draggable]="false"
+  [resizable]="false"
+  [baseZIndex]="10000"
+  styleClass="exercise-dialog"
+>
+  <div class="exercise-dialog__content">
+    <p><b>Difficulty:</b> {{ exerciseDialogData?.difficulty }}</p>
+    <p><b>Equipment:</b> {{ exerciseDialogData?.equipment }}</p>
+    <p><b>Muscle:</b> {{ exerciseDialogData?.muscle }}</p>
+    <p><b>Type:</b> {{ exerciseDialogData?.type }}</p>
+    <p><b>Instructions:</b> {{ exerciseDialogData?.instructions }}</p>
+  </div>
+  <p-footer>
+    <p-button label="Zatvori" (onClick)="exerciseDialog = false" size="small" />
+  </p-footer>
+</p-dialog>

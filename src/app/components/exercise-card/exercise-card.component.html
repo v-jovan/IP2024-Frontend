@@ -1,0 +1,17 @@
+<p-card
+  [header]="exercise.name"
+  [subheader]="'Difficulty: ' + exercise.difficulty"
+  [pTooltip]="exercise.name"
+  tooltipPosition="top"
+  showDelay="500"
+  styleClass="exercise-panel"
+>
+  <ng-template pTemplate="header">
+    <img alt="Exercise image" [src]="getImage()" />
+  </ng-template>
+  <ng-template pTemplate="footer">
+    <div class="exercise-panel__footer">
+      <p-button label="Pregled" size="small" [outlined]="true" (onClick)="showDetails(exercise)" />
+    </div>
+  </ng-template>
+</p-card>

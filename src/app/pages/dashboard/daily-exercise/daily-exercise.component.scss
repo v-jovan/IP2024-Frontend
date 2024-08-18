@@ -1,0 +1,17 @@
+.exercise {
+  width: 100%;
+  &__header {
+    margin-bottom: 2rem;
+  }
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  &-dialog {
+    width: 50rem;
+    max-width: 80%;
+  }
+}

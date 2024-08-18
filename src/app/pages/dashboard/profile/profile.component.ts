@@ -65,6 +65,7 @@ export class ProfileComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     try {
+      this.loaderService.show();
       this.cities = await this.cityService.getCities();
       this.userData = await this.userService.getUserInfo();
       if (this.userData) {
@@ -72,6 +73,8 @@ export class ProfileComponent implements OnInit {
       }
     } catch (error) {
       this.errorInterceptor.handleError(error as AxiosError);
+    } finally {
+      this.loaderService.hide();
     }
   }
 

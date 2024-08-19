@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   OnInit,
   Output,
   ViewEncapsulation
@@ -50,6 +51,8 @@ export class LoginComponent implements OnInit {
   password!: string;
   loginForm!: FormGroup;
 
+  @Input() iconOnly: boolean = false;
+  @Input() smallButton: boolean = false;
   @Output() loginSuccess = new EventEmitter<void>();
 
   constructor(

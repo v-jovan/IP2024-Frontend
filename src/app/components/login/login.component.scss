@@ -1,24 +1,31 @@
-/**
- * Styles for the login dialog component.
- */
 .login-dialog {
   display: flex;
 
-  /**
-   * Styles for the image within the login dialog.
-   */
+  &__wrapper {
+    max-width: 100%;
+  }
+
   img {
     object-fit: contain;
   }
 
-  /**
-   * Styles for the content within the login dialog.
-   */
+  &__hero {
+    display: flex;
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
     min-width: 20rem;
+    max-width: 100%;
+
+    @media (max-width: 800px) {
+      min-height: 20rem;
+    }
     margin-top: 3rem;
 
     /**

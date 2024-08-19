@@ -5,8 +5,6 @@ import { SearchHeaderComponent } from '@components/search-header/search-header.c
 import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
 import { LoginComponent } from '../../components/login/login.component';
 import { ProgramCardComponent } from '../../components/program-card/program-card.component';
-import { ActivatedRoute } from '@angular/router';
-import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-home',

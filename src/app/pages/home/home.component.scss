@@ -2,14 +2,23 @@
 .home-page {
   display: flex;
   flex-direction: column;
-  height: calc(
-    100vh - $header-height - 4rem
-  ); // 4rem is the padding of the main container
+  // height: calc(
+  //   100vh - $header-height - 4rem
+  // ); // 4rem is the padding of the main container
+
   &__container {
     display: flex;
     flex-direction: row;
     flex-grow: 1;
+    margin-bottom: 2rem;
   }
+
+  &__sidebar {
+    @media (max-width: 800px) {
+      display: none;
+    }
+  }
+
   &__content {
     padding-left: 1rem;
     display: flex;
@@ -19,5 +28,17 @@
     align-content: flex-start;
     overflow-y: auto;
     gap: 2rem;
+
+    @media (max-width: 800px) {
+      justify-content: center;
+    }
+  }
+
+  &__footer {
+    color: var(--text-color-secondary);
+    border-top: 1px solid var(--surface-100);
+    text-align: center;
+    padding: 1rem 0;
+    width: 100%;
   }
 }

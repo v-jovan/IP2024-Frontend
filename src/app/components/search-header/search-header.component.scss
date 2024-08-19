@@ -1,26 +1,74 @@
 .header {
   &__toolbar {
+    display: flex;
     background-color: unset;
     border: unset;
     align-items: center;
 
+    .p-toolbar-group-center {
+      flex-grow: 1;
+      max-width: 40rem;
+      padding: 0 2rem;
+    }
+
     &--logo {
-      width: 17rem;
+      width: 100%;
+      max-width: 17rem;
       object-fit: contain;
       box-sizing: border-box;
-      cursor: pointer;
     }
 
     &--search {
-      // .p-inputtext {
-      //   max-width: 35rem;
-      //   width: 100%;
-      // } TODO: replace this with autocomplete
+      width: 100%;
     }
     &--actions {
       display: flex;
       gap: 1rem;
       align-items: center;
     }
+  }
+}
+
+.mobile-header {
+  margin-bottom: 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  &__sidebar {
+    &--header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--primary-color);
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    &--footer {
+      margin-bottom: 0.75rem;
+      .p-button {
+        width: 100%;
+      }
+    }
+  }
+
+  &__navigation {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  &__search {
+    width: 100%;
+  }
+
+  &__logo {
+    width: 100%;
+    height: auto;
+    max-width: 10rem;
   }
 }

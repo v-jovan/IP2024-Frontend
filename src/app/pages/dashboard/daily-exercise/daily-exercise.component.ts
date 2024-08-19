@@ -41,4 +41,14 @@ export class DailyExerciseComponent implements OnInit {
     this.exerciseDialog = true;
     this.exerciseDialogData = exercise;
   }
+
+  formatString(input: string | null | undefined): string {
+    if (!input) return '';
+    let formattedString = input.replace(/_/g, ' ');
+    formattedString = formattedString.replace(/\b\w/g, (char) =>
+      char.toUpperCase()
+    );
+
+    return formattedString;
+  }
 }

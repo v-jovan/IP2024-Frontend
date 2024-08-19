@@ -21,10 +21,10 @@
   styleClass="exercise-dialog"
 >
   <div class="exercise-dialog__content">
-    <p><b>Difficulty:</b> {{ exerciseDialogData?.difficulty }}</p>
-    <p><b>Equipment:</b> {{ exerciseDialogData?.equipment }}</p>
-    <p><b>Muscle:</b> {{ exerciseDialogData?.muscle }}</p>
-    <p><b>Type:</b> {{ exerciseDialogData?.type }}</p>
+    <p><b>Difficulty:</b> {{ formatString(exerciseDialogData?.difficulty) }}</p>
+    <p><b>Equipment:</b> {{ formatString(exerciseDialogData?.equipment) }}</p>
+    <p><b>Muscle:</b> {{ formatString(exerciseDialogData?.muscle) }}</p>
+    <p><b>Type:</b> {{ formatString(exerciseDialogData?.type) }}</p>
     <p><b>Instructions:</b> {{ exerciseDialogData?.instructions }}</p>
   </div>
   <p-footer>

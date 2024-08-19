@@ -1,5 +1,7 @@
 <p-button
-  label="Prijava"
+  [label]="iconOnly ? undefined : 'Prijava'"
+  [outlined]="iconOnly"
+  [size]="smallButton ? 'small' : undefined"
   i18n-label="@@login.openDialog"
   icon="pi pi-user"
   (onClick)="showDialog()"
@@ -13,10 +15,13 @@
   [draggable]="false"
   [resizable]="false"
   [dismissableMask]="true"
+  styleClass="login-dialog__wrapper"
 >
   <div class="login-dialog">
-    <img src="https://placehold.co/200x450" alt="Hero image" />
-    <p-divider layout="vertical" />
+    <div class="login-dialog__hero">
+      <img src="https://placehold.co/200x450" alt="Hero image" />
+      <p-divider layout="vertical" />
+    </div>
     <p-tabView [(activeIndex)]="activeIndex">
       <p-tabPanel header="Prijava" i18n-header="@@login.tabs.login">
         <form

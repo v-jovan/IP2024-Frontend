@@ -1,60 +1,61 @@
-@if (numberOfItems) {
-  <i
-    class="pi pi-shopping-cart clickable"
-    style="font-size: 1.75rem"
-    pBadge
-    [value]="numberOfItems"
-    severity="warning"
-    (click)="showCart()"
-  ></i>
-} @else {
-  <i
-    class="pi pi-shopping-cart clickable"
-    style="font-size: 1.75rem"
-    (click)="showCart()"
-  ></i>
-}
-<p-sidebar [(visible)]="sidebarVisible" position="right" class="cart">
-  <ng-template pTemplate="header">
-    <span i18n="@@cart.header" class="cart__header">
-      Korpa: {{ cartItems.length }} proizvod/a
-    </span>
-  </ng-template>
-  <ng-template pTemplate="content">
-    @for (item of cartItems; track item.id) {
-      <p-card>
-        <div class="cart__card">
-          <img
-            [src]="item.imgURL"
-            [alt]="item.name"
-            class="cart__card--image"
-          />
-          <div class="cart__card--content">
-            <h3>{{ item.name }}</h3>
-            <p>{{ item.price | currency }}</p>
+<div class="cart">
+  @if (numberOfItems) {
+    <i
+      class="pi pi-shopping-cart clickable"
+      pBadge
+      [value]="numberOfItems"
+      severity="warning"
+      (click)="showCart()"
+    ></i>
+  } @else {
+    <i class="pi pi-shopping-cart clickable" (click)="showCart()"></i>
+  }
+  <p-sidebar [(visible)]="sidebarVisible" position="right" class="cart">
+    <ng-template pTemplate="header">
+      <span i18n="@@cart.header" class="cart__header">
+        Korpa: {{ cartItems.length }} proizvod/a
+      </span>
+    </ng-template>
+    <ng-template pTemplate="content">
+      @for (item of cartItems; track item.id) {
+        <p-card>
+          <div class="cart__card">
+            <img
+              [src]="item.imgURL"
+              [alt]="item.name"
+              class="cart__card--image"
+            />
+            <div class="cart__card--content">
+              <h3>{{ item.name }}</h3>
+              <p>{{ item.price | currency }}</p>
+            </div>
+            <p-button
+              icon="pi pi-times"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              (onClick)="removeFromCart(item.id)"
+            ></p-button>
           </div>
-          <p-button
-            icon="pi pi-times"
-            [rounded]="true"
-            [text]="true"
-            severity="danger"
-            (onClick)="removeFromCart(item.id)"
-          ></p-button>
+        </p-card>
+      }
+      @if (cartItems.length === 0) {
+        <p class="cart__empty" i18n="@@cart.empty">Korpa je prazna.</p>
+      }
+    </ng-template>
+    <ng-template pTemplate="footer">
+      <div class="cart__footer">
+        <div class="cart__footer--total">
+          <span i18n="@@cart.total">Ukupno:</span>
+          <span>{{ total | currency }}</span>
         </div>
-      </p-card>
-    }
-    @if (cartItems.length === 0) {
-      <p class="cart__empty" i18n="@@cart.empty">Korpa je prazna.</p>
-    }
-  </ng-template>
-  <ng-template pTemplate="footer">
-    <div class="cart__footer">
-      <div class="cart__footer--total">
-        <span i18n="@@cart.total">Ukupno:</span>
-        <span>{{ total | currency }}</span>
+        <p-button
+          label="Naruči"
+          i18n-label="@@cart.order"
+          (onClick)="order()"
+        />
+        <small i18n="@@cart.tax">PDV je obračunat u cijeni.</small>
       </div>
-      <p-button label="Naruči" i18n-label="@@cart.order" (onClick)="order()" />
-      <small i18n="@@cart.tax">PDV je obračunat u cijeni.</small>
-    </div>
-  </ng-template>
-</p-sidebar>
+    </ng-template>
+  </p-sidebar>
+</div>

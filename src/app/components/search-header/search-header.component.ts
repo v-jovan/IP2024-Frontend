@@ -1,5 +1,11 @@
-import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
-import { InputTextModule } from 'primeng/inputtext';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -15,6 +21,7 @@ import { DialogModule } from 'primeng/dialog';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
+import { SidebarModule } from 'primeng/sidebar';
 
 @Component({
   selector: 'app-search-header',
@@ -23,7 +30,7 @@ import { AuthService } from 'src/app/services/Auth/auth.service';
   styleUrl: './search-header.component.scss',
   encapsulation: ViewEncapsulation.None,
   imports: [
-    InputTextModule,
+    AutoCompleteModule,
     FormsModule,
     ToolbarModule,
     ButtonModule,
@@ -32,7 +39,8 @@ import { AuthService } from 'src/app/services/Auth/auth.service';
     MenuModule,
     AvatarModule,
     AvatarGroupModule,
-    DialogModule
+    DialogModule,
+    SidebarModule
   ]
 })
 export class SearchHeaderComponent implements OnInit {
@@ -42,6 +50,9 @@ export class SearchHeaderComponent implements OnInit {
   userNotActivated: boolean = false;
   resendLabel: string = 'Pošalji ponovo';
   buttonDisabled: boolean = false;
+  isDesktopToolbar: boolean = true;
+  mobileSidebarVisible: boolean = false;
+  userName: string | undefined;
 
   constructor(
     private router: Router,
@@ -56,8 +67,12 @@ export class SearchHeaderComponent implements OnInit {
   @ViewChild(LoginComponent) loginComponent!: LoginComponent;
 
   async ngOnInit() {
+    this.checkWindowWidth();
     if (this.tokenService.isLoggedIn()) {
       await this.setAvatar();
+      if (!this.isDesktopToolbar) {
+        this.setMobileUsername();
+      }
     }
     this.route.queryParams.subscribe((params) => {
       if (params['activated'] === 'true') {
@@ -79,12 +94,15 @@ export class SearchHeaderComponent implements OnInit {
       {
         label: 'Profil',
         icon: 'pi pi-user',
-        command: () => this.goToSettings()
+        command: () => this.goToProfile()
       },
       { label: 'Odjava', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
 
     this.userIsLoggedIn = this.tokenService.isLoggedIn();
+  }
+  setMobileUsername() {
+    this.userName = this.tokenService.getUserSubject();
   }
 
   goToHome() {
@@ -95,7 +113,7 @@ export class SearchHeaderComponent implements OnInit {
     this.loginComponent.showDialog();
   }
 
-  goToSettings() {
+  goToProfile() {
     this.router.navigate(['/dashboard/profile']);
   }
 
@@ -106,10 +124,13 @@ export class SearchHeaderComponent implements OnInit {
   logout() {
     this.tokenService.clearToken();
     this.userIsLoggedIn = false;
+    this.mobileSidebarVisible = false;
   }
 
   async onLoginSuccess() {
     this.userIsLoggedIn = true;
+    this.mobileSidebarVisible = false;
+    this.setMobileUsername();
     await this.setAvatar();
     await this.checkUserActivation();
   }
@@ -151,5 +172,13 @@ export class SearchHeaderComponent implements OnInit {
         this.buttonDisabled = false;
       }
     }, 1000);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(): void {
+    this.checkWindowWidth();
+  }
+  checkWindowWidth(): void {
+    this.isDesktopToolbar = window.innerWidth > 800;
   }
 }

@@ -1,9 +1,13 @@
 .cart {
+  i {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+  }
+
   &__header {
     font-weight: bold;
     font-size: 1.5rem;
     margin: 1rem;
-    
   }
 
   &__empty {
@@ -47,6 +51,7 @@
   }
   .p-sidebar {
     &-right {
+      max-width: 100%;
       width: 30rem;
     }
     &-header {

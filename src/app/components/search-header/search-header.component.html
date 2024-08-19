@@ -1,25 +1,79 @@
-<div class="header">
-  <p-toolbar styleClass="header__toolbar">
-    <ng-template pTemplate="start">
+@if (isDesktopToolbar) {
+  <div class="header">
+    <p-toolbar styleClass="header__toolbar">
+      <ng-template pTemplate="start">
+        <img
+          src="/assets/logo.svg"
+          alt="Logo"
+          class="header__toolbar--logo clickable"
+          (click)="goToHome()"
+        />
+      </ng-template>
+      <ng-template pTemplate="center">
+        <p-autoComplete
+          i18n-placeholder="@@header.search"
+          placeholder="Pretraga"
+          inputStyleClass="header__toolbar--search"
+          styleClass="header__toolbar--search"
+          class="header__toolbar--search"
+        ></p-autoComplete>
+      </ng-template>
+      <ng-template pTemplate="end">
+        <div class="header__toolbar--actions">
+          @if (userIsLoggedIn) {
+            <p-avatar
+              [image]="userAvatar || undefined"
+              [icon]="!userAvatar ? 'pi pi-user' : undefined"
+              shape="circle"
+              size="large"
+              class="clickable"
+              (click)="userMenu.toggle($event)"
+            ></p-avatar>
+            <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+            <app-cart />
+          } @else {
+            <app-login (loginSuccess)="onLoginSuccess()" />
+          }
+        </div>
+      </ng-template>
+    </p-toolbar>
+  </div>
+} @else {
+  <div class="mobile-header">
+    <div class="mobile-header__navigation">
+      <p-button
+        icon="pi pi-bars"
+        class="navigation--menu"
+        [outlined]="true"
+        (onClick)="mobileSidebarVisible = !mobileSidebarVisible"
+      ></p-button>
       <img
         src="/assets/logo.svg"
         alt="Logo"
-        class="header__toolbar--logo"
+        class="mobile-header__logo"
         (click)="goToHome()"
       />
-    </ng-template>
-    <ng-template pTemplate="center">
-      <span class="p-input-icon-left header__toolbar--search">
-        <i class="pi pi-search"></i>
-        <input
-          pInputText
-          i18n-placeholder="@@header.search"
-          placeholder="Pretraga"
-        />
-      </span>
-    </ng-template>
-    <ng-template pTemplate="end">
-      <div class="header__toolbar--actions">
+      @if (userIsLoggedIn) {
+        <app-cart />
+      } @else {
+        <app-login (loginSuccess)="onLoginSuccess()" [iconOnly]="true" />
+      }
+    </div>
+    <p-autoComplete
+      i18n-placeholder="@@header.search"
+      placeholder="Pretraga"
+      inputStyleClass="mobile-header__search"
+      styleClass="mobile-header__search"
+      class="mobile-header__search"
+    ></p-autoComplete>
+  </div>
+  <p-sidebar
+    [(visible)]="mobileSidebarVisible"
+    position="left"
+    [blockScroll]="true"
+  >
+    <ng-template pTemplate="header">
+      <div class="mobile-header__sidebar--header">
         @if (userIsLoggedIn) {
           <p-avatar
             [image]="userAvatar || undefined"
@@ -27,17 +81,31 @@
             shape="circle"
             size="large"
             class="clickable"
-            (click)="userMenu.toggle($event)"
+            (click)="goToProfile()"
           ></p-avatar>
-          <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
-          <app-cart />
+          <div>{{ userName }}</div>
         } @else {
-          <app-login (loginSuccess)="onLoginSuccess()" />
+          <app-login (loginSuccess)="onLoginSuccess()" [smallButton]="true" />
         }
       </div>
     </ng-template>
-  </p-toolbar>
-</div>
+    <!-- TODO: Here goes the content which would be the filter menu -->
+    <ng-template pTemplate="footer">
+      <div class="mobile-header__sidebar--footer">
+        @if (userIsLoggedIn) {
+          <p-button
+            label="Odjava"
+            i18n-label="@@header.logout"
+            (onClick)="logout()"
+            severity="warning"
+            size="small"
+            [outlined]="true"
+          ></p-button>
+        }
+      </div>
+    </ng-template>
+  </p-sidebar>
+}
 <p-dialog
   header="Oh ne..."
   [(visible)]="userNotActivated"

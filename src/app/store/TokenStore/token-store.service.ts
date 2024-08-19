@@ -58,4 +58,14 @@ export class TokenStoreService {
     const decodedToken = jwtDecode<CustomJwtPayload>(token);
     return decodedToken.email;
   }
+
+  getUserSubject(): string | undefined {
+    const token = this.getToken();
+    if (!token) {
+      return;
+    }
+
+    const decodedToken = jwtDecode<JwtPayload>(token);
+    return decodedToken.sub;
+  }
 }

@@ -164,6 +164,10 @@ export class DashboardComponent implements OnInit {
     this.router.navigate(['dashboard/profile']);
   }
 
+  createProgram(): void {
+    this.router.navigate(['dashboard/create-program']);
+  }
+
   goToDashboard(): void {
     this.router.navigate(['/dashboard']);
   }
@@ -194,9 +198,6 @@ export class DashboardComponent implements OnInit {
 
   viewPrograms(): void {
     console.log('viewPrograms');
-  }
-  createProgram(): void {
-    console.log('createProgram');
   }
   viewDiary(): void {
     console.log('viewDiary');

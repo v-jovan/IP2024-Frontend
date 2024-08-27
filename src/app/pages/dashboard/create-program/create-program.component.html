@@ -1,0 +1,241 @@
+<div class="create-program dashboard-card">
+  <h2 class="create-program__title">Kreiranje programa</h2>
+  <form [formGroup]="programForm" class="create-program__form">
+    <div class="create-program__content">
+      <div class="create-program__inputs">
+        <p-floatLabel>
+          <input
+            id="username"
+            type="text"
+            pInputText
+            formControlName="name"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('name')
+            }"
+          />
+          <label for="username">Naziv programa</label>
+        </p-floatLabel>
+        <p-floatLabel>
+          <input
+            id="instructor"
+            type="text"
+            pInputText
+            pTooltip="Vi ste instruktor ovog programa"
+            tooltipPosition="bottom"
+            showDelay="200"
+            [value]="formatedInfo"
+            disabled
+          />
+          <label for="instructor">Instruktor</label>
+        </p-floatLabel>
+        <div>
+          <p>Težina programa:</p>
+          <p-slider
+            formControlName="difficultyLevel"
+            [step]="1"
+            [min]="0"
+            [max]="2"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('difficultyLevel')
+            }"
+          />
+        </div>
+        <p-dropdown
+          id="location"
+          [options]="locations"
+          optionLabel="name"
+          optionValue="id"
+          formControlName="locationId"
+          placeholder="Lokacija programa"
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('locationId')
+          }"
+        />
+        <div class="create-program__checkbox">
+          <p-checkbox
+            formControlName="onlineCheckbox"
+            [binary]="true"
+            id="checkbox"
+            (onChange)="onCheckboxChange($event)"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('onlineCheckbox')
+            }"
+          />
+          <label for="binary">Online program</label>
+        </div>
+        <div class="create-program__link" [class.show]="checkboxChecked">
+          <p-floatLabel>
+            <input
+              id="yt-link"
+              type="text"
+              pInputText
+              formControlName="youtubeUrl"
+              [ngClass]="{
+                'ng-invalid ng-dirty': isFieldInvalid('youtubeUrl')
+              }"
+            />
+            <label for="yt-link">Youtube link</label>
+          </p-floatLabel>
+        </div>
+        <p-floatLabel>
+          <p-inputNumber
+            inputId="duration"
+            formControlName="duration"
+            [showButtons]="true"
+            [min]="10"
+            [max]="200"
+            suffix=" min"
+            decrementButtonClass="p-button-small p-button-outlined"
+            incrementButtonClass="p-button-small p-button-outlined"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('duration')
+            }"
+          />
+          <label for="duration">Trajanje programa</label>
+        </p-floatLabel>
+        <p-floatLabel>
+          <p-inputNumber
+            id="price"
+            [min]="0"
+            mode="currency"
+            currency="EUR"
+            formControlName="price"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('price')
+            }"
+          />
+          <label for="price">Cijena programa</label>
+        </p-floatLabel>
+      </div>
+      <div class="create-program__description">
+        <p-floatLabel>
+          <textarea
+            id="description"
+            rows="5"
+            cols="30"
+            pInputTextarea
+            formControlName="description"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('description')
+            }"
+          ></textarea>
+          <label for="description">Opis programa</label>
+        </p-floatLabel>
+      </div>
+    </div>
+    <div class="create-program__dynamic-attributes">
+      <p-floatLabel>
+        <p-dropdown
+          id="category"
+          formControlName="categoryId"
+          [options]="categories"
+          optionLabel="name"
+          optionValue="id"
+          (onChange)="onCategoryChange($event)"
+          [ngClass]="{
+            'ng-invalid ng-dirty': isFieldInvalid('categoryId')
+          }"
+        />
+        <label for="category">Kategorija programa</label>
+      </p-floatLabel>
+      <div formArrayName="specificAttributes">
+        @for (
+          attribute of specificAttributes.controls;
+          track attribute;
+          let i = $index
+        ) {
+          <div [formGroupName]="i" class="create-program__attributes">
+            <p-floatLabel>
+              <p-dropdown
+                id="attributeName"
+                formControlName="attributeName"
+                [options]="getAvailableAttributes(i)"
+                optionLabel="name"
+                optionValue="id"
+                (onChange)="onAttributeChange($event, i)"
+                [ngClass]="{
+                  'ng-invalid ng-dirty': isFieldInvalid('attributeName')
+                }"
+              />
+              <label for="attributeName">Atribut</label>
+            </p-floatLabel>
+            <p-floatLabel>
+              <p-dropdown
+                id="attributeValue"
+                formControlName="attributeValue"
+                [options]="selectedAttributeValues[i]"
+                optionLabel="name"
+                optionValue="id"
+                (onChange)="onValueChange()"
+                [ngClass]="{
+                  'ng-invalid ng-dirty': isFieldInvalid('attributeValue')
+                }"
+              />
+              <label for="attributeName">Vrijednost atributa</label>
+            </p-floatLabel>
+          </div>
+        }
+        @if (canAddAttribute) {
+          <button
+            pButton
+            type="button"
+            icon="pi pi-plus"
+            [outlined]="true"
+            [rounded]="true"
+            (click)="addAttribute()"
+          ></button>
+        }
+      </div>
+    </div>
+    <div>
+      <p-fileUpload
+        name="files"
+        [multiple]="true"
+        accept="image/*"
+        maxFileSize="1000000"
+        [customUpload]="true"
+        (uploadHandler)="uploadImage($event)"
+      >
+        <ng-template
+          pTemplate="header"
+          let-files
+          let-chooseCallback="chooseCallback"
+          let-clearCallback="clearCallback"
+          let-uploadCallback="uploadCallback"
+        >
+          <div>
+            <p-button
+              (onClick)="
+                choose($event, chooseCallback, clearCallback, uploadCallback)
+              "
+              icon="pi pi-images"
+              [rounded]="true"
+              [outlined]="true"
+            />
+            <p-button
+              (onClick)="clearCallback()"
+              icon="pi pi-times"
+              [rounded]="true"
+              [outlined]="true"
+              severity="danger"
+              [disabled]="!files || files.length === 0"
+            />
+          </div>
+        </ng-template>
+        <ng-template pTemplate="content" let-files>
+          @if (files.length === 0) {
+            <div class="uploader__empty">
+              Odaberite slike programa ili ih prevucite ovdje.
+            </div>
+          }
+        </ng-template>
+      </p-fileUpload>
+    </div>
+  </form>
+  <div class="create-program__footer toolbar">
+    <bottom-toolbar
+      (onSave)="saveChanges()"
+      (onDiscard)="discardChanges()"
+    ></bottom-toolbar>
+  </div>
+</div>

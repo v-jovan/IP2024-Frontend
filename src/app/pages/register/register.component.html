@@ -20,7 +20,12 @@
   </p-dialog>
   <div class="register__header">
     <div class="register__header--logo">
-      <img src="assets/logo.svg" class="clickable" (click)="goToHome()" alt="logo" />
+      <img
+        src="assets/logo.svg"
+        class="clickable"
+        (click)="goToHome()"
+        alt="logo"
+      />
     </div>
     <h2 i18n="@@registration.title">Registracija</h2>
     <small i18n="@@registration.description">
@@ -38,6 +43,7 @@
         <input
           formControlName="firstName"
           pInputText
+          pKeyFilter="alpha"
           [ngClass]="{
             'ng-invalid ng-dirty': isFieldInvalid('firstName')
           }"
@@ -56,6 +62,7 @@
             'ng-invalid ng-dirty': isFieldInvalid('lastName')
           }"
           pInputText
+          pKeyFilter="alpha"
           placeholder="Prezime"
           i18n-placeholder="@@register.lastName"
           autocomplete="family-name"

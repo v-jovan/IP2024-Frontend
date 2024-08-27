@@ -6,12 +6,10 @@ export const authGuard: CanActivateChildFn = (childRoute, state) => {
   const tokenService = inject(TokenStoreService);
   const router = inject(Router);
 
-  // if (tokenService.isLoggedIn()) {
-  //   return true;
-  // } else {
-  //   router.navigate(['/']);
-  //   return false;
-  // }
-
-  return true;
+  if (tokenService.isLoggedIn()) {
+    return true;
+  } else {
+    router.navigate(['/']);
+    return false;
+  }
 };

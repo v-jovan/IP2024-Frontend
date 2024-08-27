@@ -17,5 +17,12 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./daily-exercise/daily-exercise.component').then(
         (m) => m.DailyExerciseComponent
       )
+  },
+  {
+    path: 'create-program',
+    loadComponent: () =>
+      import('./create-program/create-program.component').then(
+        (m) => m.CreateProgramComponent
+      )
   }
 ];

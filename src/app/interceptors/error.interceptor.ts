@@ -46,7 +46,6 @@ export class ErrorInterceptorService {
         break;
       case 401:
         if (errorCode && errorCode === 'JWT_EXPIRED') {
-          // Ako je token istekao, odjavi korisnika i preusmeri na homepage
           this.messageService.add({
             severity: 'error',
             summary: 'Istekla sesija',

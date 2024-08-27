@@ -32,21 +32,19 @@ export class TokenStoreService {
       return false;
     }
 
-    // try {
-    //   const decodedToken = jwtDecode<JwtPayload>(token);
-    //   const currentTime = Math.floor(Date.now() / 1000);
-    //   if (decodedToken.exp && decodedToken.exp > currentTime) {
-    //     return true;
-    //   } else {
-    //     this.clearToken(); // Ako je token istekao, obriši ga
-    //     return false;
-    //   }
-    // } catch (error) {
-    //   // Ako dekodiranje tokena ne uspe, token se smatra nevažećim
-    //   this.clearToken();
-    //   return false;
-    // }
-    return true;
+    try {
+      const decodedToken = jwtDecode<JwtPayload>(token);
+      const currentTime = Math.floor(Date.now() / 1000);
+      if (decodedToken.exp && decodedToken.exp > currentTime) {
+        return true;
+      } else {
+        this.clearToken(); // If the token is expired, clear it
+        return false;
+      }
+    } catch (error) {
+      this.clearToken();
+      return false;
+    }
   }
 
   getUserEmail(): string | undefined {

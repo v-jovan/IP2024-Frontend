@@ -18,6 +18,7 @@ import { MessageService } from 'primeng/api';
 import { City } from 'src/app/interfaces/misc/city';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { DialogModule } from 'primeng/dialog';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
   selector: 'app-register',
@@ -33,7 +34,8 @@ import { DialogModule } from 'primeng/dialog';
     ImageUploaderComponent,
     PasswordModule,
     DividerModule,
-    DialogModule
+    DialogModule,
+    KeyFilterModule
   ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',

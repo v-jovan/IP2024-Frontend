@@ -20,6 +20,7 @@ import { Router } from '@angular/router';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-login',
@@ -60,7 +61,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private formUtils: FormUtilsService,
     private authService: AuthService,
-    private tokenStore: TokenStoreService
+    private tokenStore: TokenStoreService,
+    private errorInterceptor: ErrorInterceptorService
   ) {}
 
   ngOnInit(): void {
@@ -81,7 +83,7 @@ export class LoginComponent implements OnInit {
         this.tokenStore.setToken(response.token);
         this.loginSuccess.emit();
       } catch (error) {
-        console.error('Login failed', error);
+        this.errorInterceptor.handleError(error);
       }
     } else {
       this.loginForm.markAllAsTouched();

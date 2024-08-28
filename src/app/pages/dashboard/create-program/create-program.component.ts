@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -82,6 +88,8 @@ export class CreateProgramComponent implements OnInit {
   });
 
   uploadedFiles: File[] = [];
+
+  @ViewChild('top') topElement!: ElementRef;
 
   constructor(
     private fb: FormBuilder,
@@ -276,5 +284,6 @@ export class CreateProgramComponent implements OnInit {
       summary: 'Info',
       detail: 'Promjene su odbačene.'
     });
+    this.topElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
   }
 }

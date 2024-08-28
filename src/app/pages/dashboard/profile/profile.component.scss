@@ -59,6 +59,7 @@
       align-items: flex-start;
 
       @media (max-width: 850px) {
+        p-floatlabel,
         .p-component:disabled {
           width: 100%;
         }
@@ -80,10 +81,8 @@
     }
 
     &--email {
-      @media (max-width: 850px) {
-        .p-element {
-          width: 100%;
-        }
+      .p-element {
+        width: 100%;
       }
     }
   }

@@ -65,9 +65,10 @@ export class DashboardComponent implements OnInit {
     }
     this.userMenuItems = [
       {
+        id: 'profile',
         label: 'Profil',
         icon: 'pi pi-user',
-        command: () => this.goToProfile()
+        command: () => this.goToSidebarItem('profile')
       },
       { label: 'Odjava', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
@@ -80,13 +81,13 @@ export class DashboardComponent implements OnInit {
             id: 'view-programs',
             label: 'Pregled programa',
             icon: 'pi pi-fw pi-list',
-            command: () => this.viewPrograms()
+            command: () => this.goToSidebarItem('view-programs')
           },
           {
             id: 'create-program',
             label: 'Kreiraj novi program',
             icon: 'pi pi-fw pi-plus',
-            command: () => this.createProgram()
+            command: () => this.goToSidebarItem('create-program')
           }
         ]
       },
@@ -98,19 +99,19 @@ export class DashboardComponent implements OnInit {
             id: 'daily-exercise',
             label: 'Dnevne vježbe',
             icon: 'pi pi-fw pi-calendar',
-            command: () => this.viewDailyExercise()
+            command: () => this.goToSidebarItem('daily-exercise')
           },
           {
             id: 'profile',
             label: 'Informacije',
             icon: 'pi pi-fw pi-user',
-            command: () => this.goToProfile()
+            command: () => this.goToSidebarItem('profile')
           },
           {
             id: 'password',
             label: 'Lozinka',
             icon: 'pi pi-fw pi-lock',
-            command: () => this.gotToPassword()
+            command: () => this.goToSidebarItem('password')
           }
         ]
       }
@@ -156,20 +157,11 @@ export class DashboardComponent implements OnInit {
     this.isDesktopSidebar = window.innerWidth > 1060;
   }
 
-  gotToPassword(): void {
-    this.router.navigate(['dashboard/password']);
-  }
-
-  goToProfile(): void {
-    this.router.navigate(['dashboard/profile']);
-  }
-
-  createProgram(): void {
-    this.router.navigate(['dashboard/create-program']);
-  }
-
   goToDashboard(): void {
     this.router.navigate(['/dashboard']);
+  }
+  goToSidebarItem(item: string): void {
+    this.router.navigate([`dashboard/${item}`]);
   }
 
   selectSidebarItem(id: string) {
@@ -196,9 +188,6 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  viewPrograms(): void {
-    console.log('viewPrograms');
-  }
   viewDiary(): void {
     console.log('viewDiary');
   }

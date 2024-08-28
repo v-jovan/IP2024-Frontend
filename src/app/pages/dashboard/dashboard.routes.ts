@@ -24,5 +24,12 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./create-program/create-program.component').then(
         (m) => m.CreateProgramComponent
       )
+  },
+  {
+    path: 'view-programs',
+    loadComponent: () =>
+      import('./view-programs/view-programs.component').then(
+        (m) => m.ViewProgramsComponent
+      )
   }
 ];

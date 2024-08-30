@@ -27,4 +27,12 @@ export class FitnessProgramService {
     );
     return response.data;
   }
+
+  async getMyFitnessPrograms(params: { page: number; size: number, sort?: string }) {
+    const response = await this.apiService.axios.get(
+      `${this.programURL}/my-programs`,
+      { params }
+    );
+    return response.data;
+  }
 }

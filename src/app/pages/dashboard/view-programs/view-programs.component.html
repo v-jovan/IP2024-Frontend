@@ -1,1 +1,89 @@
-<p>view-programs works!</p>
+<div class="view-programs dashboard-card">
+  <div class="view-programs__header">
+    <h2 i18n="@@viewPrograms.title">Pregled programa</h2>
+    <p-button
+      label="Dodaj program"
+      icon="pi pi-plus"
+      (onClick)="createProgram()"
+    ></p-button>
+  </div>
+  <div class="view-programs__table">
+    <p-table
+      #dt
+      [value]="programs"
+      dataKey="id"
+      [paginator]="true"
+      [rows]="5"
+      [rowsPerPageOptions]="[5, 10, 20]"
+      [loading]="loading"
+      [lazy]="true"
+      (onLazyLoad)="loadPrograms($event)"
+      [totalRecords]="totalRecords"
+      responsiveLayout="stack"
+      emptymessage="Nema podataka."
+    >
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          @for (col of cols; track col) {
+            <th
+              [pSortableColumn]="col.sortable ? col.field : undefined"
+              [ngClass]="{ 'min-width': col.width }"
+            >
+              {{ col.header }}
+              @if (col.sortable) {
+                <p-sortIcon [field]="col.field" />
+              }
+            </th>
+          }
+          <th i18n="@@viewPrograms.actions">Akcije</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-program let-columns="columns">
+        <tr>
+          @for (col of cols; track col) {
+            @if (col.field === 'difficultyLevel') {
+              <td [ngStyle]="{ width: col.width }">
+                <p-tag
+                  [severity]="program.difficultySeverity"
+                  [value]="program.difficultyLevel"
+                />
+              </td>
+            } @else if (col.field === 'duration') {
+              <td>
+                {{ program[col.field] | convertMinutes }}
+              </td>
+            } @else if (col.field === 'price') {
+              <td>
+                {{ program[col.field] | currency }}
+              </td>
+            } @else if (col.field === 'description') {
+              <td [ngStyle]="{ width: col.width }">
+                <div
+                  [pTooltip]="program[col.field]"
+                  tooltipPosition="bottom"
+                  showDelay="500"
+                  class="shorten"
+                >
+                  {{ program[col.field] }}
+                </div>
+              </td>
+            } @else {
+              <td [ngStyle]="{ width: col.width }">{{ program[col.field] }}</td>
+            }
+          }
+
+          <td>
+            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" />
+            <p-button
+              icon="pi pi-trash"
+              [rounded]="true"
+              [text]="true"
+              severity="danger"
+              size="small"
+            />
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</div>

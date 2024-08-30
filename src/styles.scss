@@ -41,6 +41,14 @@ body {
   cursor: pointer;
 }
 
+.shorten {
+  display: inline-block;
+   max-width: 20em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .dashboard-card {
   background-color: white;
   border-radius: 0.75rem;

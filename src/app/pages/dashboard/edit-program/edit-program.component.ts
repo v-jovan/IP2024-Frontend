@@ -1,10 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  ViewEncapsulation
-} from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { InputTextModule } from 'primeng/inputtext';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -33,17 +27,23 @@ import { AttributeService } from 'src/app/services/Attribute/attribute.service';
 import { CategoryService } from 'src/app/services/Category/category.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { Category } from 'src/app/interfaces/misc/category';
-import { Attribute as CategoryAttribute } from 'src/app/interfaces/misc/attribute';
+import {
+  Attribute,
+  Attribute as CategoryAttribute
+} from 'src/app/interfaces/misc/attribute';
+import { FieldsetModule } from 'primeng/fieldset';
 import { Location as CategoryLocation } from 'src/app/interfaces/misc/location';
 import { AttributeValue } from 'src/app/interfaces/misc/attribute-value';
 import { LocationService } from 'src/app/services/Location/location.service';
 import { UserService } from 'src/app/services/User/user.service';
 import { UserInfo } from 'src/app/interfaces/misc/user-info';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
+import { GalleriaModule } from 'primeng/galleria';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
-  selector: 'app-create-program',
+  selector: 'app-edit-program',
   standalone: true,
   imports: [
     CommonModule,
@@ -59,13 +59,16 @@ import { Router } from '@angular/router';
     ButtonModule,
     HttpClientModule,
     SliderModule,
-    TooltipModule
+    TooltipModule,
+    GalleriaModule,
+    FieldsetModule
   ],
-  templateUrl: './create-program.component.html',
-  styleUrl: './create-program.component.scss',
+  templateUrl: './edit-program.component.html',
+  styleUrl: './edit-program.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class CreateProgramComponent implements OnInit {
+export class EditProgramComponent implements OnInit {
+  programId!: string;
   categories: Category[] = [];
   locations: CategoryLocation[] = [];
   selectedCategoryAttributes: CategoryAttribute[] = [];
@@ -89,8 +92,26 @@ export class CreateProgramComponent implements OnInit {
   });
 
   uploadedFiles: File[] = [];
+  programImages: string[] = [];
+  originalImages: string[] = [];
+  envUrl = environment.apiUrl;
 
-  @ViewChild('top') topElement!: ElementRef;
+  responsiveOptions: any[] = [
+    {
+      breakpoint: '1024px',
+      numVisible: 5
+    },
+    {
+      breakpoint: '768px',
+      numVisible: 3
+    },
+    {
+      breakpoint: '560px',
+      numVisible: 1
+    }
+  ];
+  displayCustom!: boolean;
+  activeIndex: number = 0;
 
   constructor(
     private fb: FormBuilder,
@@ -103,20 +124,89 @@ export class CreateProgramComponent implements OnInit {
     private formUtils: FormUtilsService,
     private fitnessProgramService: FitnessProgramService,
     private errorInterceptorService: ErrorInterceptorService,
-    private router: Router
+    private route: ActivatedRoute
   ) {}
 
   async ngOnInit() {
+    this.loaderService.show();
+    this.programId = this.route.snapshot.paramMap.get('id')!;
     try {
-      this.loaderService.show();
       this.categories = await this.categoryService.getCategories();
       this.locations = await this.locationService.getLocations();
       this.userInfo = await this.userService.getUserInfo();
+
+      const programData = await this.fitnessProgramService.getProgramById(
+        this.programId
+      );
+      this.populateForm(programData);
     } catch (error) {
       this.errorInterceptorService.handleError(error);
     } finally {
       this.loaderService.hide();
     }
+  }
+
+  populateForm(programData: any) {
+    this.programForm.patchValue({
+      name: programData.name,
+      description: programData.description,
+      difficultyLevel: this.getDifficultyLevelIndex(
+        programData.difficultyLevel
+      ),
+      youtubeUrl: programData.youtubeUrl,
+      duration: programData.duration,
+      price: programData.price,
+      locationId: programData.locationId,
+      categoryId: programData.categoryId,
+      onlineCheckbox: programData.locationId === null
+    });
+    this.originalImages = [...programData.images];
+    this.programImages = [...programData.images];
+
+    if (programData.locationId === null) {
+      this.programForm.get('locationId')?.disable();
+    }
+
+    this.populateSpecificAttributes(programData.specificAttributes);
+  }
+
+  imageClick(index: number) {
+    this.activeIndex = index;
+    this.displayCustom = true;
+  }
+
+  removeImage(imageUrl: string): void {
+    this.programImages = this.programImages.filter(
+      (image) => image !== imageUrl
+    );
+    this.displayCustom = false;
+  }
+
+  async populateSpecificAttributes(attributes: Attribute[]) {
+    this.specificAttributes.clear();
+
+    if (this.category) {
+      this.selectedCategoryAttributes =
+        await this.attributeService.getAttributesByCategory(this.category);
+    }
+
+    for (const attribute of attributes) {
+      const specificAttributeGroup = this.fb.group({
+        attributeName: [attribute.id, Validators.required],
+        attributeValue: [attribute.selectedValue?.id, Validators.required]
+      });
+
+      const index = this.specificAttributes.length;
+      this.selectedAttributeValues[index] = attribute.values;
+
+      this.specificAttributes.push(specificAttributeGroup);
+    }
+
+    this.canAddAttribute = this.canAddMoreAttributes;
+  }
+
+  getDifficultyLevelIndex(level: string): number {
+    return Object.values(this.difficultyLevelMap).indexOf(level);
   }
 
   get checkboxChecked() {
@@ -128,13 +218,11 @@ export class CreateProgramComponent implements OnInit {
   }
 
   get category() {
-    return this.programForm.get('category')?.value;
+    return this.programForm.get('categoryId')?.value;
   }
 
   get canAddMoreAttributes(): boolean {
-    return (
-      !!this.specificAttributes.length && this.filteredAttributesLength > 1
-    );
+    return this.getAvailableAttributes(-1).length > 0;
   }
 
   get formatedInfo(): string | undefined {
@@ -247,28 +335,41 @@ export class CreateProgramComponent implements OnInit {
   };
 
   async saveChanges() {
-    if (this.programForm.valid && this.uploadedFiles.length > 0) {
+    if (this.programForm.valid) {
       const formValues = this.programForm.value;
 
       const programData: FitnessProgramRequest = {
         ...formValues,
-        difficultyLevel: this.difficultyLevelMap[formValues.difficultyLevel]
+        difficultyLevel: this.difficultyLevelMap[formValues.difficultyLevel],
+        specificAttributes: this.specificAttributes.value
       };
 
       try {
-        await this.fitnessProgramService.createProgram(
-          programData,
-          this.uploadedFiles
-        );
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: 'Program kreiran uspješno!'
-        });
-        this.router.navigate(['/dashboard/view-programs']);
-        this.programForm.reset();
-        this.uploadedFiles = [];
-        this.specificAttributes.clear();
+        if (this.programId) {
+          const removedImages = this.getRemovedImages();
+
+          await this.fitnessProgramService.updateProgram(
+            this.programId,
+            programData,
+            this.uploadedFiles,
+            removedImages
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Uspjeh',
+            detail: 'Program uspješno ažuriran!'
+          });
+        } else {
+          await this.fitnessProgramService.createProgram(
+            programData,
+            this.uploadedFiles
+          );
+          this.messageService.add({
+            severity: 'success',
+            summary: 'Uspjeh',
+            detail: 'Program kreiran uspješno!'
+          });
+        }
       } catch (error) {
         this.errorInterceptorService.handleError(error);
       }
@@ -276,20 +377,18 @@ export class CreateProgramComponent implements OnInit {
       this.programForm.markAllAsTouched();
       this.messageService.add({
         severity: 'warn',
-        summary: 'Warning',
+        summary: 'Upozorenje',
         detail: 'Molimo popunite sva polja i dodajte slike.'
       });
     }
   }
-  discardChanges() {
-    this.programForm.reset();
-    this.uploadedFiles = [];
-    this.specificAttributes.clear();
-    this.messageService.add({
-      severity: 'info',
-      summary: 'Info',
-      detail: 'Promjene su odbačene.'
-    });
-    this.topElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+
+  getRemovedImages(): string[] {
+    const originalImages = new Set(this.originalImages);
+    const currentImages = new Set(this.programImages);
+
+    return [...originalImages].filter((image) => !currentImages.has(image));
   }
+
+  discardChanges() {}
 }

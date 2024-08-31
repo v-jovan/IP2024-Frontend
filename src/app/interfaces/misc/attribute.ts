@@ -1,7 +1,8 @@
-import { AttributeValue } from "./attribute-value";
+import { AttributeValue } from './attribute-value';
 
 export interface Attribute {
   id: number;
   name: string;
   values: AttributeValue[];
+  selectedValue?: AttributeValue;
 }

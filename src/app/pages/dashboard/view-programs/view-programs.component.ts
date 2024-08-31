@@ -69,6 +69,13 @@ export class ViewProgramsComponent implements OnInit {
     }));
   }
 
+  private transformLocation() {
+    this.programs = this.programs.map((program) => ({
+      ...program,
+      locationName: program.locationName || 'Online'
+    }));
+  }
+
   async loadPrograms(event: TableLazyLoadEvent) {
     this.loading = true;
     try {
@@ -79,11 +86,11 @@ export class ViewProgramsComponent implements OnInit {
           ? `${event.sortField},${event.sortOrder === 1 ? 'asc' : 'desc'}`
           : undefined
       };
-      
+
       const response = await this.programService.getMyFitnessPrograms(params);
       this.programs = response.content;
       this.totalRecords = response.totalElements;
-
+      this.transformLocation();
       this.transformDifficultyLevels();
     } catch (error) {
       this.errorInterceptorService.handleError(error);
@@ -94,5 +101,8 @@ export class ViewProgramsComponent implements OnInit {
 
   createProgram() {
     this.router.navigate(['/dashboard/create-program']);
+  }
+  editProgram(id: string) {
+    this.router.navigate(['/dashboard/edit-program', id]);
   }
 }

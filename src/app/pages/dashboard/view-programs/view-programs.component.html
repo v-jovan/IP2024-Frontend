@@ -73,7 +73,12 @@
           }
 
           <td>
-            <p-button icon="pi pi-pencil" [rounded]="true" [text]="true" />
+            <p-button
+              icon="pi pi-pencil"
+              [rounded]="true"
+              [text]="true"
+              (onClick)="editProgram(program.id)"
+            />
             <p-button
               icon="pi pi-trash"
               [rounded]="true"

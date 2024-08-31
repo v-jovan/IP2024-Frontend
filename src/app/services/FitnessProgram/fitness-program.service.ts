@@ -28,10 +28,52 @@ export class FitnessProgramService {
     return response.data;
   }
 
-  async getMyFitnessPrograms(params: { page: number; size: number, sort?: string }) {
+  async updateProgram(
+    programId: string,
+    programData: FitnessProgramRequest,
+    files: File[],
+    removedImages: string[]
+  ) {
+    const formData = new FormData();
+
+    formData.append(
+      'program',
+      new Blob([JSON.stringify(programData)], { type: 'application/json' })
+    );
+
+    for (let file of files) {
+      formData.append('files', file);
+    }
+
+    if (removedImages.length > 0) {
+      const removedImagesBlob = new Blob([JSON.stringify(removedImages)], {
+        type: 'application/json'
+      });
+      formData.append('removedImages', removedImagesBlob);
+    }
+
+    const response = await this.apiService.axios.put(
+      `${this.programURL}/${programId}`,
+      formData
+    );
+    return response.data;
+  }
+
+  async getMyFitnessPrograms(params: {
+    page: number;
+    size: number;
+    sort?: string;
+  }) {
     const response = await this.apiService.axios.get(
       `${this.programURL}/my-programs`,
       { params }
+    );
+    return response.data;
+  }
+
+  async getProgramById(id: string) {
+    const response = await this.apiService.axios.get(
+      `${this.programURL}/${id}`
     );
     return response.data;
   }

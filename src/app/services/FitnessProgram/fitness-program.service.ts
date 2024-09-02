@@ -71,9 +71,23 @@ export class FitnessProgramService {
     return response.data;
   }
 
+  async getAllPrograms(params: { page: number; size: number; sort?: string }) {
+    const response = await this.apiService.axios.get(this.programURL, {
+      params
+    });
+    return response.data;
+  }
+
   async getProgramById(id: string) {
     const response = await this.apiService.axios.get(
       `${this.programURL}/${id}`
+    );
+    return response.data;
+  }
+
+  async getCategoriesWithAttributes() {
+    const response = await this.apiService.axios.get(
+      `${this.programURL}/with-attributes`
     );
     return response.data;
   }

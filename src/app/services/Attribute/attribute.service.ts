@@ -18,4 +18,9 @@ export class AttributeService {
     );
     return response.data;
   }
+
+  async getAttributes() {
+    const response = await this.apiService.axios.get(this.attributeURL);
+    return response.data;
+  }
 }

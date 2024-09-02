@@ -2,15 +2,20 @@
   <div class="filter-menu__content">
     <div class="filter-menu__button">
       <p-button
-        icon="pi pi-filter"
+        icon="pi pi-filter-slash"
         label="Filteri"
         i18n-lable="@@filter.filters"
         [outlined]="false"
-        (click)="toggleTree()"
+        (click)="clearFilters()"
       ></p-button>
     </div>
     <div class="filter-menu__categories">
-      <p-tree [value]="categories"></p-tree>
+      <p-tree
+        [value]="categories"
+        selectionMode="single"
+         [(selection)]="selectedNode"
+        (onNodeSelect)="onNodeSelect($event)"
+      ></p-tree>
     </div>
     <div class="filter-menu__news">
       <app-news-article [articles]="newsItems"></app-news-article>

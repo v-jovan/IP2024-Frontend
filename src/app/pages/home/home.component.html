@@ -1,21 +1,24 @@
 <div class="home-page">
   <div class="home-page__container">
     <div class="home-page__sidebar">
-      <app-filter-menu />
+      <app-filter-menu (filterChanged)="onFilterChanged($event)" />
     </div>
     <div class="home-page__content">
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
-      <app-program-card />
+      @for (program of programs; track program.id) {
+        <app-program-card [program]="program" />
+      }
+      @if (programs.length === 0) {
+        <div class="home-page__no-results">
+          <p>Trenutno nema fitnes programa na raspolaganju.</p>
+        </div>
+      }
+      <p-paginator
+        (onPageChange)="onPageChange($event)"
+        [first]="first"
+        [rows]="rows"
+        [totalRecords]="totalRecords"
+        [rowsPerPageOptions]="[9, 18, 27]"
+      />
     </div>
   </div>
   <div class="home-page__footer">

@@ -4,11 +4,11 @@
       <p-galleria
         [value]="program.images"
         [circular]="true"
-        [showItemNavigators]="true"
+        [showItemNavigators]="program.images.length > 1"
         [showThumbnails]="false"
       >
         <ng-template pTemplate="item" let-item>
-          <img [src]="item" />
+          <img [src]="apiUrl + item" />
         </ng-template>
       </p-galleria>
     </ng-template>

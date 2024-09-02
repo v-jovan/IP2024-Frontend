@@ -1,12 +1,21 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Output,
+  ViewEncapsulation
+} from '@angular/core';
 import { TreeNode } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
-import { TreeModule } from 'primeng/tree';
+import { TreeModule, TreeNodeSelectEvent } from 'primeng/tree';
 import { DividerModule } from 'primeng/divider';
 import { NewsService } from 'src/app/services/News/news.service';
 import { NewsArticleComponent } from '../news-article/news-article.component';
 import { Article } from 'src/app/interfaces/misc/article';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { Attribute } from 'src/app/interfaces/misc/attribute';
+import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
+import { Category } from 'src/app/interfaces/misc/category';
+import { AttributeValue } from 'src/app/interfaces/misc/attribute-value';
 
 @Component({
   selector: 'app-filter-menu',
@@ -18,50 +27,57 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
 })
 export class FilterMenuComponent {
   categories!: TreeNode[];
-  treeExpanded = false;
+  selectedNode: TreeNode | null = null;
   newsItems: Article[] = [];
+
+  @Output() filterChanged = new EventEmitter<{
+    categoryId: number;
+    attributeId: number | null;
+    attributeValueId: number | null;
+  }>();
 
   constructor(
     private newsService: NewsService,
-    private errorInterceptor: ErrorInterceptorService
+    private errorInterceptor: ErrorInterceptorService,
+    private fitnessProgramService: FitnessProgramService
   ) {}
 
-  ngOnInit() {
-    this.categories = [
-      {
-        label: 'U sali',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'Na terenu',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'U sali',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'Na terenu',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'U sali',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'Na terenu',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'U sali',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      },
-      {
-        label: 'Na terenu',
-        children: [{ label: 'Sa loptom' }, { label: 'Sa spravama' }]
-      }
-    ];
-    this.loadRSSFeed();
+  async ngOnInit() {
+    await this.loadData();
+    await this.loadRSSFeed();
+  }
+
+  async loadData() {
+    try {
+      const categories =
+        await this.fitnessProgramService.getCategoriesWithAttributes();
+      this.categories = categories.map((category: Category) => ({
+        label: category.name,
+        data: {
+          categoryId: category.id,
+          attributeId: null,
+          attributeValueId: null
+        },
+        children: category.attributes.map((attribute: Attribute) => ({
+          label: attribute.name,
+          data: {
+            categoryId: category.id,
+            attributeId: attribute.id,
+            attributeValueId: null
+          },
+          children: attribute.values.map((value: AttributeValue) => ({
+            label: value.name,
+            data: {
+              categoryId: category.id,
+              attributeId: attribute.id,
+              attributeValueId: value.id
+            }
+          }))
+        }))
+      }));
+    } catch (error) {
+      this.errorInterceptor.handleError(error);
+    }
   }
 
   async loadRSSFeed(): Promise<void> {
@@ -72,9 +88,14 @@ export class FilterMenuComponent {
     }
   }
 
-  toggleTree() {
-    this.treeExpanded = !this.treeExpanded;
-    this.setExpansion(this.categories, this.treeExpanded);
+  clearFilters() {
+    this.filterChanged.emit({
+      categoryId: -1,
+      attributeId: null,
+      attributeValueId: null
+    });
+    this.setExpansion(this.categories, false);
+    this.selectedNode = null;
   }
 
   setExpansion(nodes: TreeNode[], expanded: boolean) {
@@ -84,5 +105,9 @@ export class FilterMenuComponent {
         this.setExpansion(node.children, expanded);
       }
     });
+  }
+
+  onNodeSelect(event: TreeNodeSelectEvent) {
+    this.filterChanged.emit(event.node.data);
   }
 }

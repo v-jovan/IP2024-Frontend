@@ -1,10 +1,11 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, Input, ViewEncapsulation } from '@angular/core';
 import { CardModule } from 'primeng/card';
 import { ButtonModule } from 'primeng/button';
 import { GalleriaModule } from 'primeng/galleria';
-import { FitnessProgram } from '../../../models/interfaces';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
+import { environment } from 'src/environments/environment.development';
 
 @Component({
   selector: 'app-program-card',
@@ -15,16 +16,8 @@ import { Router } from '@angular/router';
   encapsulation: ViewEncapsulation.None
 })
 export class ProgramCardComponent {
-  program: FitnessProgram = {
-    id: 1,
-    name: 'Program 1',
-    price: 100,
-    images: [
-      'https://placehold.co/200x150',
-      'https://upload.wikimedia.org/wikipedia/commons/6/6d/TFT-Pixel-Demo-Image-200x150.png',
-      'https://placehold.co/500x500'
-    ]
-  };
+  @Input({ required: true }) program!: FitnessProgram;
+  apiUrl: string = environment.apiUrl;
   constructor(private router: Router) {}
 
   addToCart() {

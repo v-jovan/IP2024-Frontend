@@ -7,4 +7,5 @@ export interface FitnessProgram {
   difficultyLevel: string;
   youtubeUrl?: string;
   locationName: string;
+  images: string[];
 }

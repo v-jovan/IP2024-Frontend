@@ -2,6 +2,11 @@ import { Routes } from '@angular/router';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
+    path: '',
+    redirectTo: 'view-programs',
+    pathMatch: 'full'
+  },
+  {
     path: 'profile',
     loadComponent: () =>
       import('./profile/profile.component').then((m) => m.ProfileComponent)

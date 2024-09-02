@@ -5,7 +5,10 @@ import {
   ViewChild,
   ViewEncapsulation
 } from '@angular/core';
-import { AutoCompleteModule } from 'primeng/autocomplete';
+import {
+  AutoCompleteModule,
+  AutoCompleteSelectEvent
+} from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
@@ -22,6 +25,15 @@ import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { SidebarModule } from 'primeng/sidebar';
+import { FitnessProgram } from 'src/models/interfaces';
+import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
+import { environment } from 'src/environments/environment.development';
+import { LoginService } from 'src/app/services/LoginForm/login.service';
+
+interface AutoCompleteCompleteEvent {
+  originalEvent: Event;
+  query: string;
+}
 
 @Component({
   selector: 'app-search-header',
@@ -53,6 +65,11 @@ export class SearchHeaderComponent implements OnInit {
   isDesktopToolbar: boolean = true;
   mobileSidebarVisible: boolean = false;
   userName: string | undefined;
+  apiUrl: string = environment.apiUrl;
+
+  fitnessPrograms: FitnessProgram[] = [];
+  selectedFitnessProgram: FitnessProgram | undefined;
+  filteredFitnessPrograms: FitnessProgram[] = [];
 
   constructor(
     private router: Router,
@@ -61,12 +78,20 @@ export class SearchHeaderComponent implements OnInit {
     private tokenService: TokenStoreService,
     private userService: UserService,
     private errorInterceptor: ErrorInterceptorService,
-    private authService: AuthService
+    private authService: AuthService,
+    private fitnessProgramService: FitnessProgramService,
+    private loginService: LoginService
   ) {}
 
   @ViewChild(LoginComponent) loginComponent!: LoginComponent;
 
   async ngOnInit() {
+    this.loginService.loginRequested$.subscribe(() => {
+      this.openLoginDialog();
+    });
+
+    this.filteredFitnessPrograms = [];
+
     this.checkWindowWidth();
     if (this.tokenService.isLoggedIn()) {
       await this.setAvatar();
@@ -85,6 +110,8 @@ export class SearchHeaderComponent implements OnInit {
       }
     });
 
+    await this.loadPrograms();
+
     this.userMenuItems = [
       {
         label: 'Korisnički panel',
@@ -101,6 +128,39 @@ export class SearchHeaderComponent implements OnInit {
 
     this.userIsLoggedIn = this.tokenService.isLoggedIn();
   }
+
+  filterFitnessProgram(event: AutoCompleteCompleteEvent) {
+    let filtered: FitnessProgram[] = [];
+    let query = event.query;
+    for (let i = 0; i < this.fitnessPrograms.length; i++) {
+      let program = this.fitnessPrograms[i];
+      if (program.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+        filtered.push(program);
+      }
+    }
+    this.filteredFitnessPrograms = filtered;
+  }
+
+  async loadPrograms() {
+    try {
+      const response = await this.fitnessProgramService.getAllPrograms({
+        page: 0,
+        size: 1000
+      });
+      this.fitnessPrograms = response.content;
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+  }
+
+  goToDetails(event: AutoCompleteSelectEvent) {
+    this.router.navigate(['/program-details/' + event.value.id]);
+  }
+
+  clearSearch() {
+    this.selectedFitnessProgram = undefined;
+  }
+
   setMobileUsername() {
     this.userName = this.tokenService.getUserSubject();
   }

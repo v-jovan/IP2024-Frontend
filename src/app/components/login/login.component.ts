@@ -41,10 +41,6 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
-/**
- * Represents the LoginComponent class.
- * This component is responsible for handling the login functionality.
- */
 export class LoginComponent implements OnInit {
   activeIndex: number = 0;
   visible: boolean = false;

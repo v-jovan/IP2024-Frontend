@@ -11,12 +11,25 @@
       </ng-template>
       <ng-template pTemplate="center">
         <p-autoComplete
+          [(ngModel)]="selectedFitnessProgram"
+          [suggestions]="filteredFitnessPrograms"
+          (completeMethod)="filterFitnessProgram($event)"
+          field="name"
           i18n-placeholder="@@header.search"
           placeholder="Pretraga"
           inputStyleClass="header__toolbar--search"
           styleClass="header__toolbar--search"
           class="header__toolbar--search"
-        ></p-autoComplete>
+          (onSelect)="goToDetails($event)"
+          [showClear]="true"
+        >
+          <ng-template let-item pTemplate="item">
+            <div class="autocomplete__result">
+              <img [src]="apiUrl + item.images[0]" />
+              <div>{{ item.name }}</div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
       </ng-template>
       <ng-template pTemplate="end">
         <div class="header__toolbar--actions">
@@ -60,12 +73,25 @@
       }
     </div>
     <p-autoComplete
+      [(ngModel)]="selectedFitnessProgram"
+      [suggestions]="filteredFitnessPrograms"
+      (completeMethod)="filterFitnessProgram($event)"
+      field="name"
       i18n-placeholder="@@header.search"
       placeholder="Pretraga"
       inputStyleClass="mobile-header__search"
       styleClass="mobile-header__search"
       class="mobile-header__search"
-    ></p-autoComplete>
+      (onSelect)="goToDetails($event)"
+      [showClear]="true"
+    >
+      <ng-template let-item pTemplate="item">
+        <div class="autocomplete__result">
+          <img [src]="apiUrl + item.images[0]" />
+          <div>{{ item.name }}</div>
+        </div>
+      </ng-template>
+    </p-autoComplete>
   </div>
   <p-sidebar
     [(visible)]="mobileSidebarVisible"

@@ -6,6 +6,8 @@ import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { environment } from 'src/environments/environment.development';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { LoginService } from 'src/app/services/LoginForm/login.service';
 
 @Component({
   selector: 'app-program-card',
@@ -17,11 +19,20 @@ import { environment } from 'src/environments/environment.development';
 })
 export class ProgramCardComponent {
   @Input({ required: true }) program!: FitnessProgram;
+
   apiUrl: string = environment.apiUrl;
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private tokenStoreService: TokenStoreService,
+    private loginService: LoginService
+  ) {}
 
   addToCart() {
-    alert('Adding to cart');
+    if (this.tokenStoreService.isLoggedIn()) {
+      alert('Adding to cart');
+    } else {
+      this.loginService.requestLogin();
+    }
   }
   goToDetails(id: number) {
     this.router.navigate(['/program-details', id]);

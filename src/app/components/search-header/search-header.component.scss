@@ -72,3 +72,15 @@
     max-width: 10rem;
   }
 }
+
+.autocomplete {
+  &__result {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    img {
+      width: 5rem;
+    }
+  }
+}

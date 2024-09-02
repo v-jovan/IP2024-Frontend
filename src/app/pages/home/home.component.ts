@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchHeaderComponent } from '@components/search-header/search-header.component';
 import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
-import { LoginComponent } from '../../components/login/login.component';
 import { ProgramCardComponent } from '../../components/program-card/program-card.component';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
@@ -19,7 +18,6 @@ import { LoaderService } from 'src/app/services/Loader/loader.service';
     FormsModule,
     SearchHeaderComponent,
     FilterMenuComponent,
-    LoginComponent,
     ProgramCardComponent,
     PaginatorModule
   ]

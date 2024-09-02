@@ -157,8 +157,8 @@ export class DashboardComponent implements OnInit {
     this.isDesktopSidebar = window.innerWidth > 1060;
   }
 
-  goToDashboard(): void {
-    this.router.navigate(['/dashboard']);
+  goToHome(): void {
+    this.router.navigate(['/']);
   }
   goToSidebarItem(item: string): void {
     this.router.navigate([`dashboard/${item}`]);

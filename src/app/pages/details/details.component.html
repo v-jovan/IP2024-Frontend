@@ -1,70 +1,77 @@
-<div class="details">
-  <div class="details__back">
-    <p-button
-      icon="pi pi-arrow-left"
-      label="Nazad"
-      i18n-label="@@details.back"
-      [text]="true"
-      (onClick)="goBack()"
-    />
-  </div>
-  <div class="details__content">
-    <div class="details__content--gallery">
-      <p-galleria
-        [value]="images"
-        [showItemNavigators]="true"
-        [responsiveOptions]="responsiveOptions"
-        [showThumbnails]="false"
-        [showIndicators]="true"
-        [showIndicatorsOnItem]="false"
-        [circular]="true"
-        [autoPlay]="true"
-      >
-        <ng-template pTemplate="item" let-item>
-          <img [src]="item.source" class="preview__main" />
-        </ng-template>
-        <ng-template pTemplate="thumbnail" let-item>
-          <img [src]="item.source" class="preview__mini" />
-        </ng-template>
-        <ng-template pTemplate="caption" let-item>
-          <p i18n="@@details.categoryFull">
-            Kategorija: {{ product.category.name }}
-          </p>
-        </ng-template>
-      </p-galleria>
+@if (program) {
+  <div class="details">
+    <div class="details__back">
+      <p-button
+        icon="pi pi-arrow-left"
+        label="Nazad"
+        i18n-label="@@details.back"
+        [text]="true"
+        (onClick)="goBack()"
+      />
     </div>
-    <div class="details__content--table">
-      <div class="details__content--table-title">
-        <div>
-          <h1>Random title</h1>
-          <div>{{ product.price | currency }}</div>
-        </div>
-        <p-button label="Dodaj u korpu" icon="pi pi-plus"></p-button>
+    <div class="details__content">
+      <div class="details__content--gallery">
+        <p-galleria
+          [value]="images"
+          [showItemNavigators]="images.length > 1"
+          [responsiveOptions]="responsiveOptions"
+          [showThumbnails]="false"
+          [showIndicators]="images.length > 1"
+          [showIndicatorsOnItem]="false"
+          [circular]="true"
+          [autoPlay]="true"
+        >
+          <ng-template pTemplate="item" let-item>
+            <img [src]="item" class="preview__main" />
+          </ng-template>
+          <ng-template pTemplate="thumbnail" let-item>
+            <img [src]="item" class="preview__mini" />
+          </ng-template>
+          <ng-template pTemplate="caption" let-item>
+            <p i18n="@@details.categoryFull">
+              Kategorija: {{ program.categoryName }}
+            </p>
+          </ng-template>
+        </p-galleria>
       </div>
-      <p-divider />
-      @if (product.description) {
-        <p-scrollPanel styleClass="details__content--table-description">
-          <p>{{ product.description }}</p>
-        </p-scrollPanel>
-      }
-      <table>
-        <tr>
-          <td i18n="@@details.specs.duration">Trajanje</td>
-          <td>{{ product.duration | convertMinutes }}</td>
-        </tr>
-        <tr>
-          <td i18n="@@details.specs.difficultyLevel">Nivo težine</td>
-          <td>{{ product.name }}</td>
-        </tr>
-        <tr>
-          <td i18n="@@details.specs.instructor">Trener</td>
-          <td>{{ product.instructor.name }}</td>
-        </tr>
-        <tr>
-          <td i18n="@@details.specs.location">Lokacija</td>
-          <td>{{ product.location.name }}</td>
-        </tr>
-      </table>
+      <div class="details__content--table">
+        <div class="details__content--table-title">
+          <div>
+            <h1>{{ program.name }}</h1>
+            <div>{{ program.price | currency }}</div>
+          </div>
+          <p-button label="Dodaj u korpu" icon="pi pi-plus"></p-button>
+        </div>
+        <p-divider />
+        @if (program.description) {
+          <p-scrollPanel styleClass="details__content--table-description">
+            <p>{{ program.description }}</p>
+          </p-scrollPanel>
+        }
+        <table>
+          <tr>
+            <td i18n="@@details.specs.duration">Trajanje</td>
+            <td>{{ program.duration | convertMinutes }}</td>
+          </tr>
+          <tr>
+            <td i18n="@@details.specs.difficultyLevel">Nivo težine</td>
+            <td>{{ program.difficultyLevel }}</td>
+          </tr>
+          <tr>
+            <td i18n="@@details.specs.instructor">Trener</td>
+            <td>{{ program.instructorName }}</td>
+          </tr>
+          <tr>
+            <td i18n="@@details.specs.location">Lokacija</td>
+            <td>{{ program.locationName || 'Online' }}</td>
+          </tr>
+        </table>
+      </div>
     </div>
+    @if (isLoggedIn) {
+      <div class="details__comments">
+        <app-comments [programId]="programId"></app-comments>
+      </div>
+    }
   </div>
-</div>
+}

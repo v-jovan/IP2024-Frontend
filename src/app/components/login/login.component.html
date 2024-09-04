@@ -32,7 +32,7 @@
           <p-inputGroup>
             <input
               pInputText
-              placeholder="Email"
+              placeholder="Email ili korisničko ime"
               i18n-placeholder="@@login.email"
               formControlName="email"
               [ngClass]="{
@@ -43,21 +43,16 @@
               <i class="pi pi-envelope"></i>
             </p-inputGroupAddon>
           </p-inputGroup>
-          <p-inputGroup>
-            <input
-              pInputText
-              type="password"
-              placeholder="Lozinka"
-              i18n-placeholder="@@login.password"
-              formControlName="password"
-              [ngClass]="{
-                'ng-invalid ng-dirty': isFieldInvalid('password')
-              }"
-            />
-            <p-inputGroupAddon>
-              <i class="pi pi-lock"></i>
-            </p-inputGroupAddon>
-          </p-inputGroup>
+          <p-password
+            placeholder="Lozinka"
+            i18n-placeholder="@@login.password"
+            formControlName="password"
+            [toggleMask]="true"
+            [feedback]="false"
+            [ngClass]="{
+              'ng-invalid ng-dirty': isFieldInvalid('password')
+            }"
+          />
           <p-button
             label="Prijava"
             i18n-label="@@login.login"

@@ -21,6 +21,7 @@ import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service'
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-login',
@@ -35,7 +36,8 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
     TabViewModule,
     InputGroupModule,
     InputGroupAddonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    PasswordModule
   ],
   encapsulation: ViewEncapsulation.None,
   templateUrl: './login.component.html',

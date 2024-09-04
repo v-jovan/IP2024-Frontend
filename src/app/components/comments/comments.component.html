@@ -1,0 +1,55 @@
+<div class="comments">
+  <div class="comments__header">
+    <h2 i18n="@@comments.title">Komentari</h2>
+  </div>
+  <div class="comments__list">
+    @if (comments.length === 0) {
+      <i i18n="@@comments.noComments">Nema komentara.</i>
+    }
+    @for (comment of comments; track comment.id) {
+      <div class="comments__item">
+        <div class="comments__avatar">
+          <p-avatar
+            [image]="apiUrl + comment?.userImageUrl || undefined"
+            [icon]="!comment?.userImageUrl ? 'pi pi-user' : undefined"
+            shape="circle"
+            size="xlarge"
+          ></p-avatar>
+          <p-divider layout="vertical" />
+        </div>
+        <div class="comments__content">
+          <div class="comments__content--header">
+            <span>{{ comment?.username }}</span>
+            <i>{{ comment.postedAt | date: 'dd.MM.yyyy HH:mm' }}</i>
+          </div>
+          <div class="comments__content--text">
+            <p>{{ comment.content }}</p>
+          </div>
+        </div>
+      </div>
+    }
+    <p-paginator
+      (onPageChange)="onPageChange($event)"
+      [first]="first"
+      [rows]="rows"
+      [totalRecords]="totalRecords"
+      [rowsPerPageOptions]="[10, 20, 30]"
+    />
+    <div class="comments__form">
+      <textarea
+        rows="5"
+        cols="30"
+        pInputTextarea
+        placeholder="Ostavi komentar..."
+        [(ngModel)]="comment"
+        [autoResize]="true"
+      ></textarea>
+      <p-button
+        label="Komentariši"
+        icon="pi pi-comment"
+        size="small"
+        (onClick)="createComment()"
+      />
+    </div>
+  </div>
+</div>

@@ -2,6 +2,7 @@
   &__back {
     margin-bottom: 1rem;
   }
+
   &__content {
     display: flex;
     width: 100%;
@@ -10,19 +11,30 @@
     &--gallery {
       width: 50%;
     }
+
     &--table {
       display: flex;
       flex-direction: column;
       width: 50%;
+
       &-title {
         display: flex;
-        align-items: baseline;
+        align-items: flex-start;
         justify-content: space-between;
+        h1 {
+          margin-top: 0;
+          padding-bottom: 1.25rem;
+        }
+        .p-button {
+          width: max-content;
+        }
       }
+
       &-description {
         max-height: 11rem;
         margin-bottom: 1rem;
       }
+
       table {
         margin-top: 1rem;
         width: 100%;
@@ -34,6 +46,7 @@
           padding: 1rem;
         }
       }
+
       &-footer {
         height: 100%;
         display: flex;
@@ -59,5 +72,9 @@
         width: 5rem;
       }
     }
+  }
+
+  &__comments {
+    margin-top: 2rem;
   }
 }

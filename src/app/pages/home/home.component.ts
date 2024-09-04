@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private fitnessProgramService: FitnessProgramService,
-    private errorInterceptorServic: ErrorInterceptorService,
+    private errorInterceptorService: ErrorInterceptorService,
     private loaderService: LoaderService
   ) {}
 
@@ -57,8 +57,7 @@ export class HomeComponent implements OnInit {
       this.programs = response.content;
       this.totalRecords = response.totalElements;
     } catch (error) {
-      this.errorInterceptorServic.handleError(error);
-    } finally {
+      this.errorInterceptorService.handleError(error);
     }
   }
 

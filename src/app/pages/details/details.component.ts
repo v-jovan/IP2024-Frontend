@@ -7,6 +7,12 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { TagModule } from 'primeng/tag';
 import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
 import { CurrencyPipe, Location } from '@angular/common';
+import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
+import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
+import { environment } from 'src/environments/environment.development';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { CommentsComponent } from '@components/comments/comments.component';
 
 @Component({
   selector: 'app-details',
@@ -20,40 +26,15 @@ import { CurrencyPipe, Location } from '@angular/common';
     ScrollPanelModule,
     TagModule,
     ConvertMinutesPipe,
-    CurrencyPipe
+    CurrencyPipe,
+    CommentsComponent
   ],
   encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
   programId!: string;
-  images: any[] = [
-    {
-      source: 'https://placehold.co/200x150',
-      alt: 'Description for Image 1',
-      title: 'Title 1'
-    },
-    {
-      source:
-        'https://upload.wikimedia.org/wikipedia/commons/6/6d/TFT-Pixel-Demo-Image-200x150.png',
-      alt: 'Description for Image 2',
-      title: 'Title 2'
-    },
-    {
-      source: 'https://placehold.co/500x500',
-      alt: 'Description for Image 3',
-      title: 'Title 3'
-    },
-    {
-      source: 'https://placehold.co/100x100',
-      alt: 'Description for Image 4',
-      title: 'Title 4'
-    },
-    {
-      source: 'https://placehold.co/600x600',
-      alt: 'Description for Image 5',
-      title: 'Title 5'
-    }
-  ];
+  images: string[] = [];
+  apiUrl: string = environment.apiUrl;
 
   responsiveOptions: any[] = [
     {
@@ -69,32 +50,34 @@ export class DetailsComponent implements OnInit {
       numVisible: 1
     }
   ];
-
-  product = {
-    id: 1,
-    name: 'Product 1',
-    price: 100,
-    currency: 'BAM',
-    duration: 165,
-    description:
-      'Description for Product 1 with id 1 and price 100 BAM and name Product 1 lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, varius velit. Sed sit amet urna at nulla eleifend pharetra at at nunc. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec    eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla nec purus feugiat, molestie ipsum et, varius velit. Sed sit amet urna at nulla eleifend pharetra at at nunc. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. Nulla facilisi. Nullam ac libero nec eros tincidunt aliquam nec eu nunc. Nam sit amet nisl vel nunc luctus tristique. Donec nec nunc sit amet urna aliquet aliquam. djd sfsdfosdfjosdf',
-    instructor: {
-      name: 'Milan Ćelić'
-    },
-    location: {
-      name: 'Sarajevo'
-    },
-    category: {
-      name: 'Yoga'
-    }
-  };
+  program!: FitnessProgram;
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private fitnessProgramService: FitnessProgramService,
+    private errorInterceptorService: ErrorInterceptorService,
+    private tokenStoreService: TokenStoreService
   ) {}
-  ngOnInit(): void {
+
+  async ngOnInit() {
     this.programId = this.route.snapshot.paramMap.get('id') as string;
+    try {
+      this.program = await this.fitnessProgramService.getProgramById(
+        this.programId
+      );
+      console.log(this.program);
+      this.program.images.forEach((image) => {
+        this.images.push(`${this.apiUrl}${image}`);
+      });
+      console.log(this.images);
+    } catch (error) {
+      this.errorInterceptorService.handleError(error as AxiosError);
+    }
+  }
+
+  get isLoggedIn(): boolean {
+    return this.tokenStoreService.isLoggedIn();
   }
 
   goBack() {

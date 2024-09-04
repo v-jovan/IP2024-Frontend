@@ -5,7 +5,11 @@ export interface FitnessProgram {
   duration: number;
   price: number;
   difficultyLevel: string;
-  youtubeUrl?: string;
+  youtubeUrl: string;
+  locationId: number;
   locationName: string;
+  categoryId: number;
+  categoryName: string;
+  instructorName: string;
   images: string[];
 }

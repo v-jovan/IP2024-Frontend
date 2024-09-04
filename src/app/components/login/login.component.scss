@@ -53,6 +53,9 @@
      */
     &--login {
       align-items: flex-end;
+      p-password, .p-password, .p-inputtext {
+        width: 100%;
+      }
     }
 
     /**

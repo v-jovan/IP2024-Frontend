@@ -25,10 +25,11 @@ import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { SidebarModule } from 'primeng/sidebar';
-import { FitnessProgram } from 'src/models/interfaces';
+import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { environment } from 'src/environments/environment.development';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
+import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -76,6 +77,7 @@ export class SearchHeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private tokenService: TokenStoreService,
+    private cartStoreService: CartStoreService,
     private userService: UserService,
     private errorInterceptor: ErrorInterceptorService,
     private authService: AuthService,
@@ -182,9 +184,9 @@ export class SearchHeaderComponent implements OnInit {
   }
 
   logout() {
-    this.tokenService.clearToken();
     this.userIsLoggedIn = false;
     this.mobileSidebarVisible = false;
+    this.authService.logout();
   }
 
   async onLoginSuccess() {

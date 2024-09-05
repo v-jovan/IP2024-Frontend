@@ -19,6 +19,11 @@ import { PersonalInfoFormComponent } from '../../components/checkout/personal-in
 import { CreditCardFormComponent } from '../../components/checkout/credit-card-form/credit-card-form.component';
 import { FinishComponent } from '../../components/checkout/finish/finish.component';
 import { Router } from '@angular/router';
+import { CartItem } from 'src/app/interfaces/misc/cart-item';
+import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
+import { LoaderService } from 'src/app/services/Loader/loader.service';
+import { OrderService } from 'src/app/services/Order/order.service';
+import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 interface Country {
   name: string;
@@ -47,14 +52,26 @@ interface Country {
   styleUrl: './checkout.component.scss'
 })
 export class CheckoutComponent implements OnInit {
+  activeStep: number | undefined = 0;
   countries!: Country[];
   addressForm!: FormGroup;
   creditCardForm!: FormGroup;
+  cartItems: CartItem[] = [];
+
   constructor(
     private formBuilder: FormBuilder,
-    private router: Router
+    private router: Router,
+    private cartStoreService: CartStoreService,
+    private loaderService: LoaderService,
+    private orderService: OrderService,
+    private errorInterceptorService: ErrorInterceptorService
   ) {}
+
   ngOnInit(): void {
+    this.cartStoreService.getCartItems().subscribe((items) => {
+      this.cartItems = items;
+    });
+
     this.countries = [
       { name: 'Australia', code: 'AU' },
       { name: 'Brazil', code: 'BR' },
@@ -101,5 +118,23 @@ export class CheckoutComponent implements OnInit {
 
   goToHome() {
     this.router.navigate(['/']);
+  }
+
+  async finalizeOrder(nextCallback: EventEmitter<void>, form: FormGroup) {
+    // if (!form.valid) {
+    //   form.markAllAsTouched();
+    //   return;
+    // }
+    try {
+      this.loaderService.show();
+      for (const program of this.cartItems) {
+        await this.orderService.createOrder(program.id); // Pozivamo createOrder metodu za svaki program
+      }
+      nextCallback.emit();
+    } catch (error) {
+      this.errorInterceptorService.handleError(error as AxiosError);
+    } finally {
+      this.loaderService.hide();
+    }
   }
 }

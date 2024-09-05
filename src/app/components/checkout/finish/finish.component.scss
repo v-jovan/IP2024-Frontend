@@ -6,6 +6,12 @@
     text-align: center;
   }
 
+  &__content {
+    .p-button {
+      padding: 0;
+    }
+  }
+
   &__footer {
     margin: 2rem 0;
   }

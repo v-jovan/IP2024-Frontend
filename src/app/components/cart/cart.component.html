@@ -19,7 +19,7 @@
     <ng-template pTemplate="content">
       @for (item of cartItems; track item.id) {
         <p-card>
-          <div class="cart__card">
+          <div class="cart__card clickable" (click)="goToDetails(item.id)">
             <img
               [src]="item.imgURL"
               [alt]="item.name"
@@ -50,8 +50,9 @@
           <span>{{ total | currency }}</span>
         </div>
         <p-button
-          label="Naruči"
-          i18n-label="@@cart.order"
+          label="Kupi"
+          i18n-label="@@cart.buy"
+          [disabled]="!cartItems.length"
           (onClick)="order()"
         />
         <small i18n="@@cart.tax">PDV je obračunat u cijeni.</small>

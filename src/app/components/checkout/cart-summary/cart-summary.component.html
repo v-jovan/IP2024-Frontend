@@ -1,12 +1,20 @@
 <div class="cart__summary">
   <h3 i18n="@@cart.title">Vaša korpa</h3>
-  @for (item of cartItems; track item.name) {
+  @for (item of cartItems; track item.id) {
     <div class="cart__item">
       <div class="item-info">
         <span>{{ item.name }}</span>
       </div>
       <div class="item-total">
         {{ item.price | currency }}
+        <p-button
+          icon="pi pi-times"
+          [rounded]="true"
+          [text]="true"
+          severity="danger"
+          size="small"
+          (onClick)="removeFromCart(item)"
+        />
       </div>
     </div>
   }

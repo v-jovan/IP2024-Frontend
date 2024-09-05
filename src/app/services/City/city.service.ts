@@ -12,22 +12,12 @@ export class CityService {
   constructor(private apiService: ApiService) {}
 
   async getCities(): Promise<City[]> {
-    try {
-      const response = await this.apiService.axios.get(this.cityURL);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    const response = await this.apiService.axios.get(this.cityURL);
+    return response.data;
   }
 
   async createCity(data: CityRequest): Promise<City> {
-    try {
-      const response = await this.apiService.axios.post(this.cityURL, data);
-      return response.data;
-    } catch (error) {
-      console.error(error);
-      throw error;
-    }
+    const response = await this.apiService.axios.post(this.cityURL, data);
+    return response.data;
   }
 }

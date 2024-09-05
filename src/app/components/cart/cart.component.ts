@@ -1,11 +1,12 @@
-import { Component, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
 import { CardModule } from 'primeng/card';
-import { CartItem } from '../../../models/interfaces';
+import { CartItem } from 'src/app/interfaces/misc/cart-item';
 import { BadgeModule } from 'primeng/badge';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
+import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 
 @Component({
   selector: 'app-cart',
@@ -15,8 +16,7 @@ import { Router } from '@angular/router';
   styleUrl: './cart.component.scss',
   encapsulation: ViewEncapsulation.None
 })
-export class CartComponent {
-  constructor(private router: Router) {}
+export class CartComponent implements OnInit {
   sidebarVisible: boolean = false;
   cartItems: CartItem[] = [
     {
@@ -39,21 +39,40 @@ export class CartComponent {
     }
   ];
 
+  constructor(
+    private router: Router,
+    private cartStoreService: CartStoreService
+  ) {}
+
+  ngOnInit(): void {
+    this.cartStoreService.getCartItems().subscribe((items) => {
+      this.cartItems = items;
+    });
+  }
+
+  get numberOfItems(): number {
+    return this.cartItems.length;
+  }
+
+  get total(): number {
+    return this.cartItems.reduce((acc, item) => acc + item.price, 0);
+  }
+
+  removeFromCart(id: number): void {
+    this.cartStoreService.removeFromCart(id);
+  }
+
   showCart() {
     this.sidebarVisible = true;
   }
-  removeFromCart(id: number) {
-    this.cartItems = this.cartItems.filter((item) => item.id !== id);
-  }
+
   order() {
     this.sidebarVisible = false;
     this.router.navigate(['/checkout']);
   }
-  get total(): number {
-    return this.cartItems.reduce((acc, item) => acc + item.price, 0);
-  }
-  get numberOfItems(): string {
-    if (this.cartItems.length === 0) return '';
-    return this.cartItems.length.toString();
+
+  goToDetails(id: number) {
+    this.sidebarVisible = false;
+    this.router.navigate(['/program-details', id]);
   }
 }

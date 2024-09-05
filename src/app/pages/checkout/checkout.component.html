@@ -1,5 +1,5 @@
 <div class="checkout">
-  <p-stepper [linear]="true">
+  <p-stepper [linear]="true" [(activeStep)]="activeStep">
     <p-stepperPanel header="Korpa i lični podaci" i18n-header="@@checkout.data">
       <ng-template
         pTemplate="content"
@@ -41,7 +41,7 @@
             label="Dalje"
             icon="pi pi-arrow-right"
             iconPos="right"
-            (onClick)="goNext(nextCallback, creditCardForm)"
+            (onClick)="finalizeOrder(nextCallback, creditCardForm)"
           />
         </div>
       </ng-template>

@@ -11,36 +11,43 @@
     </div>
     <div class="details__content">
       <div class="details__content--gallery">
-        <p-galleria
-          [value]="images"
-          [showItemNavigators]="images.length > 1"
-          [responsiveOptions]="responsiveOptions"
-          [showThumbnails]="false"
-          [showIndicators]="images.length > 1"
-          [showIndicatorsOnItem]="false"
-          [circular]="true"
-          [autoPlay]="true"
-        >
-          <ng-template pTemplate="item" let-item>
-            <img [src]="item" class="preview__main" />
-          </ng-template>
-          <ng-template pTemplate="thumbnail" let-item>
-            <img [src]="item" class="preview__mini" />
-          </ng-template>
-          <ng-template pTemplate="caption" let-item>
-            <p i18n="@@details.categoryFull">
-              Kategorija: {{ program.categoryName }}
-            </p>
-          </ng-template>
-        </p-galleria>
+        @if (images.length > 0) {
+          <p-galleria
+            [value]="images"
+            [showItemNavigators]="images.length > 1"
+            [responsiveOptions]="responsiveOptions"
+            [showThumbnails]="false"
+            [showIndicators]="images.length > 1"
+            [showIndicatorsOnItem]="false"
+            [circular]="true"
+            [autoPlay]="true"
+          >
+            <ng-template pTemplate="item" let-item>
+              <img [src]="item" class="preview__main" />
+            </ng-template>
+            <ng-template pTemplate="thumbnail" let-item>
+              <img [src]="item" class="preview__mini" />
+            </ng-template>
+            <ng-template pTemplate="caption" let-item>
+              <p i18n="@@details.categoryFull">
+                Kategorija: {{ program.categoryName }}
+              </p>
+            </ng-template>
+          </p-galleria>
+        }
       </div>
       <div class="details__content--table">
         <div class="details__content--table-title">
-          <div>
+          <div class="details__content--title">
             <h1>{{ program.name }}</h1>
             <div>{{ program.price | currency }}</div>
           </div>
-          <p-button label="Dodaj u korpu" icon="pi pi-plus"></p-button>
+          <p-button
+            label="Dodaj u korpu"
+            icon="pi pi-plus"
+            [disabled]="isInCart"
+            (onClick)="addToCart()"
+          ></p-button>
         </div>
         <p-divider />
         @if (program.description) {

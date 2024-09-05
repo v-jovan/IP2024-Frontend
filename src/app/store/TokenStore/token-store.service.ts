@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { jwtDecode, JwtPayload } from 'jwt-decode';
 import { CustomJwtPayload } from 'src/app/interfaces/misc/custom-jwt-payload';
+import { CartStoreService } from '../CartStore/cart-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { CustomJwtPayload } from 'src/app/interfaces/misc/custom-jwt-payload';
 export class TokenStoreService {
   private readonly tokenKey = 'token';
 
-  constructor() {}
+  constructor(private cartStoreService: CartStoreService) {}
 
   getToken(): string | null {
     return localStorage.getItem(this.tokenKey);
@@ -20,6 +21,7 @@ export class TokenStoreService {
 
   clearToken() {
     localStorage.removeItem(this.tokenKey);
+    this.cartStoreService.clearCart();
   }
 
   isLoggedIn(): boolean {

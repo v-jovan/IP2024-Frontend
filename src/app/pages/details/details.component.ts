@@ -13,6 +13,8 @@ import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { environment } from 'src/environments/environment.development';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { CommentsComponent } from '@components/comments/comments.component';
+import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-details',
@@ -35,6 +37,8 @@ export class DetailsComponent implements OnInit {
   programId!: string;
   images: string[] = [];
   apiUrl: string = environment.apiUrl;
+  isInCart: boolean = false;
+  cartSubscription!: Subscription;
 
   responsiveOptions: any[] = [
     {
@@ -57,20 +61,37 @@ export class DetailsComponent implements OnInit {
     private location: Location,
     private fitnessProgramService: FitnessProgramService,
     private errorInterceptorService: ErrorInterceptorService,
-    private tokenStoreService: TokenStoreService
+    private tokenStoreService: TokenStoreService,
+    private cartStoreService: CartStoreService
   ) {}
 
   async ngOnInit() {
-    this.programId = this.route.snapshot.paramMap.get('id') as string;
+    this.route.paramMap.subscribe((params) => {
+      this.programId = params.get('id') as string;
+      this.loadProgramDetails();
+      this.checkIfInCart();
+    });
+
+    this.cartSubscription = this.cartStoreService
+      .getCartItems()
+      .subscribe(() => {
+        this.checkIfInCart(); // Proveri svaki put kada se korpa promeni
+      });
+  }
+
+  checkIfInCart(): void {
+    this.isInCart = this.cartStoreService.isInCart(parseInt(this.programId));
+  }
+
+  async loadProgramDetails() {
+    this.images = [] as string[];
     try {
       this.program = await this.fitnessProgramService.getProgramById(
         this.programId
       );
-      console.log(this.program);
       this.program.images.forEach((image) => {
         this.images.push(`${this.apiUrl}${image}`);
       });
-      console.log(this.images);
     } catch (error) {
       this.errorInterceptorService.handleError(error as AxiosError);
     }
@@ -78,6 +99,20 @@ export class DetailsComponent implements OnInit {
 
   get isLoggedIn(): boolean {
     return this.tokenStoreService.isLoggedIn();
+  }
+
+  addToCart(): void {
+    const cartItem = {
+      id: this.program.id,
+      name: this.program.name,
+      price: this.program.price,
+      imgURL: this.images[0]
+    };
+
+    const success = this.cartStoreService.addToCart(cartItem);
+    if (success) {
+      this.isInCart = true;
+    }
   }
 
   goBack() {

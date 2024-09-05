@@ -5,6 +5,7 @@ import { LoginRequest } from 'src/app/interfaces/requests/login-request';
 import { JwtResponse } from 'src/app/interfaces/responses/jwt-response';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { Router } from '@angular/router';
+import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,7 @@ export class AuthService {
   constructor(
     private apiService: ApiService,
     private tokenService: TokenStoreService,
+    private cartStoreService: CartStoreService,
     private router: Router
   ) {}
 
@@ -36,8 +38,9 @@ export class AuthService {
     return response.data;
   }
 
-  async logout() {
+  logout() {
     this.tokenService.clearToken();
+    this.cartStoreService.clearCart();
     this.router.navigate(['/']);
   }
 

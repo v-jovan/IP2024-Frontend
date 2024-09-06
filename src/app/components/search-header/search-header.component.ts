@@ -29,7 +29,7 @@ import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { environment } from 'src/environments/environment.development';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
-import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
+import { CurrencyPipe } from '@angular/common';
 
 interface AutoCompleteCompleteEvent {
   originalEvent: Event;
@@ -53,7 +53,8 @@ interface AutoCompleteCompleteEvent {
     AvatarModule,
     AvatarGroupModule,
     DialogModule,
-    SidebarModule
+    SidebarModule,
+    CurrencyPipe
   ]
 })
 export class SearchHeaderComponent implements OnInit {
@@ -77,7 +78,6 @@ export class SearchHeaderComponent implements OnInit {
     private route: ActivatedRoute,
     private messageService: MessageService,
     private tokenService: TokenStoreService,
-    private cartStoreService: CartStoreService,
     private userService: UserService,
     private errorInterceptor: ErrorInterceptorService,
     private authService: AuthService,

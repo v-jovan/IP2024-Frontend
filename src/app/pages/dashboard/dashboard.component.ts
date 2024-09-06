@@ -88,6 +88,12 @@ export class DashboardComponent implements OnInit {
             label: 'Kreiraj novi program',
             icon: 'pi pi-fw pi-plus',
             command: () => this.goToSidebarItem('create-program')
+          },
+          {
+            id: 'purchased-programs',
+            label: 'Kupljeni programi',
+            icon: 'pi pi-fw pi-shopping-cart',
+            command: () => this.goToSidebarItem('purchased-programs')
           }
         ]
       },
@@ -112,6 +118,30 @@ export class DashboardComponent implements OnInit {
             label: 'Lozinka',
             icon: 'pi pi-fw pi-lock',
             command: () => this.goToSidebarItem('password')
+          }
+        ]
+      },
+      {
+        id: 'training',
+        label: 'Trening',
+        items: [
+          {
+            id: 'xyz',
+            label: 'Kupljeni programi',
+            icon: 'pi pi-fw pi-shopping-cart',
+            command: () => this.goToSidebarItem('users')
+          },
+          {
+            id: 'exercises',
+            label: 'Vježbe',
+            icon: 'pi pi-fw pi-list',
+            command: () => this.goToSidebarItem('exercises')
+          },
+          {
+            id: 'categories',
+            label: 'Kategorije',
+            icon: 'pi pi-fw pi-list',
+            command: () => this.goToSidebarItem('categories')
           }
         ]
       }

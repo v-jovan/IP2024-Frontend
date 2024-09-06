@@ -12,10 +12,6 @@ import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 import { CartItem } from 'src/app/interfaces/misc/cart-item';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
-import { OrderService } from 'src/app/services/Order/order.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
-import { UserProgramResponse } from 'src/app/interfaces/responses/user-program-response';
-import { ProgramStatus } from 'src/app/enums/program-status';
 
 @Component({
   selector: 'app-program-card',
@@ -27,9 +23,11 @@ import { ProgramStatus } from 'src/app/enums/program-status';
 })
 export class ProgramCardComponent implements OnInit {
   @Input({ required: true }) program!: FitnessProgram;
+  @Input({ required: true }) showBuyButton: boolean = true;
+  @Input({ required: true }) isProgramPurchased: boolean = false;
   isInCart: boolean = false;
-  isProgramPurchased: boolean = false;
   apiUrl: string = environment.apiUrl;
+  myId: number = 0;
   private cartSubscription!: Subscription;
 
   constructor(
@@ -38,8 +36,6 @@ export class ProgramCardComponent implements OnInit {
     private cartStoreService: CartStoreService,
     private loginService: LoginService,
     private messageService: MessageService,
-    private orderService: OrderService,
-    private errorInterceptortService: ErrorInterceptorService
   ) {}
 
   async ngOnInit() {
@@ -48,26 +44,6 @@ export class ProgramCardComponent implements OnInit {
       .subscribe((cartItems) => {
         this.isInCart = cartItems.some((item) => item.id === this.program.id);
       });
-
-    await this.checkIfProgramPurchased();
-  }
-
-  async checkIfProgramPurchased() {
-    if (this.tokenStoreService.isLoggedIn()) {
-      try {
-        const purchasedProgramsResponse =
-          await this.orderService.getPurchasedPrograms();
-        const purchasedPrograms = purchasedProgramsResponse.content;
-
-        this.isProgramPurchased = purchasedPrograms.some(
-          (program: UserProgramResponse) =>
-            program.programName === this.program.name &&
-            program.status === ProgramStatus.ACTIVE
-        );
-      } catch (error) {
-        this.errorInterceptortService.handleError(error as AxiosError);
-      }
-    }
   }
 
   addToCart() {

@@ -80,6 +80,7 @@ export class LoginComponent implements OnInit {
         const response = await this.authService.login(loginData);
         this.tokenStore.setToken(response.token);
         this.loginSuccess.emit();
+        window.location.reload();
       } catch (error) {
         this.errorInterceptor.handleError(error);
       }

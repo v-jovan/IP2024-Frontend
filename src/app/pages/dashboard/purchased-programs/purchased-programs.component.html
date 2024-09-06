@@ -1,15 +1,10 @@
-<div class="view-programs dashboard-card">
-  <div class="view-programs__header">
-    <h2 i18n="@@viewPrograms.title">Pregled programa</h2>
-    <p-button
-      label="Dodaj program"
-      icon="pi pi-plus"
-      (onClick)="createProgram()"
-    ></p-button>
+<div class="purchased-programs dashboard-card">
+  <div class="purchased-programs__header">
+    <h2 i18n="@@purchasedPrograms.title">Kupljeni programi</h2>
   </div>
   <div class="view-programs__table">
     <p-table
-      #vpTable
+      #ppTable
       [value]="programs"
       dataKey="id"
       [paginator]="true"
@@ -34,7 +29,6 @@
               }
             </th>
           }
-          <th i18n="@@viewPrograms.actions">Akcije</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-program let-columns="columns">
@@ -51,9 +45,35 @@
               <td>
                 {{ program[col.field] | convertMinutes }}
               </td>
+            } @else if (col.field === 'name') {
+              <td>
+                <a
+                  [routerLink]="['/program-details/', program.id]"
+                  class="purchased-programs__link"
+                >
+                  {{ program[col.field] }}
+                </a>
+              </td>
             } @else if (col.field === 'price') {
               <td>
                 {{ program[col.field] | currency }}
+              </td>
+            } @else if (col.field === 'endDate') {
+              <td>
+                {{ program[col.field] | date: 'dd.MM.yyyy' }}
+              </td>
+            } @else if (col.field === 'locationName') {
+              <td>
+                @if (program[col.field] === 'Online') {
+                  <a
+                    href="javascript:void(0)"
+                    class="purchased-programs__link"
+                    (click)="showVideoDialog(program?.youtubeUrl)"
+                    >{{ program[col.field] }}</a
+                  >
+                } @else {
+                  {{ program[col.field] }}
+                }
               </td>
             } @else if (col.field === 'description') {
               <td [ngStyle]="{ width: col.width }">
@@ -70,31 +90,32 @@
               <td [ngStyle]="{ width: col.width }">{{ program[col.field] }}</td>
             }
           }
-
-          <td>
-            <p-button
-              icon="pi pi-pencil"
-              [rounded]="true"
-              [text]="true"
-              (onClick)="editProgram(program.id)"
-            />
-            <p-button
-              icon="pi pi-trash"
-              [rounded]="true"
-              [text]="true"
-              severity="danger"
-              size="small"
-            />
-          </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td style="text-align: center" colspan="7">
-            Nema podataka.
+          <td style="text-align: center" colspan="8">
+            Nema kupljenih programa.
           </td>
         </tr>
       </ng-template>
     </p-table>
   </div>
+  <p-dialog
+    [modal]="true"
+    [(visible)]="videoDialogVisible"
+    [style]="{ width: '70vw' }"
+    [closable]="true"
+    (onHide)="clearVideoUrl()"
+  >
+    @if (videoUrl) {
+      <iframe
+        [src]="videoUrl | youtube"
+        width="100%"
+        height="600"
+        frameborder="0"
+        allowfullscreen
+      ></iframe>
+    }
+  </p-dialog>
 </div>

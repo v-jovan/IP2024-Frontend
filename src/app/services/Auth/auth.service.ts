@@ -42,6 +42,7 @@ export class AuthService {
     this.tokenService.clearToken();
     this.cartStoreService.clearCart();
     this.router.navigate(['/']);
+    window.location.reload();
   }
 
   /**

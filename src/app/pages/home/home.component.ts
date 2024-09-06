@@ -8,6 +8,10 @@ import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
+import { UserService } from 'src/app/services/User/user.service';
+import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
+import { UserProgramResponse } from 'src/app/interfaces/responses/user-program-response';
+import { ProgramStatus } from 'src/app/enums/program-status';
 
 @Component({
   selector: 'app-home',
@@ -30,16 +34,52 @@ export class HomeComponent implements OnInit {
   selectedCategoryId: number | null = null;
   selectedAttributeId: number | null = null;
   selectedAttributeValueId: number | null = null;
+  myId: number = 0;
 
   constructor(
     private fitnessProgramService: FitnessProgramService,
     private errorInterceptorService: ErrorInterceptorService,
-    private loaderService: LoaderService
+    private loaderService: LoaderService,
+    private userService: UserService,
+    private tokenStoreService: TokenStoreService
   ) {}
 
   async ngOnInit() {
     this.loaderService.show();
+
+    let purchasedPrograms: UserProgramResponse[] = [];
+
+    if (this.isLoggedIn) {
+      this.myId = await this.userService.getUserId();
+
+      try {
+        const purchasedProgramsResponse =
+          await this.fitnessProgramService.getPurchasedPrograms({
+            page: 0,
+            size: 100
+          });
+
+        purchasedPrograms = purchasedProgramsResponse.content;
+      } catch (error) {
+        this.errorInterceptorService.handleError(error);
+      }
+    }
+
     await this.loadPrograms();
+
+    this.programs = this.programs.map((program) => {
+      const isPurchased = purchasedPrograms.some(
+        (purchased: UserProgramResponse) =>
+          purchased.id === program.id &&
+          purchased.status === ProgramStatus.ACTIVE
+      );
+
+      return {
+        ...program,
+        isPurchased: isPurchased
+      };
+    });
+
     this.loaderService.hide();
   }
 
@@ -59,6 +99,10 @@ export class HomeComponent implements OnInit {
     } catch (error) {
       this.errorInterceptorService.handleError(error);
     }
+  }
+
+  get isLoggedIn(): boolean {
+    return this.tokenStoreService.isLoggedIn();
   }
 
   onPageChange(event: PaginatorState) {

@@ -38,6 +38,13 @@ export const DASHBOARD_ROUTES: Routes = [
       )
   },
   {
+    path: 'purchased-programs',
+    loadComponent: () =>
+      import('./purchased-programs/purchased-programs.component').then(
+        (m) => m.PurchasedProgramsComponent
+      )
+  },
+  {
     path: 'edit-program/:id',
     loadComponent: () =>
       import('./edit-program/edit-program.component').then(

@@ -91,4 +91,15 @@ export class FitnessProgramService {
     );
     return response.data;
   }
+
+  async getPurchasedPrograms(params: {
+    page: number;
+    size: number;
+  }) {
+    const response = await this.apiService.axios.get(
+      `${this.programURL}/purchased`,
+      { params }
+    );
+    return response.data;
+  }
 }

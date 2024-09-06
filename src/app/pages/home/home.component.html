@@ -5,7 +5,11 @@
     </div>
     <div class="home-page__content">
       @for (program of programs; track program.id) {
-        <app-program-card [program]="program" />
+        <app-program-card
+          [program]="program"
+          [showBuyButton]="program.instructorId !== myId"
+          [isProgramPurchased]="program.isPurchased!"
+        />
       }
       @if (programs.length === 0) {
         <div class="home-page__no-results">

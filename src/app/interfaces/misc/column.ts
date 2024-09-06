@@ -3,4 +3,5 @@ export interface Column {
   header: string;
   width?: string;
   sortable?: boolean;
+  filterable?: boolean;
 }

@@ -11,5 +11,8 @@ export interface FitnessProgram {
   categoryId: number;
   categoryName: string;
   instructorName: string;
+  instructorId?: number;
   images: string[];
+  status?: string;
+  isPurchased?: boolean;
 }

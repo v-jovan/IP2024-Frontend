@@ -18,11 +18,13 @@
           <strong>{{ program.name }}</strong>
           <div>{{ program.price | currency }}</div>
         </div>
-        <p-button
-          icon="pi pi-cart-plus"
-          [disabled]="isInCart || isProgramPurchased"
-          (click)="addToCart()"
-        ></p-button>
+        @if (showBuyButton) {
+          <p-button
+            icon="pi pi-cart-plus"
+            [disabled]="isInCart || isProgramPurchased"
+            (click)="addToCart()"
+          ></p-button>
+        }
       </div>
     </ng-template>
   </p-card>

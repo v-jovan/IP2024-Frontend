@@ -25,7 +25,6 @@ export class OrderService {
     return response.data;
   }
 
-  // Fetch purchased programs from the API
   async getPurchasedPrograms(page: number = 0, size: number = 1000) {
     const response = await this.apiService.axios.get(
       this.orderURL,

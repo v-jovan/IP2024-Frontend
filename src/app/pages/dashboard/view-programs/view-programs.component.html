@@ -84,17 +84,42 @@
               [text]="true"
               severity="danger"
               size="small"
+              (onClick)="showDeleteDialog(program.id)"
             />
           </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td style="text-align: center" colspan="7">
-            Nema podataka.
-          </td>
+          <td style="text-align: center" colspan="7">Nema podataka.</td>
         </tr>
       </ng-template>
     </p-table>
   </div>
+  <p-dialog
+    header="Potvrda brisanja"
+    [(visible)]="deleteDialogVisible"
+    [modal]="true"
+    [closable]="true"
+    [style]="{ width: '30vw' }"
+  >
+    <p>Da li ste sigurni da želite da obrišete program?</p>
+    <p-footer>
+      <p-button
+        label="Ne"
+        icon="pi pi-times"
+        size="small"
+        [outlined]="true"
+        (onClick)="deleteDialogVisible = false"
+      ></p-button>
+      <p-button
+        label="Da"
+        icon="pi pi-check"
+        size="small"
+        [outlined]="true"
+        severity="danger"
+        (onClick)="deleteProgram()"
+      ></p-button>
+    </p-footer>
+  </p-dialog>
 </div>

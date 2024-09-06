@@ -21,6 +21,7 @@ import { UserProgramResponse } from 'src/app/interfaces/responses/user-program-r
 import { ProgramStatus } from 'src/app/enums/program-status';
 import { DialogModule } from 'primeng/dialog';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
+import { OrderService } from 'src/app/services/Order/order.service';
 
 @Component({
   selector: 'app-details',
@@ -72,6 +73,7 @@ export class DetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private location: Location,
     private fitnessProgramService: FitnessProgramService,
+    private orderService: OrderService,
     private errorInterceptorService: ErrorInterceptorService,
     private tokenStoreService: TokenStoreService,
     private cartStoreService: CartStoreService,
@@ -119,7 +121,7 @@ export class DetailsComponent implements OnInit {
     if (this.tokenStoreService.isLoggedIn()) {
       try {
         const purchasedProgramsResponse =
-          await this.fitnessProgramService.getPurchasedPrograms({
+          await this.orderService.getPurchasedPrograms({
             page: 0,
             size: 100
           });

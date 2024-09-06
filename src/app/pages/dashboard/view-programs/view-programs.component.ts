@@ -10,6 +10,8 @@ import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { ConvertMinutesPipe } from '../../../pipes/convert-minutes.pipe';
 import { Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-view-programs',
@@ -20,7 +22,8 @@ import { Router } from '@angular/router';
     ButtonModule,
     TagModule,
     ConvertMinutesPipe,
-    TooltipModule
+    TooltipModule,
+    DialogModule
   ],
   templateUrl: './view-programs.component.html',
   styleUrl: './view-programs.component.scss'
@@ -30,6 +33,10 @@ export class ViewProgramsComponent implements OnInit {
   cols!: Column[];
   loading: boolean = true;
   totalRecords: number = 0;
+  deleteDialogVisible: boolean = false;
+  deleteId: number = 0;
+
+  lastLazyLoadEvent!: TableLazyLoadEvent;
 
   private difficultyLevelMap: { [key: string]: string } = {
     BEGINNER: 'Početnik',
@@ -43,9 +50,10 @@ export class ViewProgramsComponent implements OnInit {
   };
 
   constructor(
-    private programService: FitnessProgramService,
+    private fitnessProgramService: FitnessProgramService,
     private errorInterceptorService: ErrorInterceptorService,
-    private router: Router
+    private router: Router,
+    private messageService: MessageService
   ) {}
 
   async ngOnInit() {
@@ -77,6 +85,7 @@ export class ViewProgramsComponent implements OnInit {
   }
 
   async loadPrograms(event: TableLazyLoadEvent) {
+    this.lastLazyLoadEvent = event;
     this.loading = true;
     try {
       const params = {
@@ -87,7 +96,7 @@ export class ViewProgramsComponent implements OnInit {
           : undefined
       };
 
-      const response = await this.programService.getMyFitnessPrograms(params);
+      const response = await this.fitnessProgramService.getMyFitnessPrograms(params);
       this.programs = response.content;
       this.totalRecords = response.totalElements;
       this.transformLocation();
@@ -99,10 +108,35 @@ export class ViewProgramsComponent implements OnInit {
     }
   }
 
+  showDeleteDialog(id: number) {
+    this.deleteDialogVisible = true;
+    this.deleteId = id;
+  }
+
   createProgram() {
     this.router.navigate(['/dashboard/create-program']);
   }
+
   editProgram(id: string) {
     this.router.navigate(['/dashboard/edit-program', id]);
+  }
+
+  async deleteProgram() {
+    try {
+      await this.fitnessProgramService.deleteFitnessProgram(this.deleteId);
+      if (this.lastLazyLoadEvent) {
+        await this.loadPrograms(this.lastLazyLoadEvent);
+      }
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Uspješno',
+        detail: 'Program je uspješno obrisan'
+      });
+    } catch (error) {
+      this.errorInterceptorService.handleError(error as AxiosError);
+    } finally {
+      this.deleteDialogVisible = false;
+      this.deleteId = 0;
+    }
   }
 }

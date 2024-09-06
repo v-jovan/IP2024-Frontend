@@ -12,6 +12,7 @@ import { UserService } from 'src/app/services/User/user.service';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { UserProgramResponse } from 'src/app/interfaces/responses/user-program-response';
 import { ProgramStatus } from 'src/app/enums/program-status';
+import { OrderService } from 'src/app/services/Order/order.service';
 
 @Component({
   selector: 'app-home',
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private fitnessProgramService: FitnessProgramService,
+    private orderService: OrderService,
     private errorInterceptorService: ErrorInterceptorService,
     private loaderService: LoaderService,
     private userService: UserService,
@@ -54,7 +56,7 @@ export class HomeComponent implements OnInit {
 
       try {
         const purchasedProgramsResponse =
-          await this.fitnessProgramService.getPurchasedPrograms({
+          await this.orderService.getPurchasedPrograms({
             page: 0,
             size: 100
           });

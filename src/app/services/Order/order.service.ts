@@ -25,13 +25,12 @@ export class OrderService {
     return response.data;
   }
 
-  async getPurchasedPrograms(page: number = 0, size: number = 1000) {
-    const response = await this.apiService.axios.get(
-      this.orderURL,
-      {
-        params: { page, size }
-      }
-    );
+  async getPurchasedPrograms(params: { page: number; size: number }) {
+    const response = await this.apiService.axios.get(this.orderURL, { params });
     return response.data;
+  }
+
+  async deletePurchasedFitnessProgram(id: number) {
+    await this.apiService.axios.delete(`${this.orderURL}/${id}`);
   }
 }

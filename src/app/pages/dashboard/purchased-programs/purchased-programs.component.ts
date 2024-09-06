@@ -11,7 +11,9 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
-import { YoutubePipe } from "../../../pipes/youtube.pipe";
+import { YoutubePipe } from '../../../pipes/youtube.pipe';
+import { MessageService } from 'primeng/api';
+import { OrderService } from 'src/app/services/Order/order.service';
 
 @Component({
   selector: 'app-purchased-programs',
@@ -36,6 +38,10 @@ export class PurchasedProgramsComponent implements OnInit {
   loading: boolean = true;
   totalRecords: number = 0;
 
+  deleteDialogVisible: boolean = false;
+  deleteId: number = 0;
+  lastLazyLoadEvent!: TableLazyLoadEvent;
+
   videoDialogVisible: boolean = false;
   videoUrl: string | null = null;
 
@@ -58,7 +64,8 @@ export class PurchasedProgramsComponent implements OnInit {
 
   constructor(
     private errorInterceptorService: ErrorInterceptorService,
-    private fitnessProgramService: FitnessProgramService
+    private orderService: OrderService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit() {
@@ -75,6 +82,7 @@ export class PurchasedProgramsComponent implements OnInit {
   }
 
   async loadPrograms(event: TableLazyLoadEvent) {
+    this.lastLazyLoadEvent = event;
     this.loading = true;
     try {
       const params = {
@@ -82,8 +90,7 @@ export class PurchasedProgramsComponent implements OnInit {
         size: event.rows!
       };
 
-      const response =
-        await this.fitnessProgramService.getPurchasedPrograms(params);
+      const response = await this.orderService.getPurchasedPrograms(params);
       this.programs = response.content;
       this.totalRecords = response.totalElements;
       this.transformDifficultyLevels();
@@ -126,5 +133,29 @@ export class PurchasedProgramsComponent implements OnInit {
   }
   clearVideoUrl() {
     this.videoUrl = null;
+  }
+
+  showDeleteDialog(id: number) {
+    this.deleteDialogVisible = true;
+    this.deleteId = id;
+  }
+
+  async deleteProgram() {
+    try {
+      await this.orderService.deletePurchasedFitnessProgram(this.deleteId);
+      if (this.lastLazyLoadEvent) {
+        await this.loadPrograms(this.lastLazyLoadEvent);
+      }
+      this.messageService.add({
+        severity: 'success',
+        summary: 'Uspješno',
+        detail: 'Program je uspješno obrisan'
+      });
+    } catch (error) {
+      this.errorInterceptorService.handleError(error as AxiosError);
+    } finally {
+      this.deleteDialogVisible = false;
+      this.deleteId = 0;
+    }
   }
 }

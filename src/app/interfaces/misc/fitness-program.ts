@@ -15,4 +15,5 @@ export interface FitnessProgram {
   images: string[];
   status?: string;
   isPurchased?: boolean;
+  purchaseId?: number;
 }

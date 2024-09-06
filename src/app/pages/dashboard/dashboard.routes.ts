@@ -50,5 +50,10 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./edit-program/edit-program.component').then(
         (m) => m.EditProgramComponent
       )
+  },
+  {
+    path: 'diary',
+    loadComponent: () =>
+      import('./diary/diary.component').then((m) => m.DiaryComponent)
   }
 ];

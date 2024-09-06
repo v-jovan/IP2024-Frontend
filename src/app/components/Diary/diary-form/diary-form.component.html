@@ -1,0 +1,85 @@
+<div class="diary-form">
+  @if (activity) {
+    <h2>Pregled aktivnosti</h2>
+  } @else {
+    <h2>Dodaj aktivnost</h2>
+  }
+  <form [formGroup]="activityForm" class="diary-form__form">
+    <p-dropdown
+      id="activityType"
+      formControlName="activityType"
+      [options]="activityTypes"
+      placeholder="Vrsta aktivnosti"
+      optionLabel="label"
+      optionValue="value"
+      [readonly]="!!activity"
+      [ngClass]="{
+        'ng-invalid ng-dirty': isFieldInvalid('activityType')
+      }"
+    >
+    </p-dropdown>
+
+    <p-floatLabel>
+      <p-inputNumber
+        inputId="duration"
+        formControlName="duration"
+        [min]="10"
+        [max]="200"
+        suffix=" min"
+        [readonly]="!!activity"
+        [showButtons]="true"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('duration')
+        }"
+      />
+      <label for="duration">Trajanje aktivnosti</label>
+    </p-floatLabel>
+
+    <p-dropdown
+      id="intensity"
+      formControlName="intensity"
+      [options]="intensityOptions"
+      placeholder="Intenzitet aktivnosti"
+      optionLabel="label"
+      optionValue="value"
+      [readonly]="!!activity"
+      [ngClass]="{
+        'ng-invalid ng-dirty': isFieldInvalid('intensity')
+      }"
+    >
+    </p-dropdown>
+
+    <p-floatLabel>
+      <p-inputNumber
+        inputId="result"
+        formControlName="result"
+        suffix=" kg"
+        [showButtons]="true"
+        [step]="0.25"
+        [readonly]="!!activity"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('result')
+        }"
+      />
+      <label for="result">Promjena kilaže</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+      <input
+        type="text"
+        pInputText
+        formControlName="logDate"
+        [readonly]="true"
+      />
+      <label for="logDate">Datum aktivnosti</label>
+    </p-floatLabel>
+  </form>
+  @if (!activity) {
+    <p-button
+      label="Sačuvaj"
+      [disabled]="activityForm.invalid"
+      size="small"
+      (onClick)="addActivity()"
+    />
+  }
+</div>

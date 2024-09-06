@@ -1,0 +1,64 @@
+@import 'variables';
+.diary-history {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface-50);
+  border-radius: $border-radius;
+
+  &__header {
+    text-align: center;
+    border-bottom: 1px solid var(--surface-d);
+
+    h2 {
+      margin-top: 0;
+    }
+  }
+
+  &__content {
+    flex: 1;
+    overflow-y: auto;
+    margin-top: 1.5rem;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    gap: 2rem;
+    width: 100%;
+
+    .p-element {
+      flex: 1;
+      width: 100%;
+    }
+
+  }
+}
+
+.history-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  background: var(--surface-a);
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  transition:
+    border-color 0.2s ease,
+    background-color 0.3s ease;
+
+  &:hover {
+    border-color: var(--surface-d);
+  }
+
+  &.selected {
+    border-color: var(--surface-d);
+    background-color: var(--blue-50);
+  }
+}

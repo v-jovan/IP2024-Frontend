@@ -1,0 +1,35 @@
+<div class="diary-history">
+  <div class="diary-history__header">
+    <h2>Dnevnik aktivnosti</h2>
+  </div>
+  <div class="diary-history__content">
+    <p-scrollPanel [style]="{ width: '100%', height: '100%' }">
+      @if (activities.length === 0) {
+        <p>Nema aktivnosti.</p>
+      }
+      @for (activity of activities; track activity.id; let i = $index) {
+        <div
+          class="history-card clickable"
+          [ngClass]="{ selected: selectedIndex === i }"
+          (click)="selectCard(i, activity)"
+        >
+          Aktivnost: <b>{{ activity.logDate | date: 'dd.MM.yyyy' }}</b>
+        </div>
+      }
+    </p-scrollPanel>
+  </div>
+  <div class="diary-history__footer">
+    <p-button
+      label="Dodaj"
+      icon="pi pi-plus"
+      size="small"
+      (click)="newActivity()"
+    />
+    <p-button
+      label="Izvještaj"
+      icon="pi pi-print"
+      size="small"
+      (click)="getPdf()"
+    />
+  </div>
+</div>

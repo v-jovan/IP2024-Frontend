@@ -1,0 +1,12 @@
+<div class="diary dashboard-card">
+  <app-diary-history
+    class="diary__history"
+    [activities]="activities"
+    (selectedActivity)="selectActivity($event)"
+  />
+  <app-diary-form
+    class="diary__form"
+    [activity]="selectedActivity"
+    (addNewActivity)="addActivity($event)"
+  />
+</div>

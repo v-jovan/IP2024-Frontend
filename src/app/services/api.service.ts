@@ -8,7 +8,6 @@ import { environment } from '../../environments/environment.development';
 })
 export class ApiService {
   private axiosInstance: AxiosInstance;
-  private noTokenUrls = environment.noTokenUrls;
 
   constructor(private tokenStore: TokenStoreService) {
     this.axiosInstance = axios.create({
@@ -23,11 +22,8 @@ export class ApiService {
     this.axiosInstance.interceptors.request.use(
       async (config) => {
         const token = this.tokenStore.getToken();
-        const tokenExcludedUrl = this.noTokenUrls.some((url) =>
-          config.url?.startsWith(url)
-        );
 
-        if (!tokenExcludedUrl && token) {
+        if (token) {
           config.headers['Authorization'] = `Bearer ${token}`;
         } else {
           delete config.headers['Authorization'];

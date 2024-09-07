@@ -55,13 +55,15 @@
         formControlName="result"
         suffix=" kg"
         [showButtons]="true"
+        [min]="10"
+        [max]="250"
         [step]="0.25"
         [readonly]="!!activity"
         [ngClass]="{
           'ng-invalid ng-dirty': isFieldInvalid('result')
         }"
       />
-      <label for="result">Promjena kilaže</label>
+      <label for="result">Promjena kilaže (kg)</label>
     </p-floatLabel>
 
     <p-floatLabel>

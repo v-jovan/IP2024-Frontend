@@ -55,5 +55,12 @@ export const DASHBOARD_ROUTES: Routes = [
     path: 'diary',
     loadComponent: () =>
       import('./diary/diary.component').then((m) => m.DiaryComponent)
+  },
+  {
+    path: 'statistics',
+    loadComponent: () =>
+      import('./statistics/statistics.component').then(
+        (m) => m.StatisticsComponent
+      )
   }
 ];

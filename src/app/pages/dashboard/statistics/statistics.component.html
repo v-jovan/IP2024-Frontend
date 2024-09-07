@@ -1,0 +1,10 @@
+<div class="statistics dashboard-card">
+  <p-tabView>
+    <p-tabPanel header="Stanje mase i intenziteta treninga">
+      <p-chart type="line" [data]="weightData"></p-chart>
+    </p-tabPanel>
+    <p-tabPanel header="Trajanje fizičkih aktivnosti">
+      <p-chart type="bar" [data]="activityImpactData"></p-chart>
+    </p-tabPanel>
+  </p-tabView>
+</div>

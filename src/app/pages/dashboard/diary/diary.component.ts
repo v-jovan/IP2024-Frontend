@@ -61,4 +61,12 @@ export class DiaryComponent implements OnInit {
       this.errorInterceporService.handleError(error as AxiosError);
     }
   }
+
+  async downloadPdf() {
+    try {
+      await this.activityService.downloadActivityPdf();
+    } catch (error) {
+      this.errorInterceporService.handleError(error as AxiosError);
+    }
+  }
 }

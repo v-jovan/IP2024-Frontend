@@ -22,6 +22,7 @@ export class DiaryHistoryComponent {
   @Input({ required: true }) activities!: ActivityResponse[];
   @Output() selectedActivity: EventEmitter<ActivityResponse | null> =
     new EventEmitter<ActivityResponse | null>();
+  @Output() downloadPdf: EventEmitter<void> = new EventEmitter<void>();
 
   selectedIndex: number | null = null;
 
@@ -33,8 +34,7 @@ export class DiaryHistoryComponent {
   }
 
   getPdf() {
-    console.log('Get PDF');
-    console.log(this.activities);
+    this.downloadPdf.emit();
   }
   newActivity() {
     this.selectedIndex = null;

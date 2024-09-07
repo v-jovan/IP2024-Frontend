@@ -3,6 +3,7 @@
     class="diary__history"
     [activities]="activities"
     (selectedActivity)="selectActivity($event)"
+    (downloadPdf)="downloadPdf()"
   />
   <app-diary-form
     class="diary__form"

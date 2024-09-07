@@ -62,5 +62,12 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./statistics/statistics.component').then(
         (m) => m.StatisticsComponent
       )
+  },
+  {
+    path: 'subscription',
+    loadComponent: () =>
+      import('./subscription/subscription.component').then(
+        (m) => m.SubscriptionComponent
+      )
   }
 ];

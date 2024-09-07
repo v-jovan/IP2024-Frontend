@@ -136,6 +136,12 @@ export class DashboardComponent implements OnInit {
             label: 'Lozinka',
             icon: 'pi pi-fw pi-lock',
             command: () => this.goToSidebarItem('password')
+          },
+          {
+            id: 'subscription',
+            label: 'Pretplate',
+            icon: 'pi pi-fw pi-calendar-clock',
+            command: () => this.goToSidebarItem('subscription')
           }
         ]
       }

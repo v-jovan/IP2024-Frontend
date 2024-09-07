@@ -5,4 +5,5 @@ export interface Category {
   name: string;
   description: string;
   attributes: Attribute[];
+  subscribed?: boolean;
 }

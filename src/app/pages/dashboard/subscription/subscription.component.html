@@ -1,0 +1,13 @@
+<div class="subscription dashboard-card">
+  <div class="subscription__header">
+    <h2>Subscriptions</h2>
+  </div>
+  <div class="subscription__content">
+    @for (category of categories; track category.id) {
+      <subscription-card
+        [category]="category"
+        (categorySelected)="selectCategory(category)"
+      />
+    }
+  </div>
+</div>

@@ -1,0 +1,22 @@
+<p-card
+  [header]="category.name"
+  styleClass="subscription-card"
+  [pTooltip]="category.name"
+  [showDelay]="500"
+  tooltipPosition="top"
+>
+  <p-scrollPanel styleClass="subscription-card__content">
+    <p>{{ category.description }}</p>
+  </p-scrollPanel>
+  <ng-template pTemplate="footer">
+    <div class="subscription-card__footer">
+      <p-button
+        [label]="label"
+        size="small"
+        [icon]="icon"
+        [outlined]="category?.subscribed"
+        (click)="onSubscribe(category)"
+      ></p-button>
+    </div>
+  </ng-template>
+</p-card>

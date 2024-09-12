@@ -144,6 +144,24 @@ export class DashboardComponent implements OnInit {
             command: () => this.goToSidebarItem('subscription')
           }
         ]
+      },
+      {
+        id: 'contact',
+        label: 'Kontakt',
+        items: [
+          {
+            id: 'contact',
+            label: 'Poruke',
+            icon: 'pi pi-fw pi-inbox',
+            command: () => this.goToSidebarItem('contact')
+          },
+          {
+            id: 'advisor-contact',
+            label: 'Savjetnici',
+            icon: 'pi pi-fw pi-question-circle',
+            command: () => this.goToSidebarItem('advisor-contact')
+          }
+        ]
       }
     ];
     this.home = {

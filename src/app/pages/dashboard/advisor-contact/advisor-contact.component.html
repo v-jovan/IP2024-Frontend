@@ -1,0 +1,58 @@
+<div class="advisor-contact dashboard-card">
+  <div class="advisor-contact__header">
+    <h2>Kontaktirajte savjetnika</h2>
+  </div>
+  <form [formGroup]="contactForm" class="advisor-contact__form">
+    <p-inputGroup>
+      <p-inputGroupAddon>ZA:</p-inputGroupAddon>
+      <p-dropdown
+        [options]="advisors"
+        formControlName="recipientId"
+        optionLabel="name"
+        optionValue="id"
+        placeholder="Izaberite savjetnika za komunikaciju"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('recipientId')
+        }"
+      />
+    </p-inputGroup>
+    <p-inputGroup>
+      <p-inputGroupAddon>OD:</p-inputGroupAddon>
+      <input id="email" type="text" pInputText [value]="email" disabled />
+    </p-inputGroup>
+    <p-floatLabel>
+      <input
+        id="subject"
+        type="text"
+        pInputText
+        formControlName="subject"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('subject')
+        }"
+      />
+      <label for="subject">Naslov *</label>
+    </p-floatLabel>
+    <p-floatLabel>
+      <textarea
+        id="message"
+        pInputTextarea
+        formControlName="content"
+        rows="8"
+        cols="30"
+        [ngClass]="{
+          'ng-invalid ng-dirty': isFieldInvalid('content')
+        }"
+      ></textarea>
+      <label for="message">Poruka *</label>
+    </p-floatLabel>
+    <div class="advisor-contact__send">
+      <p-button
+        icon="pi pi-send"
+        size="small"
+        label="Pošalji"
+        [disabled]="noAdvisors || contactForm.invalid"
+        (onClick)="send()"
+      />
+    </div>
+  </form>
+</div>

@@ -1,0 +1,33 @@
+.advisor-contact {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__header {
+    margin-bottom: 2rem;
+  }
+  &__form {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    gap: 2.5rem;
+
+    .p-inputtext {
+      width: 100%;
+    }
+
+    textarea {
+      resize: none;
+      width: 100%;
+      flex: 1;
+    }
+  }
+  &__send {
+    display: flex;
+    justify-content: flex-end;
+    .p-element {
+      width: initial;
+    }
+  }
+}

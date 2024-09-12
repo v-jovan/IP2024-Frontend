@@ -69,5 +69,17 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./subscription/subscription.component').then(
         (m) => m.SubscriptionComponent
       )
+  },
+  {
+    path: 'contact',
+    loadComponent: () =>
+      import('./contact/contact.component').then((m) => m.ContactComponent)
+  },
+  {
+    path: 'advisor-contact',
+    loadComponent: () =>
+      import('./advisor-contact/advisor-contact.component').then(
+        (m) => m.AdvisorContactComponent
+      )
   }
 ];

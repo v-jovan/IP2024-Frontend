@@ -67,4 +67,9 @@ export class UserService {
 
     return response.data;
   }
+
+  async getAdvisors() {
+    const response = await this.apiService.axios.get(`${this.userURL}/advisors`);
+    return response.data;
+  }
 }

@@ -17,4 +17,18 @@ export class MessagingService {
     );
     return response.data;
   }
+
+  async getConversations() {
+    const response = await this.apiService.axios.get(
+      `${this.messageURL}/conversations`
+    );
+    return response.data;
+  }
+
+  async getMessagesForConversation(conversationUserId: number) {
+    const response = await this.apiService.axios.get(
+      `${this.messageURL}/conversation/${conversationUserId}`
+    );
+    return response.data;
+  }
 }

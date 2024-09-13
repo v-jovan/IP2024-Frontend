@@ -1,9 +1,9 @@
 export interface Message {
   id?: number;
-  senderId: number;
+  senderId?: number;
   recipientId: number;
-  subject: string;
+  subject?: string;
   content: string;
   sentAt?: string;
-  readAt?: string;
+  readAt?: string | null;
 }

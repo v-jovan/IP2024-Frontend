@@ -1,0 +1,40 @@
+<div class="conversation">
+  <div class="conversation__content">
+    <p-scrollPanel #scrollPanel [style]="{ height: '100%', width: '100%' }">
+      @for (message of messages; track message.id) {
+        <div
+          [ngClass]="{
+            'conversation__position--me': message.senderId === userId,
+            'conversation__position--you': message.senderId !== userId
+          }"
+        >
+          <div
+            class="conversation__bubble"
+            [ngClass]="{
+              'conversation__bubble--me': message.senderId === userId,
+              'conversation__bubble--you': message.senderId !== userId
+            }"
+          >
+            <div class="message">{{ message.content }}</div>
+            <small>{{ message.sentAt | date: 'dd.MM.YY HH:mm' }}</small>
+          </div>
+        </div>
+      }
+    </p-scrollPanel>
+  </div>
+  <div class="conversation__input">
+    <textarea
+      pInputTextarea
+      [(ngModel)]="newMessage"
+      [autoResize]="true"
+      rows="1"
+      placeholder="Unesite poruku..."
+      (keydown.enter)="sendMessage(); $event.preventDefault()"
+    ></textarea>
+    <p-button
+      icon="pi pi-send"
+      size="small"
+      (onClick)="sendMessage()"
+    ></p-button>
+  </div>
+</div>

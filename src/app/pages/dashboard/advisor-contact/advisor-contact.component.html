@@ -20,7 +20,8 @@
       <p-inputGroupAddon>OD:</p-inputGroupAddon>
       <input id="email" type="text" pInputText [value]="email" disabled />
     </p-inputGroup>
-    <p-floatLabel>
+    <p-inputGroup>
+      <p-inputGroupAddon>Naslov:</p-inputGroupAddon>
       <input
         id="subject"
         type="text"
@@ -30,21 +31,18 @@
           'ng-invalid ng-dirty': isFieldInvalid('subject')
         }"
       />
-      <label for="subject">Naslov *</label>
-    </p-floatLabel>
-    <p-floatLabel>
-      <textarea
-        id="message"
-        pInputTextarea
-        formControlName="content"
-        rows="8"
-        cols="30"
-        [ngClass]="{
-          'ng-invalid ng-dirty': isFieldInvalid('content')
-        }"
-      ></textarea>
-      <label for="message">Poruka *</label>
-    </p-floatLabel>
+    </p-inputGroup>
+    <textarea
+      id="message"
+      placeholder="Unesite poruku..."
+      pInputTextarea
+      formControlName="content"
+      rows="8"
+      cols="30"
+      [ngClass]="{
+        'ng-invalid ng-dirty': isFieldInvalid('content')
+      }"
+    ></textarea>
     <div class="advisor-contact__send">
       <p-button
         icon="pi pi-send"

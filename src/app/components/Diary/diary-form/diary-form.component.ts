@@ -55,7 +55,7 @@ export class DiaryFormComponent implements OnChanges {
     activityType: ['', Validators.required],
     duration: ['', [Validators.required, Validators.min(1)]],
     intensity: ['', Validators.required],
-    result: ['', [Validators.required, Validators.min(10)]],
+    result: ['', [Validators.required]],
     logDate: [
       this.datePipe.transform(new Date(), this.dateFormat),
       Validators.required

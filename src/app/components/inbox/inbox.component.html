@@ -1,0 +1,81 @@
+<div class="inbox">
+  <div class="inbox__header">
+    <h2>Poruke</h2>
+    <p-button
+      icon="pi pi-plus"
+      size="small"
+      (onClick)="newConversation()"
+    ></p-button>
+  </div>
+  <div class="inbox__content">
+    <p-scrollPanel [style]="{ height: '100%', width: '100%' }">
+      @for (conversation of conversations; track conversation.userId) {
+        <div
+          class="inbox__conversation"
+          [ngClass]="{
+            selected: selectedConversationId === conversation.userId,
+            unread: conversation.unread && !selectedConversationId
+          }"
+          (click)="selectConversation(conversation.userId)"
+        >
+          <p-avatar
+            [image]="getAvatarImage(conversation)"
+            [icon]="getAvatarIcon(conversation)"
+            size="xlarge"
+            shape="circle"
+            [attr.loading]="'lazy'"
+          ></p-avatar>
+          <div class="inbox__conversation--data">
+            <div class="inbox__conversation--info">
+              <strong>{{ conversation.username }}</strong>
+              <small>
+                <i>
+                  {{ conversation.lastMessageTime | date: 'dd.MM.YY HH:mm' }}
+                </i>
+              </small>
+            </div>
+            <div class="inbox__conversation--message">
+              {{ conversation.lastMessage }}
+            </div>
+          </div>
+        </div>
+      }
+    </p-scrollPanel>
+  </div>
+  <p-dialog
+    header="Nova Poruka"
+    [modal]="true"
+    [(visible)]="showNewConversationDialog"
+    [closable]="true"
+    (onHide)="closeNewConversation()"
+    [resizable]="false"
+    [draggable]="false"
+    [style]="{ 'min-width': '35rem', 'min-height': '35rem' }"
+  >
+    <div class="new-message">
+      <p-inputGroup>
+        <p-inputGroupAddon>ZA:</p-inputGroupAddon>
+        <p-dropdown
+          [options]="users"
+          [(ngModel)]="newMessage.recipientId"
+          optionLabel="name"
+          optionValue="userId"
+          placeholder="Izaberite korisnika za komunikaciju"
+        />
+      </p-inputGroup>
+      <textarea
+        pInputTextarea
+        [(ngModel)]="newMessage.content"
+        rows="15"
+        placeholder="Unesite poruku..."
+      ></textarea>
+      <p-button
+        label="Pošalji"
+        icon="pi pi-send"
+        size="small"
+        (onClick)="sendNewMessage()"
+        [disabled]="!newMessage.recipientId || !newMessage.content"
+      />
+    </div>
+  </p-dialog>
+</div>

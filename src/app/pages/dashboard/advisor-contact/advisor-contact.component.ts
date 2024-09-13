@@ -3,7 +3,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { FloatLabelModule } from 'primeng/floatlabel';
 import {
   ReactiveFormsModule,
   FormBuilder,
@@ -33,7 +32,6 @@ import { Message } from 'src/app/interfaces/misc/message';
     ButtonModule,
     InputTextModule,
     ReactiveFormsModule,
-    FloatLabelModule,
     InputTextareaModule,
     CommonModule,
     InputGroupModule,

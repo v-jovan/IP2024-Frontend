@@ -34,6 +34,7 @@ export class AppComponent implements OnInit {
    */
   ngOnInit(): void {
     this.primengConfig.ripple = true; // Enable ripple effect for PrimeNG components
+    this.showHeader = !this.shouldHideHeader(this.router.url);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         this.showHeader = !this.shouldHideHeader(event.url); // Determine whether to hide header or not

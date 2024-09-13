@@ -72,4 +72,9 @@ export class UserService {
     const response = await this.apiService.axios.get(`${this.userURL}/advisors`);
     return response.data;
   }
+
+  async getNonAdvisors() {
+    const response = await this.apiService.axios.get(`${this.userURL}/non-advisors`);
+    return response.data;
+  }
 }

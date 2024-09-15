@@ -68,13 +68,13 @@ export class UserService {
     return response.data;
   }
 
-  async getAdvisors() {
-    const response = await this.apiService.axios.get(`${this.userURL}/advisors`);
+  async getAdvisers() {
+    const response = await this.apiService.axios.get(`${this.userURL}/advisers`);
     return response.data;
   }
 
-  async getNonAdvisors() {
-    const response = await this.apiService.axios.get(`${this.userURL}/non-advisors`);
+  async getNonAdvisers() {
+    const response = await this.apiService.axios.get(`${this.userURL}/non-advisers`);
     return response.data;
   }
 }

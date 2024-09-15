@@ -70,7 +70,7 @@ export class InboxComponent implements OnInit {
 
   async fetchUsers() {
     try {
-      this.users = await this.userService.getNonAdvisors();
+      this.users = await this.userService.getNonAdvisers();
     } catch (error) {
       this.errorInterceptorService.handleError(error as AxiosError);
     }

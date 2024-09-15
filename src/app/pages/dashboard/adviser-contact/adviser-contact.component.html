@@ -1,12 +1,12 @@
-<div class="advisor-contact dashboard-card">
-  <div class="advisor-contact__header">
+<div class="adviser-contact dashboard-card">
+  <div class="adviser-contact__header">
     <h2>Kontaktirajte savjetnika</h2>
   </div>
-  <form [formGroup]="contactForm" class="advisor-contact__form">
+  <form [formGroup]="contactForm" class="adviser-contact__form">
     <p-inputGroup>
       <p-inputGroupAddon>ZA:</p-inputGroupAddon>
       <p-dropdown
-        [options]="advisors"
+        [options]="advisers"
         formControlName="recipientId"
         optionLabel="name"
         optionValue="id"
@@ -43,12 +43,12 @@
         'ng-invalid ng-dirty': isFieldInvalid('content')
       }"
     ></textarea>
-    <div class="advisor-contact__send">
+    <div class="adviser-contact__send">
       <p-button
         icon="pi pi-send"
         size="small"
         label="Pošalji"
-        [disabled]="noAdvisors || contactForm.invalid"
+        [disabled]="noAdvisers || contactForm.invalid"
         (onClick)="send()"
       />
     </div>

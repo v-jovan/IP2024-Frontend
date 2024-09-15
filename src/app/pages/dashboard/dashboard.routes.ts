@@ -76,10 +76,10 @@ export const DASHBOARD_ROUTES: Routes = [
       import('./contact/contact.component').then((m) => m.ContactComponent)
   },
   {
-    path: 'advisor-contact',
+    path: 'adviser-contact',
     loadComponent: () =>
-      import('./advisor-contact/advisor-contact.component').then(
-        (m) => m.AdvisorContactComponent
+      import('./adviser-contact/adviser-contact.component').then(
+        (m) => m.AdviserContactComponent
       )
   }
 ];

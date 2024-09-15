@@ -156,10 +156,10 @@ export class DashboardComponent implements OnInit {
             command: () => this.goToSidebarItem('contact')
           },
           {
-            id: 'advisor-contact',
+            id: 'adviser-contact',
             label: 'Savjetnici',
             icon: 'pi pi-fw pi-question-circle',
-            command: () => this.goToSidebarItem('advisor-contact')
+            command: () => this.goToSidebarItem('adviser-contact')
           }
         ]
       }

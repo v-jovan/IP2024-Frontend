@@ -11,20 +11,20 @@ import {
   FormGroup
 } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
-import { UserService } from 'src/app/services/User/user.service';
-import { Advisor } from 'src/app/interfaces/misc/advisor';
-import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
-import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
+import { ErrorInterceptorService } from '../../../interceptors/error.interceptor';
+import { UserService } from '../../../services/User/user.service';
+import { Adviser } from 'src/app/interfaces/misc/adviser';
+import { TokenStoreService } from '../../../store/TokenStore/token-store.service';
+import { FormUtilsService } from '../../../services/FormUtils/form-utils.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { MessagingService } from 'src/app/services/Messaging/messaging.service';
-import { Message } from 'src/app/interfaces/misc/message';
+import { MessagingService } from '../../../services/Messaging/messaging.service';
+import { Message } from '../../../interfaces/misc/message';
 
 @Component({
-  selector: 'app-advisor-contact',
+  selector: 'app-adviser-contact',
   standalone: true,
   imports: [
     DropdownModule,
@@ -37,11 +37,11 @@ import { Message } from 'src/app/interfaces/misc/message';
     InputGroupModule,
     InputGroupAddonModule
   ],
-  templateUrl: './advisor-contact.component.html',
-  styleUrl: './advisor-contact.component.scss'
+  templateUrl: './adviser-contact.component.html',
+  styleUrl: './adviser-contact.component.scss'
 })
-export class AdvisorContactComponent implements OnInit {
-  advisors: Advisor[] = [];
+export class AdviserContactComponent implements OnInit {
+  advisers: Adviser[] = [];
   email: string = '';
 
   contactForm: FormGroup = this.fb.group({
@@ -63,18 +63,18 @@ export class AdvisorContactComponent implements OnInit {
   ) {}
 
   async ngOnInit() {
-    await this.fetchAdvisors();
+    await this.fetchAdvisers();
     await this.getSenderId();
     this.email = this.tokenStoreService.getUserEmail() || '';
   }
 
-  get noAdvisors() {
-    return this.advisors.length === 0;
+  get noAdvisers() {
+    return this.advisers.length === 0;
   }
 
-  async fetchAdvisors() {
+  async fetchAdvisers() {
     try {
-      this.advisors = await this.userService.getAdvisors();
+      this.advisers = await this.userService.getAdvisers();
     } catch (error) {
       this.errorInterceptor.handleError(error);
     }

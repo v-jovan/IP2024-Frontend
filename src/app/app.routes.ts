@@ -7,6 +7,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { DASHBOARD_ROUTES } from './pages/dashboard/dashboard.routes';
 import { authGuard } from './guards/auth.guard';
+import { NotFoundComponent } from './pages/not-found/not-found.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'home', pathMatch: 'full' },
@@ -20,5 +21,7 @@ export const routes: Routes = [
     component: DashboardComponent,
     children: DASHBOARD_ROUTES,
     canActivate: [authGuard]
-  }
+  },
+  { path: 'not-found', component: NotFoundComponent },
+  { path: '**', redirectTo: 'not-found' }
 ];

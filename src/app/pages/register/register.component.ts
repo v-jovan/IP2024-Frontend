@@ -199,4 +199,8 @@ export class RegisterComponent implements OnInit {
     this.showDialog = false;
     window.location.href = '/';
   }
+
+  closeDialog(): void {
+    this.goToHome();
+  }
 }

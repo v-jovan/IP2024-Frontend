@@ -10,7 +10,7 @@
         <div class="comments__item">
           <div class="comments__avatar">
             <p-avatar
-              [image]="apiUrl + comment?.userImageUrl || undefined"
+              [image]="comment?.userImageUrl | url"
               [icon]="!comment?.userImageUrl ? 'pi pi-user' : undefined"
               shape="circle"
               size="xlarge"
@@ -42,11 +42,13 @@
         cols="30"
         pInputTextarea
         placeholder="Ostavi komentar..."
+        i18n-placeholder="@@comments.leaveComment"
         [(ngModel)]="comment"
         [autoResize]="true"
       ></textarea>
       <p-button
         label="Komentariši"
+        i18n-label="@@comments.comment"
         icon="pi pi-comment"
         size="small"
         (onClick)="createComment()"

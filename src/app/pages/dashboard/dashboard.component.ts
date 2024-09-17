@@ -7,8 +7,6 @@ import {
 } from '@angular/core';
 import { ToolbarModule } from 'primeng/toolbar';
 import { ButtonModule } from 'primeng/button';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
 import { NavigationEnd, Router } from '@angular/router';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
@@ -19,6 +17,7 @@ import { filter } from 'rxjs/operators';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
+import { UserAvatarComponent } from "../../components/user-avatar/user-avatar.component";
 
 @Component({
   selector: 'app-dashboard',
@@ -26,13 +25,12 @@ import { AuthService } from 'src/app/services/Auth/auth.service';
   imports: [
     ToolbarModule,
     ButtonModule,
-    AvatarModule,
-    AvatarGroupModule,
     CommonModule,
     MenuModule,
     BreadcrumbModule,
-    SidebarModule
-  ],
+    SidebarModule,
+    UserAvatarComponent
+],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -202,7 +200,7 @@ export class DashboardComponent implements OnInit {
     this.checkWindowWidth();
   }
   checkWindowWidth(): void {
-    this.isDesktopSidebar = window.innerWidth > 1060;
+    this.isDesktopSidebar = window.innerWidth > 1200;
   }
 
   goToHome(): void {
@@ -236,15 +234,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  viewDiary(): void {
-    console.log('viewDiary');
-  }
-  viewStatistics(): void {
-    console.log('viewStatistics');
-  }
-
   navigateHome() {
     this.router.navigate(['/home']);
+  }
+
+  navigateToInbox() {
+    this.router.navigate(['/dashboard/contact']);
   }
 
   logout(): void {

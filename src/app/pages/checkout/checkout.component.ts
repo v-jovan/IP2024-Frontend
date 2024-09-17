@@ -24,11 +24,9 @@ import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { OrderService } from 'src/app/services/Order/order.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
-
-interface Country {
-  name: string;
-  code: string;
-}
+import { MessageService } from 'primeng/api';
+import { Country } from 'src/app/interfaces/misc/country';
+import { Countries } from 'src/app/enums/countries';
 
 @Component({
   selector: 'app-checkout',
@@ -64,7 +62,8 @@ export class CheckoutComponent implements OnInit {
     private cartStoreService: CartStoreService,
     private loaderService: LoaderService,
     private orderService: OrderService,
-    private errorInterceptorService: ErrorInterceptorService
+    private errorInterceptorService: ErrorInterceptorService,
+    private messageService: MessageService
   ) {}
 
   ngOnInit(): void {
@@ -72,18 +71,13 @@ export class CheckoutComponent implements OnInit {
       this.cartItems = items;
     });
 
-    this.countries = [
-      { name: 'Australia', code: 'AU' },
-      { name: 'Brazil', code: 'BR' },
-      { name: 'China', code: 'CN' },
-      { name: 'Egypt', code: 'EG' },
-      { name: 'France', code: 'FR' },
-      { name: 'Germany', code: 'DE' },
-      { name: 'India', code: 'IN' },
-      { name: 'Japan', code: 'JP' },
-      { name: 'Spain', code: 'ES' },
-      { name: 'United States', code: 'US' }
-    ];
+    this.countries = Object.values(Countries).map((countryStr: string) => {
+      const countryObj = JSON.parse(countryStr);
+      return {
+        name: countryObj.name,
+        code: countryObj.code
+      } as Country;
+    });
     this.addressForm = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
@@ -96,20 +90,23 @@ export class CheckoutComponent implements OnInit {
     });
     this.creditCardForm = this.formBuilder.group({
       cardNumber: ['', [Validators.required]],
-      cardHolder: ['', Validators.required],
+      cardHolder: ['', [Validators.required]],
       expiryDate: ['', Validators.required],
       cvv: ['', [Validators.required, Validators.pattern('^[0-9]{3,4}$')]]
     });
   }
 
   goNext(nextCallback: EventEmitter<void>, form: FormGroup) {
-    // if (form.valid) {
-    //   nextCallback.emit();
-    // } else {
-    //   form.markAllAsTouched();
-    // }
-    // temp just to open the next step
-    nextCallback.emit();
+    if (form.valid) {
+      nextCallback.emit();
+    } else {
+      form.markAllAsTouched();
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Greška',
+        detail: 'Molimo popunite sva obavezna polja'
+      });
+    }
   }
 
   goBack(backCallback: EventEmitter<void>) {
@@ -121,14 +118,14 @@ export class CheckoutComponent implements OnInit {
   }
 
   async finalizeOrder(nextCallback: EventEmitter<void>, form: FormGroup) {
-    // if (!form.valid) {
-    //   form.markAllAsTouched();
-    //   return;
-    // }
+    if (!form.valid) {
+      form.markAllAsTouched();
+      return;
+    }
     try {
       this.loaderService.show();
       for (const program of this.cartItems) {
-        await this.orderService.createOrder(program.id); // Pozivamo createOrder metodu za svaki program
+        await this.orderService.createOrder(program.id);
       }
       nextCallback.emit();
     } catch (error) {

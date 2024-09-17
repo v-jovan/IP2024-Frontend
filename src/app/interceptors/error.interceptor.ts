@@ -55,7 +55,7 @@ export class ErrorInterceptorService {
         } else {
           this.messageService.add({
             severity: 'error',
-            summary: 'Neovlašćeno',
+            summary: 'Zabranjen pristup',
             detail:
               errorResponse.data?.message ||
               'Neispravni kredencijali. Pokušajte ponovo.'

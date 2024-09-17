@@ -86,20 +86,16 @@
             (click)="navigateHome()"
           ></p-button>
           <p-button
-            icon="pi pi-info-circle"
+            icon="pi pi-envelope"
             [text]="true"
             severity="secondary"
             size="large"
-            (click)="navigateHome()"
+            (click)="navigateToInbox()"
           ></p-button>
-          <p-avatar
-            [image]="userAvatar || undefined"
-            [icon]="!userAvatar ? 'pi pi-user' : undefined"
-            shape="circle"
-            size="large"
-            class="clickable"
-            (click)="userMenu.toggle($event)"
-          ></p-avatar>
+          <user-avatar
+            [userAvatar]="userAvatar"
+            (avatarClick)="userMenu.toggle($event)"
+          />
         </div>
       </ng-template>
     </p-toolbar>
@@ -110,7 +106,7 @@
     </div>
 
     <div class="dashboard__footer">
-      <small>© 2024 Internet programiranje 2024. Sva prava zadržana.</small>
+      <small>© 2024 Internet programiranje. Sva prava zadržana.</small>
     </div>
   </div>
 </div>

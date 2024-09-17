@@ -5,18 +5,18 @@ import { GalleriaModule } from 'primeng/galleria';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
-import { environment } from 'src/environments/environment.development';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 import { CartItem } from 'src/app/interfaces/misc/cart-item';
 import { MessageService } from 'primeng/api';
 import { Subscription } from 'rxjs';
+import { UrlPipe } from '../../pipes/url.pipe';
 
 @Component({
   selector: 'app-program-card',
   standalone: true,
-  imports: [CardModule, ButtonModule, GalleriaModule, CurrencyPipe],
+  imports: [CardModule, ButtonModule, GalleriaModule, CurrencyPipe, UrlPipe],
   templateUrl: './program-card.component.html',
   styleUrl: './program-card.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -26,7 +26,6 @@ export class ProgramCardComponent implements OnInit {
   @Input({ required: true }) showBuyButton: boolean = true;
   @Input({ required: true }) isProgramPurchased: boolean = false;
   isInCart: boolean = false;
-  apiUrl: string = environment.apiUrl;
   myId: number = 0;
   private cartSubscription!: Subscription;
 
@@ -35,7 +34,7 @@ export class ProgramCardComponent implements OnInit {
     private tokenStoreService: TokenStoreService,
     private cartStoreService: CartStoreService,
     private loginService: LoginService,
-    private messageService: MessageService,
+    private messageService: MessageService
   ) {}
 
   async ngOnInit() {
@@ -52,7 +51,7 @@ export class ProgramCardComponent implements OnInit {
         id: this.program.id,
         name: this.program.name,
         price: this.program.price,
-        imgURL: `${this.apiUrl}${this.program?.images[0]}`
+        imgURL: this.program?.images[0]
       };
 
       const success = this.cartStoreService.addToCart(cartItem);

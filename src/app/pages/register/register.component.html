@@ -1,23 +1,26 @@
 <div class="register">
   <p-dialog
     header="Aktivacija naloga"
+    i18n-header="@@register.activationDialogHeader"
     [modal]="true"
     [draggable]="false"
     [resizable]="false"
-    [closable]="false"
+    [closable]="true"
+    (onHide)="closeDialog()"
     [(visible)]="showDialog"
     [style]="{ width: '25rem' }"
   >
-    <p>
+    <p i18n="@@register.activationMessage1">
       Uspješno! Da biste aktivirali Vaš nalog, kliknite na link u mejl koji smo
       Vam poslali.
     </p>
-    <p>
+    <p i18n="@@register.activationMessage2">
       Ukoliko niste dobili mejl, molimo Vas da provjerite spam folder ili
-      jednostavno sačekati određeni period.
+      jednostavno sačekate određeni period.
     </p>
-    <p>Ovaj prozor možete da zatvorite.</p>
+    <p i18n="@@register.activationMessage3">Ovaj prozor možete da zatvorite.</p>
   </p-dialog>
+
   <div class="register__header">
     <div class="register__header--logo">
       <img
@@ -25,16 +28,19 @@
         class="clickable"
         (click)="goToHome()"
         alt="logo"
+        i18n-alt="@@register.logoAlt"
       />
     </div>
-    <h2 i18n="@@registration.title">Registracija</h2>
-    <small i18n="@@registration.description">
+    <h2 i18n="@@register.title">Registracija</h2>
+    <small i18n="@@register.description">
       Molimo Vas da popunite sledeće informacije kako biste se registrovali.<br />Sva
       polja osim slike su obavezna.
     </small>
   </div>
+
   <form [formGroup]="registerForm" class="register__form">
     <image-uploader (imageUploaded)="onImageUploaded($event)" />
+
     <div class="register__form--name">
       <p-inputGroup>
         <p-inputGroupAddon>
@@ -52,6 +58,7 @@
           autocomplete="given-name"
         />
       </p-inputGroup>
+
       <p-inputGroup>
         <p-inputGroupAddon>
           <i class="pi pi-user"></i>
@@ -69,6 +76,7 @@
         />
       </p-inputGroup>
     </div>
+
     <p-inputGroup>
       <p-inputGroupAddon>
         <i class="pi pi-key"></i>
@@ -80,7 +88,7 @@
         }"
         pInputText
         placeholder="Korisničko ime"
-        i18n-placeholder="@@login.username"
+        i18n-placeholder="@@register.username"
         autocomplete="username"
       />
       <button
@@ -91,6 +99,7 @@
         (click)="checkUsername()"
       ></button>
     </p-inputGroup>
+
     <p-inputGroup>
       <p-inputGroupAddon>
         <i class="pi pi-envelope"></i>
@@ -102,35 +111,48 @@
         }"
         pInputText
         placeholder="Email"
-        i18n-placeholder="@@login.email"
+        i18n-placeholder="@@register.email"
         autocomplete="email"
       />
     </p-inputGroup>
+
     <p-password
       class="register__form--password"
       formControlName="password"
       placeholder="Lozinka"
-      i18n-placeholder="@@login.password"
+      i18n-placeholder="@@register.password"
       [ngClass]="{
         'ng-invalid ng-dirty': isFieldInvalid('password')
       }"
       [toggleMask]="true"
       promptLabel="Unesite lozinku"
+      i18n-promptLabel="@@register.passwordPrompt"
       weakLabel="Prejednostavna lozinka"
+      i18n-weakLabel="@@register.weakPassword"
       mediumLabel="Srednja kompleksnost lozinke"
+      i18n-mediumLabel="@@register.mediumPassword"
       strongLabel="Kompleksna lozinka"
+      i18n-strongLabel="@@register.strongPassword"
     >
       <ng-template pTemplate="footer">
         <p-divider />
-        <p class="password__suggestion">Preporuke</p>
+        <p
+          class="password__suggestion"
+          i18n="@@register.passwordSuggestionsTitle"
+        >
+          Preporuke
+        </p>
         <ul class="password_suggestions">
-          <li>Bar jedno malo slovo</li>
-          <li>Bar jedno veliko slovo</li>
-          <li>Bar jedna cifra ili znak</li>
-          <li>Minimalno 8 karaktera</li>
+          <li i18n="@@register.passwordSuggestion1">Bar jedno malo slovo</li>
+          <li i18n="@@register.passwordSuggestion2">Bar jedno veliko slovo</li>
+          <li i18n="@@register.passwordSuggestion3">
+            Bar jedna cifra ili znak
+          </li>
+          <li i18n="@@register.passwordSuggestion4">Minimalno 8 karaktera</li>
         </ul>
       </ng-template>
     </p-password>
+
     <p-dropdown
       [options]="cities"
       optionLabel="name"
@@ -140,16 +162,18 @@
       [ngClass]="{
         'ng-invalid ng-dirty': isFieldInvalid('cityId')
       }"
-      i18n-placeholder="@@register.city"
       placeholder="Grad"
-    />
+      i18n-placeholder="@@register.city"
+    ></p-dropdown>
+
     <div class="register__form--register">
       <p-button
         label="Registracija"
-        i18n-label="@@login.register"
+        i18n-label="@@register.registerButton"
         (click)="register()"
       ></p-button>
     </div>
   </form>
+
   <div class="register__footer"></div>
 </div>

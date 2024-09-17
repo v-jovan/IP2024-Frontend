@@ -8,6 +8,9 @@
     border-bottom: 1px solid var(--surface-d);
     background-color: var(--surface-b);
     border-top-left-radius: 1rem;
+    @media (max-width: 820px) {
+      border-top-right-radius: 1rem;
+    }
     display: flex;
     justify-content: space-between;
     align-items: center;

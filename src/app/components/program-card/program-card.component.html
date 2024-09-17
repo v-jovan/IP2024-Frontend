@@ -8,7 +8,7 @@
         [showThumbnails]="false"
       >
         <ng-template pTemplate="item" let-item>
-          <img [src]="apiUrl + item" />
+          <img [src]="item | url" />
         </ng-template>
       </p-galleria>
     </ng-template>
@@ -23,7 +23,7 @@
             icon="pi pi-cart-plus"
             [disabled]="isInCart || isProgramPurchased"
             (click)="addToCart()"
-          ></p-button>
+          />
         }
       </div>
     </ng-template>

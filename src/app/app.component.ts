@@ -21,7 +21,7 @@ import { PrimeNGConfig } from 'primeng/api';
 })
 export class AppComponent implements OnInit {
   title = 'IP2024Frontend';
-  doNotShowHeaderOn = ['checkout', 'register', 'dashboard']; // Paths where header should not be shown
+  doNotShowHeaderOn = ['checkout', 'register', 'dashboard'];
   showHeader = true;
 
   constructor(
@@ -29,11 +29,8 @@ export class AppComponent implements OnInit {
     private router: Router
   ) {}
 
-  /**
-   * Initializes the component and subscribes to router events to determine whether to hide the header or not.
-   */
   ngOnInit(): void {
-    this.primengConfig.ripple = true; // Enable ripple effect for PrimeNG components
+    this.primengConfig.ripple = true;
     this.showHeader = !this.shouldHideHeader(this.router.url);
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {

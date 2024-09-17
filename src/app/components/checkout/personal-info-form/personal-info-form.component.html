@@ -7,6 +7,7 @@
       'ng-invalid ng-dirty': isFieldInvalid('firstName')
     }"
     type="text"
+    pKeyFilter="alpha"
     formControlName="firstName"
     pInputText
   />
@@ -17,6 +18,7 @@
       'ng-invalid ng-dirty': isFieldInvalid('lastName')
     }"
     type="text"
+    pKeyFilter="alpha"
     formControlName="lastName"
     pInputText
   />
@@ -37,11 +39,13 @@
       'ng-invalid ng-dirty': isFieldInvalid('street')
     }"
     type="text"
+    pKeyFilter="alphanum"
     formControlName="street"
     pInputText
   />
   <input
     placeholder="Grad"
+    pKeyFilter="alpha"
     i18n-placeholder="@@checkout.city"
     [ngClass]="{
       'ng-invalid ng-dirty': isFieldInvalid('city')

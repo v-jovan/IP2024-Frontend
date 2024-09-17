@@ -10,8 +10,13 @@ import { CommonModule } from '@angular/common';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { ButtonModule } from 'primeng/button';
-import { FormBuilder, FormsModule, Validators } from '@angular/forms';
-import { FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormBuilder,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+  FormGroup
+} from '@angular/forms';
 import { DividerModule } from 'primeng/divider';
 import { TabViewModule } from 'primeng/tabview';
 import { InputGroupModule } from 'primeng/inputgroup';
@@ -44,14 +49,19 @@ import { PasswordModule } from 'primeng/password';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
+  // Active tab index (Login/Register)
   activeIndex: number = 0;
+
   visible: boolean = false;
+
+  // Form-related fields
+  loginForm!: FormGroup;
   username: string = '';
   password!: string;
-  loginForm!: FormGroup;
 
   @Input() iconOnly: boolean = false;
   @Input() smallButton: boolean = false;
+
   @Output() loginSuccess = new EventEmitter<void>();
 
   constructor(
@@ -63,13 +73,19 @@ export class LoginComponent implements OnInit {
     private errorInterceptor: ErrorInterceptorService
   ) {}
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.initializeForm();
+  }
+
+  // Initialize login form with validation rules
+  private initializeForm(): void {
     this.loginForm = this.fb.group({
       email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
+  // Perform login operation
   async login() {
     if (this.loginForm.valid) {
       try {
@@ -80,12 +96,13 @@ export class LoginComponent implements OnInit {
         const response = await this.authService.login(loginData);
         this.tokenStore.setToken(response.token);
         this.loginSuccess.emit();
-        window.location.reload();
+        window.location.reload(); // Reload the page to apply the session
       } catch (error) {
         this.errorInterceptor.handleError(error);
+        this.loginForm.reset(); // Reset form on login failure
       }
     } else {
-      this.loginForm.markAllAsTouched();
+      this.loginForm.markAllAsTouched(); // Mark fields as touched to show validation errors
     }
   }
 
@@ -93,23 +110,24 @@ export class LoginComponent implements OnInit {
     return this.formUtils.isTouchedAndInvalid(this.loginForm, controlName);
   }
 
-  showDialog() {
+  showDialog(): void {
     this.visible = true;
   }
 
-  closeDialog() {
+  closeDialog(): void {
     this.visible = false;
+    this.loginForm.reset();
   }
 
-  goToRegister() {
+  goToRegister(): void {
     this.activeIndex = 1;
   }
 
-  goToLogin() {
+  goToLogin(): void {
     this.activeIndex = 0;
   }
 
-  goToRegisterPage() {
+  goToRegisterPage(): void {
     this.router.navigate(['/register']);
   }
 }

@@ -7,7 +7,8 @@ import {
 } from '@angular/core';
 import {
   AutoCompleteModule,
-  AutoCompleteSelectEvent
+  AutoCompleteSelectEvent,
+  AutoCompleteCompleteEvent
 } from 'primeng/autocomplete';
 import { FormsModule } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -15,26 +16,24 @@ import { ButtonModule } from 'primeng/button';
 import { LoginComponent } from '@components/login/login.component';
 import { CartComponent } from '@components/cart/cart.component';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService, TreeNode } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
-import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
 import { DialogModule } from 'primeng/dialog';
 import { UserService } from 'src/app/services/User/user.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
-import { SidebarModule } from 'primeng/sidebar';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
-import { environment } from 'src/environments/environment.development';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { CurrencyPipe } from '@angular/common';
-
-interface AutoCompleteCompleteEvent {
-  originalEvent: Event;
-  query: string;
-}
+import { UserAvatarComponent } from '../user-avatar/user-avatar.component';
+import { TreeModule } from 'primeng/tree';
+import { Category } from 'src/app/interfaces/misc/category';
+import { Attribute } from 'src/app/interfaces/misc/attribute';
+import { AttributeValue } from 'src/app/interfaces/misc/attribute-value';
+import { SidebarService } from 'src/app/services/FilterSidebar/sidebar.service';
+import { UrlPipe } from "../../pipes/url.pipe";
 
 @Component({
   selector: 'app-search-header',
@@ -50,28 +49,38 @@ interface AutoCompleteCompleteEvent {
     LoginComponent,
     CartComponent,
     MenuModule,
-    AvatarModule,
-    AvatarGroupModule,
     DialogModule,
-    SidebarModule,
-    CurrencyPipe
-  ]
+    CurrencyPipe,
+    UserAvatarComponent,
+    TreeModule,
+    UrlPipe
+]
 })
 export class SearchHeaderComponent implements OnInit {
+  categories!: TreeNode[];
+  selectedNode: TreeNode | null = null;
+
+  // User related
   userIsLoggedIn: boolean = false;
   userMenuItems: MenuItem[] | undefined;
   userAvatar: string | undefined;
   userNotActivated: boolean = false;
-  resendLabel: string = 'Pošalji ponovo';
-  buttonDisabled: boolean = false;
+  userName: string | undefined;
+
+  // UI related
   isDesktopToolbar: boolean = true;
   mobileSidebarVisible: boolean = false;
-  userName: string | undefined;
-  apiUrl: string = environment.apiUrl;
 
+  // Activation mail related
+  resendLabel: string = 'Pošalji ponovo';
+  buttonDisabled: boolean = false;
+
+  // Fitness program related
   fitnessPrograms: FitnessProgram[] = [];
   selectedFitnessProgram: FitnessProgram | undefined;
   filteredFitnessPrograms: FitnessProgram[] = [];
+
+  @ViewChild(LoginComponent) loginComponent!: LoginComponent;
 
   constructor(
     private router: Router,
@@ -82,16 +91,12 @@ export class SearchHeaderComponent implements OnInit {
     private errorInterceptor: ErrorInterceptorService,
     private authService: AuthService,
     private fitnessProgramService: FitnessProgramService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private sidebarService: SidebarService
   ) {}
 
-  @ViewChild(LoginComponent) loginComponent!: LoginComponent;
-
   async ngOnInit() {
-    this.loginService.loginRequested$.subscribe(() => {
-      this.openLoginDialog();
-    });
-
+    this.subscribeToLoginEvents();
     this.filteredFitnessPrograms = [];
 
     this.checkWindowWidth();
@@ -101,19 +106,14 @@ export class SearchHeaderComponent implements OnInit {
         this.setMobileUsername();
       }
     }
-    this.route.queryParams.subscribe((params) => {
-      if (params['activated'] === 'true') {
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Nalog aktiviran',
-          detail: 'Uspješno ste aktivirali nalog. Sada se možete prijaviti.'
-        });
-        this.loginComponent.showDialog();
-      }
-    });
-
+    this.checkQueryParams();
     await this.loadPrograms();
+    this.initUserMenuItems();
+    this.userIsLoggedIn = this.tokenService.isLoggedIn();
+  }
 
+  // User related methods
+  private initUserMenuItems() {
     this.userMenuItems = [
       {
         label: 'Korisnički panel',
@@ -127,10 +127,93 @@ export class SearchHeaderComponent implements OnInit {
       },
       { label: 'Odjava', icon: 'pi pi-sign-out', command: () => this.logout() }
     ];
-
-    this.userIsLoggedIn = this.tokenService.isLoggedIn();
   }
 
+  private subscribeToLoginEvents() {
+    this.loginService.loginRequested$.subscribe(() => {
+      this.openLoginDialog();
+    });
+  }
+
+  private checkQueryParams() {
+    this.route.queryParams.subscribe((params) => {
+      if (params['activated'] === 'true') {
+        this.messageService.add({
+          severity: 'success',
+          summary: 'Nalog aktiviran',
+          detail: 'Uspješno ste aktivirali nalog. Sada se možete prijaviti.'
+        });
+        this.loginComponent.showDialog();
+      }
+    });
+  }
+
+  private async setAvatar() {
+    try {
+      this.userAvatar = await this.userService.getAvatar();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+  }
+
+  private setMobileUsername() {
+    this.userName = this.tokenService.getUserSubject();
+  }
+
+  logout() {
+    this.userIsLoggedIn = false;
+    this.mobileSidebarVisible = false;
+    this.authService.logout();
+  }
+
+  async onLoginSuccess() {
+    this.userIsLoggedIn = true;
+    this.mobileSidebarVisible = false;
+    this.setMobileUsername();
+    await this.setAvatar();
+    await this.checkUserActivation();
+  }
+
+  async checkUserActivation() {
+    try {
+      this.userNotActivated =
+        !((await this.userService.isUserActive()) as boolean);
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+  }
+
+  resendActivationEmail() {
+    try {
+      this.authService.resendActivationEmail();
+    } catch (error) {
+      this.errorInterceptor.handleError(error as AxiosError);
+    }
+
+    this.buttonDisabled = true;
+    let countdown = 30;
+
+    const interval = setInterval(() => {
+      countdown--;
+      this.resendLabel = `Pošalji ponovo (${countdown})`;
+      if (countdown === 0) {
+        clearInterval(interval);
+        this.checkUserActivation();
+        this.resendLabel = 'Pošalji ponovo';
+        this.buttonDisabled = false;
+      }
+    }, 1000);
+  }
+
+  goToProfile() {
+    this.router.navigate(['/dashboard/profile']);
+  }
+
+  goToDashboard() {
+    this.router.navigate(['/dashboard']);
+  }
+
+  // Fitness program related methods
   filterFitnessProgram(event: AutoCompleteCompleteEvent) {
     let filtered: FitnessProgram[] = [];
     let query = event.query;
@@ -155,6 +238,41 @@ export class SearchHeaderComponent implements OnInit {
     }
   }
 
+  async loadFilter() {
+    try {
+      const categories =
+        await this.fitnessProgramService.getCategoriesWithAttributes();
+      this.categories = categories.map((category: Category) => ({
+        label: category.name,
+        key: category.id,
+        expanded: true,
+        data: {
+          categoryId: category.id,
+          attributeId: null,
+          attributeValueId: null
+        },
+        children: category.attributes.map((attribute: Attribute) => ({
+          label: attribute.name,
+          data: {
+            categoryId: category.id,
+            attributeId: attribute.id,
+            attributeValueId: null
+          },
+          children: attribute.values.map((value: AttributeValue) => ({
+            label: value.name,
+            data: {
+              categoryId: category.id,
+              attributeId: attribute.id,
+              attributeValueId: value.id
+            }
+          }))
+        }))
+      }));
+    } catch (error) {
+      this.errorInterceptor.handleError(error);
+    }
+  }
+
   goToDetails(event: AutoCompleteSelectEvent) {
     this.router.navigate(['/program-details/' + event.value.id]);
   }
@@ -163,84 +281,24 @@ export class SearchHeaderComponent implements OnInit {
     this.selectedFitnessProgram = undefined;
   }
 
-  setMobileUsername() {
-    this.userName = this.tokenService.getUserSubject();
+  openLoginDialog() {
+    this.loginComponent.showDialog();
   }
 
   goToHome() {
     this.router.navigate(['/']);
   }
 
-  openLoginDialog() {
-    this.loginComponent.showDialog();
-  }
-
-  goToProfile() {
-    this.router.navigate(['/dashboard/profile']);
-  }
-
-  goToDashboard() {
-    this.router.navigate(['/dashboard']);
-  }
-
-  logout() {
-    this.userIsLoggedIn = false;
-    this.mobileSidebarVisible = false;
-    this.authService.logout();
-  }
-
-  async onLoginSuccess() {
-    this.userIsLoggedIn = true;
-    this.mobileSidebarVisible = false;
-    this.setMobileUsername();
-    await this.setAvatar();
-    await this.checkUserActivation();
-  }
-
-  async setAvatar() {
-    try {
-      this.userAvatar = await this.userService.getAvatar();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
-  }
-
-  async checkUserActivation() {
-    try {
-      this.userNotActivated =
-        !((await this.userService.isUserActive()) as boolean);
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
-  }
-
-  resendActivationEmail() {
-    try {
-      this.authService.resendActivationEmail();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
-
-    this.buttonDisabled = true;
-    let coundown = 30;
-
-    const interval = setInterval(() => {
-      coundown--;
-      this.resendLabel = `Pošalji ponovo (${coundown})`;
-      if (coundown === 0) {
-        clearInterval(interval);
-        this.checkUserActivation();
-        this.resendLabel = 'Pošalji ponovo';
-        this.buttonDisabled = false;
-      }
-    }, 1000);
-  }
-
   @HostListener('window:resize', ['$event'])
-  onResize(): void {
+  onResize() {
     this.checkWindowWidth();
   }
-  checkWindowWidth(): void {
-    this.isDesktopToolbar = window.innerWidth > 800;
+
+  checkWindowWidth() {
+    this.isDesktopToolbar = window.innerWidth > 820;
+  }
+
+  openSidebar() {
+    this.sidebarService.setSidebarVisibility(true);
   }
 }

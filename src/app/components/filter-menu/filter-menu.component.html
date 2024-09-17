@@ -7,19 +7,23 @@
         i18n-lable="@@filter.filters"
         [outlined]="false"
         (click)="clearFilters()"
-      ></p-button>
+      />
     </div>
     <div class="filter-menu__categories">
       <p-tree
         [value]="categories"
         selectionMode="single"
-         [(selection)]="selectedNode"
+        [(selection)]="selectedNode"
         (onNodeSelect)="onNodeSelect($event)"
-      ></p-tree>
+      />
     </div>
-    <div class="filter-menu__news">
-      <app-news-article [articles]="newsItems"></app-news-article>
-    </div>
+    @if (!mobile) {
+      <div class="filter-menu__news">
+        <app-news-article [articles]="newsItems" />
+      </div>
+    }
   </div>
-  <p-divider type="solid" layout="vertical"></p-divider>
+  @if (!mobile) {
+    <p-divider type="solid" layout="vertical" />
+  }
 </div>

@@ -20,6 +20,7 @@
       (onLazyLoad)="loadPrograms($event)"
       [totalRecords]="totalRecords"
       responsiveLayout="stack"
+      [breakpoint]="'1200px'"
     >
       <ng-template pTemplate="header" let-columns>
         <tr>
@@ -44,7 +45,7 @@
               <td [ngStyle]="{ width: col.width }">
                 <p-tag
                   [severity]="program.difficultySeverity"
-                  [value]="program.difficultyLevel"
+                  [value]="program.difficultyLevel | difficulty"
                 />
               </td>
             } @else if (col.field === 'duration') {

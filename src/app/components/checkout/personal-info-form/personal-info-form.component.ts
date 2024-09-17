@@ -7,6 +7,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { CountryItemComponent } from '@components/util/country-item/country-item.component';
 import { FormGroup } from '@angular/forms';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
   selector: 'personal-info-form',
@@ -17,7 +18,8 @@ import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service'
     FormsModule,
     CommonModule,
     ReactiveFormsModule,
-    CountryItemComponent
+    CountryItemComponent,
+    KeyFilterModule
   ],
   templateUrl: './personal-info-form.component.html',
   styleUrl: './personal-info-form.component.scss'

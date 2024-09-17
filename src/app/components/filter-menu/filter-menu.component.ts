@@ -1,6 +1,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   Output,
   ViewEncapsulation
 } from '@angular/core';
@@ -30,6 +31,8 @@ export class FilterMenuComponent {
   selectedNode: TreeNode | null = null;
   newsItems: Article[] = [];
 
+  @Input() mobile: boolean = false;
+
   @Output() filterChanged = new EventEmitter<{
     categoryId: number;
     attributeId: number | null;
@@ -53,6 +56,8 @@ export class FilterMenuComponent {
         await this.fitnessProgramService.getCategoriesWithAttributes();
       this.categories = categories.map((category: Category) => ({
         label: category.name,
+        key: category.id,
+        expanded: true,
         data: {
           categoryId: category.id,
           attributeId: null,

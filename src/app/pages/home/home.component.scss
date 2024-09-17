@@ -12,8 +12,25 @@
   }
 
   &__sidebar {
-    @media (max-width: 800px) {
+    @media (max-width: 820px) {
       display: none;
+    }
+  }
+
+  &__mobile-sidebar {
+    &--header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      color: var(--primary-color);
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    &--footer {
+      .p-button {
+        width: 100%;
+        margin-bottom: 0.75rem;
+      }
     }
   }
 
@@ -32,7 +49,7 @@
       width: 100%;
     }
 
-    @media (max-width: 800px) {
+    @media (max-width: 820px) {
       justify-content: center;
     }
   }

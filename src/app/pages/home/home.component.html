@@ -1,8 +1,56 @@
 <div class="home-page">
   <div class="home-page__container">
-    <div class="home-page__sidebar">
-      <app-filter-menu (filterChanged)="onFilterChanged($event)" />
-    </div>
+    @if (!isMobile) {
+      <div class="home-page__sidebar">
+        <app-filter-menu (filterChanged)="onFilterChanged($event)" />
+      </div>
+    } @else {
+      <p-sidebar
+        [(visible)]="mobileSidebarVisible"
+        position="left"
+        [blockScroll]="true"
+      >
+        <ng-template pTemplate="header">
+          <div class="home-page__mobile-sidebar--header">
+            @if (userIsLoggedIn) {
+              <user-avatar
+                [userAvatar]="userAvatar"
+                (avatarClick)="goToProfile()"
+                i18n-avatarAlt="@@homePage.userAvatarAlt"
+              />
+              <div>{{ userName }}</div>
+            }
+          </div>
+        </ng-template>
+        <app-filter-menu
+          [mobile]="isMobile"
+          (filterChanged)="onFilterChanged($event)"
+        />
+
+        <ng-template pTemplate="footer">
+          <div class="home-page__mobile-sidebar--footer">
+            @if (userIsLoggedIn) {
+              <p-button
+                label="Korisnički meni"
+                i18n-label="@@homePage.dashboard"
+                (onClick)="goToDashboard()"
+                size="small"
+                [outlined]="true"
+              />
+              <p-button
+                label="Odjava"
+                i18n-label="@@homePage.logoutButton"
+                (onClick)="logout()"
+                severity="warning"
+                size="small"
+                [outlined]="true"
+              />
+            }
+          </div>
+        </ng-template>
+      </p-sidebar>
+    }
+
     <div class="home-page__content">
       @for (program of programs; track program.id) {
         <app-program-card
@@ -11,11 +59,16 @@
           [isProgramPurchased]="program.isPurchased!"
         />
       }
+
+      <!-- No results message -->
       @if (programs.length === 0) {
         <div class="home-page__no-results">
-          <p>Trenutno nema fitnes programa na raspolaganju.</p>
+          <p i18n="@@homePage.noProgramsMessage">
+            Trenutno nema fitnes programa na raspolaganju.
+          </p>
         </div>
       }
+
       <p-paginator
         (onPageChange)="onPageChange($event)"
         [first]="first"
@@ -25,7 +78,10 @@
       />
     </div>
   </div>
+
   <div class="home-page__footer">
-    <small>© 2024 Internet programiranje 2024. Sva prava zadržana.</small>
+    <small i18n="@@homePage.rightsReserved">
+      © 2024 Internet programiranje. Sva prava zadržana.
+    </small>
   </div>
 </div>

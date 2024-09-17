@@ -1,6 +1,9 @@
 @import 'variables';
 .filter-menu {
-  width: $filter-menu-width;
+  @media (min-width: 820px) {
+    width: $filter-menu-width;
+  }
+
   height: 100%;
   display: flex;
   &__content {

@@ -52,6 +52,7 @@ export class ConversationComponent implements OnChanges {
         this.messages = await this.messagingService.getMessagesForConversation(
           this.conversationUserId
         );
+
       } catch (error) {
         this.errorInterceptorService.handleError(error as AxiosError);
       }

@@ -32,6 +32,10 @@
   &__avatar {
     display: flex;
     gap: 1rem;
+
+    @media (max-width: 820px) {
+      display: none;
+    }
   }
 
   &__content {

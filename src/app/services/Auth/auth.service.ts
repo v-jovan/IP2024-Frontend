@@ -39,10 +39,10 @@ export class AuthService {
   }
 
   logout() {
+    window.location.reload();
     this.tokenService.clearToken();
     this.cartStoreService.clearCart();
     this.router.navigate(['/']);
-    window.location.reload();
   }
 
   /**

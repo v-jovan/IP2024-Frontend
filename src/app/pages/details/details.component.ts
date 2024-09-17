@@ -22,6 +22,7 @@ import { ProgramStatus } from 'src/app/enums/program-status';
 import { DialogModule } from 'primeng/dialog';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { OrderService } from 'src/app/services/Order/order.service';
+import { DifficultyPipe } from "../../pipes/difficulty.pipe";
 
 @Component({
   selector: 'app-details',
@@ -37,8 +38,9 @@ import { OrderService } from 'src/app/services/Order/order.service';
     ConvertMinutesPipe,
     CurrencyPipe,
     CommentsComponent,
-    DialogModule
-  ],
+    DialogModule,
+    DifficultyPipe
+],
   encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {

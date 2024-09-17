@@ -7,6 +7,7 @@
           alt="Logo"
           class="header__toolbar--logo clickable"
           (click)="goToHome()"
+          i18n-alt="@@searchHeader.logoAlt"
         />
       </ng-template>
       <ng-template pTemplate="center">
@@ -15,7 +16,7 @@
           [suggestions]="filteredFitnessPrograms"
           (completeMethod)="filterFitnessProgram($event)"
           field="name"
-          i18n-placeholder="@@header.search"
+          i18n-placeholder="@@searchHeader.searchPlaceholder"
           placeholder="Pretraga"
           inputStyleClass="header__toolbar--search"
           styleClass="header__toolbar--search"
@@ -25,24 +26,28 @@
         >
           <ng-template let-item pTemplate="item">
             <div class="autocomplete__result">
-              <img [src]="apiUrl + item.images[0]" />
-              <div>{{ item.price |  currency }}</div>
+              <img
+                [src]="item.images[0] | url"
+                i18n-alt="@@searchHeader.programImageAlt"
+                alt="Slika programa"
+              />
+              <div>{{ item.price | currency }}</div>
               <div>{{ item.name }}</div>
             </div>
+          </ng-template>
+          <ng-template pTemplate="empty">
+            <div i18n="@@searchHeader.noResults">Nema rezultata</div>
           </ng-template>
         </p-autoComplete>
       </ng-template>
       <ng-template pTemplate="end">
         <div class="header__toolbar--actions">
           @if (userIsLoggedIn) {
-            <p-avatar
-              [image]="userAvatar || undefined"
-              [icon]="!userAvatar ? 'pi pi-user' : undefined"
-              shape="circle"
-              size="large"
-              class="clickable"
-              (click)="userMenu.toggle($event)"
-            ></p-avatar>
+            <user-avatar
+              [userAvatar]="userAvatar"
+              (avatarClick)="userMenu.toggle($event)"
+              i18n-avatarAlt="@@searchHeader.userAvatarAlt"
+            />
             <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
             <app-cart />
           } @else {
@@ -59,13 +64,15 @@
         icon="pi pi-bars"
         class="navigation--menu"
         [outlined]="true"
-        (onClick)="mobileSidebarVisible = !mobileSidebarVisible"
+        (onClick)="openSidebar()"
+        i18n-label="@@searchHeader.menuButtonLabel"
       ></p-button>
       <img
         src="/assets/logo.svg"
         alt="Logo"
         class="mobile-header__logo"
         (click)="goToHome()"
+        i18n-alt="@@searchHeader.logoAlt"
       />
       @if (userIsLoggedIn) {
         <app-cart />
@@ -78,7 +85,7 @@
       [suggestions]="filteredFitnessPrograms"
       (completeMethod)="filterFitnessProgram($event)"
       field="name"
-      i18n-placeholder="@@header.search"
+      i18n-placeholder="@@searchHeader.searchPlaceholder"
       placeholder="Pretraga"
       inputStyleClass="mobile-header__search"
       styleClass="mobile-header__search"
@@ -88,54 +95,21 @@
     >
       <ng-template let-item pTemplate="item">
         <div class="autocomplete__result">
-          <img [src]="apiUrl + item.images[0]" />
-          <div>{{ item.price |  currency }}</div>
+          <img
+            [src]="item.images[0] | url"
+            i18n-alt="@@searchHeader.programImageAlt"
+            alt="Slika programa"
+          />
+          <div>{{ item.price | currency }}</div>
           <div>{{ item.name }}</div>
         </div>
       </ng-template>
     </p-autoComplete>
   </div>
-  <p-sidebar
-    [(visible)]="mobileSidebarVisible"
-    position="left"
-    [blockScroll]="true"
-  >
-    <ng-template pTemplate="header">
-      <div class="mobile-header__sidebar--header">
-        @if (userIsLoggedIn) {
-          <p-avatar
-            [image]="userAvatar || undefined"
-            [icon]="!userAvatar ? 'pi pi-user' : undefined"
-            shape="circle"
-            size="large"
-            class="clickable"
-            (click)="goToProfile()"
-          ></p-avatar>
-          <div>{{ userName }}</div>
-        } @else {
-          <app-login (loginSuccess)="onLoginSuccess()" [smallButton]="true" />
-        }
-      </div>
-    </ng-template>
-    <!-- TODO: Here goes the content which would be the filter menu -->
-    <ng-template pTemplate="footer">
-      <div class="mobile-header__sidebar--footer">
-        @if (userIsLoggedIn) {
-          <p-button
-            label="Odjava"
-            i18n-label="@@header.logout"
-            (onClick)="logout()"
-            severity="warning"
-            size="small"
-            [outlined]="true"
-          ></p-button>
-        }
-      </div>
-    </ng-template>
-  </p-sidebar>
 }
 <p-dialog
   header="Oh ne..."
+  i18n-header="@@searchHeader.dialogHeader"
   [(visible)]="userNotActivated"
   [modal]="true"
   [closable]="true"
@@ -143,7 +117,7 @@
   [resizable]="false"
   [closable]="false"
 >
-  <p>
+  <p i18n="@@searchHeader.dialogMessage">
     Vaš nalog nije aktiviran.
     <br />
     Prilikom registracije niste otvorili mejl sa akctivacionim linkom.

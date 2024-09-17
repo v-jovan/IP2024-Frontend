@@ -12,6 +12,7 @@ import { ConvertMinutesPipe } from '../../../pipes/convert-minutes.pipe';
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
+import { DifficultyPipe } from "../../../pipes/difficulty.pipe";
 
 @Component({
   selector: 'app-view-programs',
@@ -23,8 +24,9 @@ import { MessageService } from 'primeng/api';
     TagModule,
     ConvertMinutesPipe,
     TooltipModule,
-    DialogModule
-  ],
+    DialogModule,
+    DifficultyPipe
+],
   templateUrl: './view-programs.component.html',
   styleUrl: './view-programs.component.scss'
 })
@@ -38,11 +40,6 @@ export class ViewProgramsComponent implements OnInit {
 
   lastLazyLoadEvent!: TableLazyLoadEvent;
 
-  private difficultyLevelMap: { [key: string]: string } = {
-    BEGINNER: 'Početnik',
-    INTERMEDIATE: 'Srednji',
-    ADVANCED: 'Napredni'
-  };
   private severityMap: { [key: string]: string } = {
     BEGINNER: 'success',
     INTERMEDIATE: 'warning',
@@ -70,9 +67,6 @@ export class ViewProgramsComponent implements OnInit {
   private transformDifficultyLevels() {
     this.programs = this.programs.map((program) => ({
       ...program,
-      difficultyLevel:
-        this.difficultyLevelMap[program.difficultyLevel] ||
-        program.difficultyLevel,
       difficultySeverity: this.severityMap[program.difficultyLevel] || 'info'
     }));
   }

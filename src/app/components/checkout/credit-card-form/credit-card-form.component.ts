@@ -7,6 +7,7 @@ import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
 import { InputMaskModule } from 'primeng/inputmask';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
   selector: 'credit-card-form',
@@ -18,7 +19,8 @@ import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service'
     InputGroupAddonModule,
     InputMaskModule,
     InputTextModule,
-    CommonModule
+    CommonModule,
+    KeyFilterModule
   ],
   templateUrl: './credit-card-form.component.html',
   styleUrl: './credit-card-form.component.scss'

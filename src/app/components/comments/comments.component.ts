@@ -10,7 +10,7 @@ import { CommentService } from 'src/app/services/Comment/comment.service';
 import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CommentRequest } from 'src/app/interfaces/requests/comment-request';
-import { environment } from 'src/environments/environment.development';
+import { UrlPipe } from "../../pipes/url.pipe";
 
 @Component({
   selector: 'app-comments',
@@ -22,8 +22,9 @@ import { environment } from 'src/environments/environment.development';
     ButtonModule,
     InputTextareaModule,
     FormsModule,
-    PaginatorModule
-  ],
+    PaginatorModule,
+    UrlPipe
+],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -35,7 +36,6 @@ export class CommentsComponent implements OnInit {
   rows: number = 10;
   totalRecords: number = 0;
   loading: boolean = false;
-  apiUrl: string = environment.apiUrl;
 
   @Input({ required: true }) programId!: string;
 

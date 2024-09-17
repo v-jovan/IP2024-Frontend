@@ -1,5 +1,5 @@
 <div class="main" [ngClass]="{ 'dashboard-mode': isDashboard() }">
-  @if (showHeader && !isDashboard()) {
+  @if (showHeader) {
     <div class="main__header">
       <app-search-header />
     </div>

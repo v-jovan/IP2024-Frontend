@@ -7,37 +7,19 @@ import { BadgeModule } from 'primeng/badge';
 import { CurrencyPipe } from '@angular/common';
 import { Router } from '@angular/router';
 import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
+import { UrlPipe } from "../../pipes/url.pipe";
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [ButtonModule, SidebarModule, CardModule, BadgeModule, CurrencyPipe],
+  imports: [ButtonModule, SidebarModule, CardModule, BadgeModule, CurrencyPipe, UrlPipe],
   templateUrl: './cart.component.html',
   styleUrl: './cart.component.scss',
   encapsulation: ViewEncapsulation.None
 })
 export class CartComponent implements OnInit {
   sidebarVisible: boolean = false;
-  cartItems: CartItem[] = [
-    {
-      id: 1,
-      name: 'Product 1',
-      price: 100,
-      imgURL: 'https://placehold.co/200x150'
-    },
-    {
-      id: 2,
-      name: 'Product 2',
-      price: 200,
-      imgURL: 'https://placehold.co/200x150'
-    },
-    {
-      id: 3,
-      name: 'Product 3',
-      price: 300,
-      imgURL: 'https://placehold.co/200x150'
-    }
-  ];
+  cartItems: CartItem[] = [];
 
   constructor(
     private router: Router,

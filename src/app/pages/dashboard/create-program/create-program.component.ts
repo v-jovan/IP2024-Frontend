@@ -248,6 +248,7 @@ export class CreateProgramComponent implements OnInit {
 
   async saveChanges() {
     if (this.programForm.valid && this.uploadedFiles.length > 0) {
+      this.loaderService.show();
       const formValues = this.programForm.value;
 
       const programData: FitnessProgramRequest = {
@@ -262,7 +263,7 @@ export class CreateProgramComponent implements OnInit {
         );
         this.messageService.add({
           severity: 'success',
-          summary: 'Success',
+          summary: 'Uspješno',
           detail: 'Program kreiran uspješno!'
         });
         this.router.navigate(['/dashboard/view-programs']);
@@ -271,12 +272,14 @@ export class CreateProgramComponent implements OnInit {
         this.specificAttributes.clear();
       } catch (error) {
         this.errorInterceptorService.handleError(error);
+      } finally {
+        this.loaderService.hide();
       }
     } else {
       this.programForm.markAllAsTouched();
       this.messageService.add({
         severity: 'warn',
-        summary: 'Warning',
+        summary: 'Upozorenje',
         detail: 'Molimo popunite sva polja i dodajte slike.'
       });
     }
@@ -287,7 +290,7 @@ export class CreateProgramComponent implements OnInit {
     this.specificAttributes.clear();
     this.messageService.add({
       severity: 'info',
-      summary: 'Info',
+      summary: 'Informacija',
       detail: 'Promjene su odbačene.'
     });
     this.topElement.nativeElement.scrollIntoView({ behavior: 'smooth' });

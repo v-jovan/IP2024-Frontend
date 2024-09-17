@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 864.846 423.293">
+  <defs>
+    <style>
+      .cls-1 {
+        fill: #414042;
+      }
+
+      .cls-2 {
+        fill: #58595b;
+      }
+
+      .cls-3 {
+        fill: #333132;
+      }
+
+      .cls-4 {
+        fill: #f15a29;
+      }
+
+      .cls-5 {
+        fill: url(#Orange_Yellow);
+      }
+    </style>
+    <linearGradient id="Orange_Yellow" data-name="Orange, Yellow" x1="551.765" y1="11.422" x2="349.873" y2="318.194" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff33b"/>
+      <stop offset="0.04" stop-color="#fee72e"/>
+      <stop offset="0.117" stop-color="#fed51b"/>
+      <stop offset="0.196" stop-color="#fdca10"/>
+      <stop offset="0.281" stop-color="#fdc70c"/>
+      <stop offset="0.669" stop-color="#f3903f"/>
+      <stop offset="0.888" stop-color="#ed683c"/>
+      <stop offset="1" stop-color="#e93e3a"/>
+    </linearGradient>
+  </defs>
+  <title>buc</title>
+  <g id="Layer_2" data-name="Layer 2">
+    <g id="Layer_1-2" data-name="Layer 1">
+      <g id="_Group_" data-name="&lt;Group&gt;">
+        <rect id="_Path_" data-name="&lt;Path&gt;" class="cls-1" x="91.386" y="33.787" width="79.873" height="355.719" rx="25.384" ry="25.384"/>
+        <rect id="_Path_2" data-name="&lt;Path&gt;" class="cls-2" y="73.311" width="79.873" height="276.67" rx="25.384" ry="25.384"/>
+        <path id="_Path_3" data-name="&lt;Path&gt;" class="cls-3" d="M288.029,173.184A25.384,25.384,0,0,1,262.645,147.8V25.384A25.384,25.384,0,0,0,237.261,0h-29.1a25.384,25.384,0,0,0-25.384,25.384V397.908a25.384,25.384,0,0,0,25.384,25.385h29.1a25.384,25.384,0,0,0,25.384-25.385V275.492a25.384,25.384,0,0,1,25.384-25.384h21.28l43.343-76.924Z"/>
+        <path id="_Path_4" data-name="&lt;Path&gt;" class="cls-3" d="M656.689,0H627.584A25.383,25.383,0,0,0,602.2,25.384V147.8a25.384,25.384,0,0,1-25.385,25.384H555.537l-43.343,76.924h64.622A25.384,25.384,0,0,1,602.2,275.492V397.908a25.384,25.384,0,0,0,25.383,25.385h29.105a25.385,25.385,0,0,0,25.385-25.385V25.384A25.384,25.384,0,0,0,656.689,0Z"/>
+        <rect id="_Path_5" data-name="&lt;Path&gt;" class="cls-1" x="693.587" y="33.787" width="79.873" height="355.719" rx="25.384" ry="25.384"/>
+        <rect id="_Path_6" data-name="&lt;Path&gt;" class="cls-2" x="784.973" y="73.311" width="79.873" height="276.67" rx="25.384" ry="25.384"/>
+        <g id="_Group_2" data-name="&lt;Group&gt;">
+          <path id="_Path_7" data-name="&lt;Path&gt;" class="cls-4" d="M543.4,154.626l-99.61,71-26.22-32.338-96.113,75.375,111.293-16.109L395.44,417.212Z"/>
+          <path id="_Path_8" data-name="&lt;Path&gt;" class="cls-5" d="M443.785,225.63l99.61-71h0L432.1,170.734,469.406,6.081,321.452,268.667h0l96.113-75.375Z"/>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

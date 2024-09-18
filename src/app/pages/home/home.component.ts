@@ -1,4 +1,9 @@
-import { Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  HostListener,
+  OnInit,
+  ViewEncapsulation
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { SearchHeaderComponent } from '@components/search-header/search-header.component';
 import { FilterMenuComponent } from '../../components/filter-menu/filter-menu.component';
@@ -6,7 +11,6 @@ import { ProgramCardComponent } from '../../components/program-card/program-card
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { UserService } from 'src/app/services/User/user.service';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
@@ -64,7 +68,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private fitnessProgramService: FitnessProgramService,
     private orderService: OrderService,
-    private errorInterceptorService: ErrorInterceptorService,
     private loaderService: LoaderService,
     private userService: UserService,
     private tokenStoreService: TokenStoreService,
@@ -120,7 +123,6 @@ export class HomeComponent implements OnInit {
       });
       return response.content;
     } catch (error) {
-      this.errorInterceptorService.handleError(error);
       return [];
     }
   }
@@ -147,9 +149,7 @@ export class HomeComponent implements OnInit {
         )
       }));
       this.totalRecords = response.totalElements;
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
-    }
+    } catch (error) {}
   }
 
   // Event handler for pagination change
@@ -181,9 +181,7 @@ export class HomeComponent implements OnInit {
   private async setAvatar() {
     try {
       this.userAvatar = await this.userService.getAvatar();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   // Log the user out

@@ -22,7 +22,6 @@ import {
 import { BottomToolbarComponent } from '../../../components/bottom-toolbar/bottom-toolbar.component';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { FitnessProgramRequest } from 'src/app/interfaces/requests/fitness-program-request';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AttributeService } from 'src/app/services/Attribute/attribute.service';
 import { CategoryService } from 'src/app/services/Category/category.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
@@ -123,7 +122,6 @@ export class EditProgramComponent implements OnInit {
     private userService: UserService,
     private formUtils: FormUtilsService,
     private fitnessProgramService: FitnessProgramService,
-    private errorInterceptorService: ErrorInterceptorService,
     private route: ActivatedRoute
   ) {}
 
@@ -140,7 +138,6 @@ export class EditProgramComponent implements OnInit {
       );
       this.populateForm(programData);
     } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loaderService.hide();
     }
@@ -239,9 +236,7 @@ export class EditProgramComponent implements OnInit {
     try {
       this.selectedCategoryAttributes =
         await this.attributeService.getAttributesByCategory(categoryId);
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
-    }
+    } catch (error) {}
   }
 
   async onCategoryChange(event: DropdownChangeEvent) {
@@ -370,9 +365,7 @@ export class EditProgramComponent implements OnInit {
             detail: 'Program kreiran uspješno!'
           });
         }
-      } catch (error) {
-        this.errorInterceptorService.handleError(error);
-      }
+      } catch (error) {}
     } else {
       this.programForm.markAllAsTouched();
       this.messageService.add({

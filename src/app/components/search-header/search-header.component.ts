@@ -21,7 +21,6 @@ import { MenuModule } from 'primeng/menu';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { DialogModule } from 'primeng/dialog';
 import { UserService } from 'src/app/services/User/user.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
@@ -33,7 +32,7 @@ import { Category } from 'src/app/interfaces/misc/category';
 import { Attribute } from 'src/app/interfaces/misc/attribute';
 import { AttributeValue } from 'src/app/interfaces/misc/attribute-value';
 import { SidebarService } from 'src/app/services/FilterSidebar/sidebar.service';
-import { UrlPipe } from "../../pipes/url.pipe";
+import { UrlPipe } from '../../pipes/url.pipe';
 
 @Component({
   selector: 'app-search-header',
@@ -54,7 +53,7 @@ import { UrlPipe } from "../../pipes/url.pipe";
     UserAvatarComponent,
     TreeModule,
     UrlPipe
-]
+  ]
 })
 export class SearchHeaderComponent implements OnInit {
   categories!: TreeNode[];
@@ -88,7 +87,6 @@ export class SearchHeaderComponent implements OnInit {
     private messageService: MessageService,
     private tokenService: TokenStoreService,
     private userService: UserService,
-    private errorInterceptor: ErrorInterceptorService,
     private authService: AuthService,
     private fitnessProgramService: FitnessProgramService,
     private loginService: LoginService,
@@ -151,9 +149,7 @@ export class SearchHeaderComponent implements OnInit {
   private async setAvatar() {
     try {
       this.userAvatar = await this.userService.getAvatar();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   private setMobileUsername() {
@@ -178,17 +174,13 @@ export class SearchHeaderComponent implements OnInit {
     try {
       this.userNotActivated =
         !((await this.userService.isUserActive()) as boolean);
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   resendActivationEmail() {
     try {
       this.authService.resendActivationEmail();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
 
     this.buttonDisabled = true;
     let countdown = 30;
@@ -233,9 +225,7 @@ export class SearchHeaderComponent implements OnInit {
         size: 1000
       });
       this.fitnessPrograms = response.content;
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   async loadFilter() {
@@ -268,9 +258,7 @@ export class SearchHeaderComponent implements OnInit {
           }))
         }))
       }));
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
-    }
+    } catch (error) {}
   }
 
   goToDetails(event: AutoCompleteSelectEvent) {

@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DiaryHistoryComponent } from '../../../components/Diary/diary-history/diary-history.component';
 import { DiaryFormComponent } from '../../../components/Diary/diary-form/diary-form.component';
-import { Activity } from 'src/app/interfaces/misc/activity';
 import { ActivityService } from 'src/app/services/Activity/activity.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { ActivityResponse } from 'src/app/interfaces/responses/activity-response';
 import { MessageService } from 'primeng/api';
@@ -21,7 +19,6 @@ export class DiaryComponent implements OnInit {
 
   constructor(
     private activityService: ActivityService,
-    private errorInterceporService: ErrorInterceptorService,
     private loaderService: LoaderService,
     private messageService: MessageService
   ) {}
@@ -30,8 +27,6 @@ export class DiaryComponent implements OnInit {
     try {
       this.loaderService.show();
       await this.loadActivities();
-    } catch (error) {
-      this.errorInterceporService.handleError(error as AxiosError);
     } finally {
       this.loaderService.hide();
     }
@@ -57,16 +52,12 @@ export class DiaryComponent implements OnInit {
         summary: 'Uspješno',
         detail: 'Aktivnost je uspješno dodana'
       });
-    } catch (error) {
-      this.errorInterceporService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   async downloadPdf() {
     try {
       await this.activityService.downloadActivityPdf();
-    } catch (error) {
-      this.errorInterceporService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 }

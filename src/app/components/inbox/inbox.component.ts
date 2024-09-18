@@ -14,7 +14,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagingService } from 'src/app/services/Messaging/messaging.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { UserService } from 'src/app/services/User/user.service';
 import { environment } from 'src/environments/environment.development';
 
@@ -52,8 +51,7 @@ export class InboxComponent implements OnInit {
 
   constructor(
     private messagingService: MessagingService,
-    private userService: UserService,
-    private errorInterceptorService: ErrorInterceptorService
+    private userService: UserService
   ) {}
 
   async ngOnInit() {
@@ -63,17 +61,13 @@ export class InboxComponent implements OnInit {
   async fetchConversations() {
     try {
       this.conversations = await this.messagingService.getConversations();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   async fetchUsers() {
     try {
       this.users = await this.userService.getNonAdvisers();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   selectConversation(conversationId: number) {
@@ -95,9 +89,7 @@ export class InboxComponent implements OnInit {
       await this.messagingService.sendMessage(this.newMessage);
       this.closeNewConversation();
       await this.fetchConversations();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   getAvatarImage(conversation: Conversation): string | undefined {

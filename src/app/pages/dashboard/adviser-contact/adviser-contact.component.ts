@@ -11,7 +11,6 @@ import {
   FormGroup
 } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { ErrorInterceptorService } from '../../../interceptors/error.interceptor';
 import { UserService } from '../../../services/User/user.service';
 import { Adviser } from 'src/app/interfaces/misc/adviser';
 import { TokenStoreService } from '../../../store/TokenStore/token-store.service';
@@ -56,7 +55,6 @@ export class AdviserContactComponent implements OnInit {
     private messageService: MessageService,
     private userService: UserService,
     private tokenStoreService: TokenStoreService,
-    private errorInterceptor: ErrorInterceptorService,
     private formUtils: FormUtilsService,
     private router: Router,
     private messagingService: MessagingService
@@ -75,9 +73,7 @@ export class AdviserContactComponent implements OnInit {
   async fetchAdvisers() {
     try {
       this.advisers = await this.userService.getAdvisers();
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
-    }
+    } catch (error) {}
   }
 
   isFieldInvalid(controlName: string): boolean {
@@ -95,9 +91,7 @@ export class AdviserContactComponent implements OnInit {
       });
       this.contactForm.reset();
       this.router.navigate(['/dashboard']);
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
-    }
+    } catch (error) {}
   }
 
   async getSenderId() {
@@ -106,8 +100,6 @@ export class AdviserContactComponent implements OnInit {
       this.contactForm.patchValue({
         senderId: userId
       });
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
-    }
+    } catch (error) {}
   }
 }

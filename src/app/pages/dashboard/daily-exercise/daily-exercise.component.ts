@@ -2,7 +2,6 @@ import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ExerciseCardComponent } from '../../../components/exercise-card/exercise-card.component';
 import { DailyExerciseService } from 'src/app/services/DailyExercise/daily-exercise.service';
 import { Exercise } from 'src/app/interfaces/misc/exercise';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { DialogModule } from 'primeng/dialog';
 import { ButtonModule } from 'primeng/button';
@@ -22,7 +21,6 @@ export class DailyExerciseComponent implements OnInit {
 
   constructor(
     private dailyExercisesService: DailyExerciseService,
-    private errorInterceptor: ErrorInterceptorService,
     private loaderService: LoaderService
   ) {}
 
@@ -30,8 +28,6 @@ export class DailyExerciseComponent implements OnInit {
     try {
       this.loaderService.show();
       this.exercises = await this.dailyExercisesService.getDailyExercises();
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
     } finally {
       this.loaderService.hide();
     }

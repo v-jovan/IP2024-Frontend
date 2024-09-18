@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { TableLazyLoadEvent, TableModule } from 'primeng/table';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { Column } from 'src/app/interfaces/misc/column';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { TagModule } from 'primeng/tag';
@@ -10,7 +9,6 @@ import { ConvertMinutesPipe } from '../../../pipes/convert-minutes.pipe';
 import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { YoutubePipe } from '../../../pipes/youtube.pipe';
 import { MessageService } from 'primeng/api';
 import { OrderService } from 'src/app/services/Order/order.service';
@@ -63,7 +61,6 @@ export class PurchasedProgramsComponent implements OnInit {
   };
 
   constructor(
-    private errorInterceptorService: ErrorInterceptorService,
     private orderService: OrderService,
     private messageService: MessageService
   ) {}
@@ -96,8 +93,6 @@ export class PurchasedProgramsComponent implements OnInit {
       this.transformDifficultyLevels();
       this.transformLocation();
       this.transformStatus();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loading = false;
     }
@@ -151,8 +146,6 @@ export class PurchasedProgramsComponent implements OnInit {
         summary: 'Uspješno',
         detail: 'Program je uspješno obrisan'
       });
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
     } finally {
       this.deleteDialogVisible = false;
       this.deleteId = 0;

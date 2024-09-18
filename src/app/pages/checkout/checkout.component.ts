@@ -23,7 +23,6 @@ import { CartItem } from 'src/app/interfaces/misc/cart-item';
 import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { OrderService } from 'src/app/services/Order/order.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { MessageService } from 'primeng/api';
 import { Country } from 'src/app/interfaces/misc/country';
 import { Countries } from 'src/app/enums/countries';
@@ -62,7 +61,6 @@ export class CheckoutComponent implements OnInit {
     private cartStoreService: CartStoreService,
     private loaderService: LoaderService,
     private orderService: OrderService,
-    private errorInterceptorService: ErrorInterceptorService,
     private messageService: MessageService
   ) {}
 
@@ -129,7 +127,6 @@ export class CheckoutComponent implements OnInit {
       }
       nextCallback.emit();
     } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
     } finally {
       this.loaderService.hide();
     }

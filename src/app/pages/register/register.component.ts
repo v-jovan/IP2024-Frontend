@@ -16,7 +16,6 @@ import { LoaderService } from 'src/app/services/Loader/loader.service';
 import { CityService } from 'src/app/services/City/city.service';
 import { MessageService } from 'primeng/api';
 import { City } from 'src/app/interfaces/misc/city';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { DialogModule } from 'primeng/dialog';
 import { KeyFilterModule } from 'primeng/keyfilter';
 
@@ -73,16 +72,13 @@ export class RegisterComponent implements OnInit {
     private authService: AuthService,
     private cityService: CityService,
     private messageService: MessageService,
-    private loaderService: LoaderService,
-    private errorInterceptor: ErrorInterceptorService
+    private loaderService: LoaderService
   ) {}
 
   async ngOnInit(): Promise<void> {
     this.loaderService.show();
     try {
       this.cities = await this.cityService.getCities();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
     } finally {
       this.loaderService.hide();
     }
@@ -123,8 +119,6 @@ export class RegisterComponent implements OnInit {
           detail: 'Odaberite drugo korisničko ime'
         });
       }
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
     } finally {
       this.setButtonProperties(this.usernameTaken);
     }
@@ -174,8 +168,6 @@ export class RegisterComponent implements OnInit {
         });
         this.registerForm.reset();
         this.showDialog = true;
-      } catch (error) {
-        this.errorInterceptor.handleError(error as AxiosError);
       } finally {
         this.loaderService.hide();
       }

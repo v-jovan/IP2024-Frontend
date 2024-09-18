@@ -12,7 +12,6 @@ import { BottomToolbarComponent } from '@components/bottom-toolbar/bottom-toolba
 import { passwordsMatchValidator } from 'src/app/validators/PasswordMatch';
 import { MessageService } from 'primeng/api';
 import { UserService } from 'src/app/services/User/user.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { FloatLabelModule } from 'primeng/floatlabel';
 
 @Component({
@@ -43,8 +42,7 @@ export class PasswordComponent {
   constructor(
     private fb: FormBuilder,
     private messageService: MessageService,
-    private userService: UserService,
-    private errorInterceptor: ErrorInterceptorService
+    private userService: UserService
   ) {}
 
   async saveChanges() {
@@ -67,9 +65,7 @@ export class PasswordComponent {
           detail: 'Provjerite ispravnost unijetih podataka'
         });
       }
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
   discardChanges() {
     window.location.href = '/dashboard';

@@ -7,10 +7,9 @@ import { ButtonModule } from 'primeng/button';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FormsModule } from '@angular/forms';
 import { CommentService } from 'src/app/services/Comment/comment.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { CommentRequest } from 'src/app/interfaces/requests/comment-request';
-import { UrlPipe } from "../../pipes/url.pipe";
+import { UrlPipe } from '../../pipes/url.pipe';
 
 @Component({
   selector: 'app-comments',
@@ -24,7 +23,7 @@ import { UrlPipe } from "../../pipes/url.pipe";
     FormsModule,
     PaginatorModule,
     UrlPipe
-],
+  ],
   templateUrl: './comments.component.html',
   styleUrl: './comments.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -39,10 +38,7 @@ export class CommentsComponent implements OnInit {
 
   @Input({ required: true }) programId!: string;
 
-  constructor(
-    private commentService: CommentService,
-    private errorInterceptorService: ErrorInterceptorService
-  ) {}
+  constructor(private commentService: CommentService) {}
 
   async ngOnInit() {
     await this.loadComments();
@@ -61,8 +57,6 @@ export class CommentsComponent implements OnInit {
       const response = await this.commentService.getComments(params);
       this.comments = response.content;
       this.totalRecords = response.totalElements;
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loading = false;
     }
@@ -89,8 +83,6 @@ export class CommentsComponent implements OnInit {
       this.comment = '';
       await this.loadComments();
       await this.goToLastPage();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loading = false;
     }

@@ -4,7 +4,6 @@ import { TableLazyLoadEvent, TableModule } from 'primeng/table';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { Column } from 'src/app/interfaces/misc/column';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
@@ -12,7 +11,7 @@ import { ConvertMinutesPipe } from '../../../pipes/convert-minutes.pipe';
 import { Router } from '@angular/router';
 import { DialogModule } from 'primeng/dialog';
 import { MessageService } from 'primeng/api';
-import { DifficultyPipe } from "../../../pipes/difficulty.pipe";
+import { DifficultyPipe } from '../../../pipes/difficulty.pipe';
 
 @Component({
   selector: 'app-view-programs',
@@ -26,7 +25,7 @@ import { DifficultyPipe } from "../../../pipes/difficulty.pipe";
     TooltipModule,
     DialogModule,
     DifficultyPipe
-],
+  ],
   templateUrl: './view-programs.component.html',
   styleUrl: './view-programs.component.scss'
 })
@@ -48,7 +47,6 @@ export class ViewProgramsComponent implements OnInit {
 
   constructor(
     private fitnessProgramService: FitnessProgramService,
-    private errorInterceptorService: ErrorInterceptorService,
     private router: Router,
     private messageService: MessageService
   ) {}
@@ -90,13 +88,12 @@ export class ViewProgramsComponent implements OnInit {
           : undefined
       };
 
-      const response = await this.fitnessProgramService.getMyFitnessPrograms(params);
+      const response =
+        await this.fitnessProgramService.getMyFitnessPrograms(params);
       this.programs = response.content;
       this.totalRecords = response.totalElements;
       this.transformLocation();
       this.transformDifficultyLevels();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loading = false;
     }
@@ -126,8 +123,6 @@ export class ViewProgramsComponent implements OnInit {
         summary: 'Uspješno',
         detail: 'Program je uspješno obrisan'
       });
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
     } finally {
       this.deleteDialogVisible = false;
       this.deleteId = 0;

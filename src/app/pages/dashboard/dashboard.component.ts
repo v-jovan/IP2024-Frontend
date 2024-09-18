@@ -15,9 +15,8 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { Sidebar, SidebarModule } from 'primeng/sidebar';
 import { filter } from 'rxjs/operators';
 import { UserService } from 'src/app/services/User/user.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AuthService } from 'src/app/services/Auth/auth.service';
-import { UserAvatarComponent } from "../../components/user-avatar/user-avatar.component";
+import { UserAvatarComponent } from '../../components/user-avatar/user-avatar.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -30,7 +29,7 @@ import { UserAvatarComponent } from "../../components/user-avatar/user-avatar.co
     BreadcrumbModule,
     SidebarModule,
     UserAvatarComponent
-],
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -51,16 +50,13 @@ export class DashboardComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private userService: UserService,
-    private errorInterceptor: ErrorInterceptorService
+    private userService: UserService
   ) {}
 
   async ngOnInit() {
     try {
       this.userAvatar = await this.userService.getAvatar();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
     this.userMenuItems = [
       {
         id: 'profile',

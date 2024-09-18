@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { SubscriptionCardComponent } from '../../../components/subscription-card/subscription-card.component';
 import { CategoryService } from 'src/app/services/Category/category.service';
 import { Category } from 'src/app/interfaces/misc/category';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-subscription',
@@ -14,18 +13,13 @@ import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor'
 export class SubscriptionComponent implements OnInit {
   categories: Category[] = [];
 
-  constructor(
-    private categoryService: CategoryService,
-    private erroriInterceptorService: ErrorInterceptorService
-  ) {}
+  constructor(private categoryService: CategoryService) {}
 
   async ngOnInit() {
     try {
       this.categories =
         await this.categoryService.getCategoriesWithSubscriptions();
-    } catch (error) {
-      this.erroriInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   async selectCategory(category: Category) {
@@ -34,8 +28,6 @@ export class SubscriptionComponent implements OnInit {
     }
     try {
       await this.categoryService.subscribe(category.id);
-    } catch (error) {
-      this.erroriInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 }

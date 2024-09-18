@@ -12,7 +12,6 @@ import { DividerModule } from 'primeng/divider';
 import { NewsService } from 'src/app/services/News/news.service';
 import { NewsArticleComponent } from '../news-article/news-article.component';
 import { Article } from 'src/app/interfaces/misc/article';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { Attribute } from 'src/app/interfaces/misc/attribute';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { Category } from 'src/app/interfaces/misc/category';
@@ -41,7 +40,6 @@ export class FilterMenuComponent {
 
   constructor(
     private newsService: NewsService,
-    private errorInterceptor: ErrorInterceptorService,
     private fitnessProgramService: FitnessProgramService
   ) {}
 
@@ -80,17 +78,13 @@ export class FilterMenuComponent {
           }))
         }))
       }));
-    } catch (error) {
-      this.errorInterceptor.handleError(error);
-    }
+    } catch (error) {}
   }
 
   async loadRSSFeed(): Promise<void> {
     try {
       this.newsItems = await this.newsService.getNews();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   clearFilters() {

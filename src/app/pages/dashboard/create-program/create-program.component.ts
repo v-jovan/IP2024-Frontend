@@ -28,7 +28,6 @@ import {
 import { BottomToolbarComponent } from '../../../components/bottom-toolbar/bottom-toolbar.component';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { FitnessProgramRequest } from 'src/app/interfaces/requests/fitness-program-request';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { AttributeService } from 'src/app/services/Attribute/attribute.service';
 import { CategoryService } from 'src/app/services/Category/category.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
@@ -102,7 +101,6 @@ export class CreateProgramComponent implements OnInit {
     private userService: UserService,
     private formUtils: FormUtilsService,
     private fitnessProgramService: FitnessProgramService,
-    private errorInterceptorService: ErrorInterceptorService,
     private router: Router
   ) {}
 
@@ -112,8 +110,6 @@ export class CreateProgramComponent implements OnInit {
       this.categories = await this.categoryService.getCategories();
       this.locations = await this.locationService.getLocations();
       this.userInfo = await this.userService.getUserInfo();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
     } finally {
       this.loaderService.hide();
     }
@@ -151,9 +147,7 @@ export class CreateProgramComponent implements OnInit {
     try {
       this.selectedCategoryAttributes =
         await this.attributeService.getAttributesByCategory(categoryId);
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
-    }
+    } catch (error) {}
   }
 
   async onCategoryChange(event: DropdownChangeEvent) {
@@ -270,8 +264,6 @@ export class CreateProgramComponent implements OnInit {
         this.programForm.reset();
         this.uploadedFiles = [];
         this.specificAttributes.clear();
-      } catch (error) {
-        this.errorInterceptorService.handleError(error);
       } finally {
         this.loaderService.hide();
       }

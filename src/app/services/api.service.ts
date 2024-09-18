@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import axios, { AxiosInstance } from 'axios';
-import { TokenStoreService } from '../store/TokenStore/token-store.service';
 import { environment } from '../../environments/environment.development';
+import { AuthInterceptor } from '../interceptors/auth.interceptor';
+import { ErrorInterceptor } from '../interceptors/error.interceptor';
 
 @Injectable({
   providedIn: 'root'
@@ -9,7 +10,7 @@ import { environment } from '../../environments/environment.development';
 export class ApiService {
   private axiosInstance: AxiosInstance;
 
-  constructor(private tokenStore: TokenStoreService) {
+  constructor(private injector: Injector) {
     this.axiosInstance = axios.create({
       baseURL: environment.apiUrl,
       timeout: environment.apiTimeout
@@ -19,29 +20,8 @@ export class ApiService {
   }
 
   private setupInterceptors() {
-    this.axiosInstance.interceptors.request.use(
-      async (config) => {
-        const token = this.tokenStore.getToken();
-
-        if (token) {
-          config.headers['Authorization'] = `Bearer ${token}`;
-        } else {
-          delete config.headers['Authorization'];
-        }
-
-        return config;
-      },
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
-
-    this.axiosInstance.interceptors.response.use(
-      (response) => response,
-      (error) => {
-        return Promise.reject(error);
-      }
-    );
+    AuthInterceptor(this.axiosInstance, this.injector);
+    ErrorInterceptor(this.axiosInstance, this.injector);
   }
 
   get axios() {

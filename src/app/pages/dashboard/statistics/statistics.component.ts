@@ -3,7 +3,6 @@ import { ChartModule } from 'primeng/chart';
 import { ActivityResponse } from 'src/app/interfaces/responses/activity-response';
 import { ActivityService } from 'src/app/services/Activity/activity.service';
 import { TabViewModule } from 'primeng/tabview';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { ACTIVITY_TYPES } from '@components/util/activity-types';
 
 @Component({
@@ -19,17 +18,12 @@ export class StatisticsComponent implements OnInit {
   activities: ActivityResponse[] = [];
   weightDataOptions: any;
 
-  constructor(
-    private activityService: ActivityService,
-    private errorInterceptorService: ErrorInterceptorService
-  ) {}
+  constructor(private activityService: ActivityService) {}
 
   async ngOnInit() {
     try {
       this.activities = await this.activityService.getAllActivities();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error);
-    }
+    } catch (error) {}
 
     const logDates = this.activities.map((a) =>
       new Date(a.logDate).toLocaleDateString()

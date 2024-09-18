@@ -11,7 +11,6 @@ import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { City } from 'src/app/interfaces/misc/city';
 import { CityService } from 'src/app/services/City/city.service';
 import { LoaderService } from 'src/app/services/Loader/loader.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { UserService } from 'src/app/services/User/user.service';
 import { UserInfoResponse } from 'src/app/interfaces/responses/user-info-response';
 import { BottomToolbarComponent } from '@components/bottom-toolbar/bottom-toolbar.component';
@@ -59,7 +58,6 @@ export class ProfileComponent implements OnInit {
     private fb: FormBuilder,
     private cityService: CityService,
     private loaderService: LoaderService,
-    private errorInterceptor: ErrorInterceptorService,
     private userService: UserService
   ) {}
 
@@ -71,8 +69,6 @@ export class ProfileComponent implements OnInit {
       if (this.userData) {
         this.userDataForm.patchValue(this.userData);
       }
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
     } finally {
       this.loaderService.hide();
     }
@@ -126,8 +122,6 @@ export class ProfileComponent implements OnInit {
         detail: 'Podaci su uspješno ažurirani'
       });
       window.location.reload();
-    } catch (error) {
-      this.errorInterceptor.handleError(error as AxiosError);
     } finally {
       this.loaderService.hide();
     }

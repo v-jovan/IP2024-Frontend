@@ -8,7 +8,6 @@ import { TagModule } from 'primeng/tag';
 import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
 import { CurrencyPipe, Location } from '@angular/common';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
 import { environment } from 'src/environments/environment.development';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
@@ -22,7 +21,7 @@ import { ProgramStatus } from 'src/app/enums/program-status';
 import { DialogModule } from 'primeng/dialog';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { OrderService } from 'src/app/services/Order/order.service';
-import { DifficultyPipe } from "../../pipes/difficulty.pipe";
+import { DifficultyPipe } from '../../pipes/difficulty.pipe';
 
 @Component({
   selector: 'app-details',
@@ -40,7 +39,7 @@ import { DifficultyPipe } from "../../pipes/difficulty.pipe";
     CommentsComponent,
     DialogModule,
     DifficultyPipe
-],
+  ],
   encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
@@ -76,7 +75,6 @@ export class DetailsComponent implements OnInit {
     private location: Location,
     private fitnessProgramService: FitnessProgramService,
     private orderService: OrderService,
-    private errorInterceptorService: ErrorInterceptorService,
     private tokenStoreService: TokenStoreService,
     private cartStoreService: CartStoreService,
     private userService: UserService,
@@ -114,9 +112,7 @@ export class DetailsComponent implements OnInit {
         this.program.instructorId as number
       );
       this.instructorBiography = instructor.biography;
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   async checkIfProgramPurchased() {
@@ -134,9 +130,7 @@ export class DetailsComponent implements OnInit {
             program.id === parseInt(this.programId) &&
             program.status === ProgramStatus.ACTIVE
         );
-      } catch (error) {
-        this.errorInterceptorService.handleError(error as AxiosError);
-      }
+      } catch (error) {}
     }
   }
 
@@ -149,9 +143,7 @@ export class DetailsComponent implements OnInit {
       this.program.images.forEach((image) => {
         this.images.push(`${this.apiUrl}${image}`);
       });
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   get isLoggedIn(): boolean {

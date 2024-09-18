@@ -1,10 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Message } from 'src/app/interfaces/misc/message';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
 import { ConversationComponent } from '../../../components/conversation/conversation.component';
 import { InboxComponent } from '../../../components/inbox/inbox.component';
 import { UserService } from 'src/app/services/User/user.service';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-contact',
@@ -17,17 +15,12 @@ export class ContactComponent implements OnInit {
   selectedConversationUserId: number | null = null;
   myUserId: number | null = 0;
 
-  constructor(
-    private userService: UserService,
-    private errorInterceptorService: ErrorInterceptorService
-  ) {}
+  constructor(private userService: UserService) {}
 
   async ngOnInit() {
     try {
       this.myUserId = await this.userService.getUserId();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    } catch (error) {}
   }
 
   onConversationSelected(userId: number) {

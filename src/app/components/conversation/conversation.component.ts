@@ -1,9 +1,7 @@
 import {
-  AfterViewInit,
   Component,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   ViewChild
 } from '@angular/core';
@@ -14,7 +12,6 @@ import { CommonModule } from '@angular/common';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ButtonModule } from 'primeng/button';
 import { FormsModule } from '@angular/forms';
-import { ErrorInterceptorService } from 'src/app/interceptors/error.interceptor';
 
 @Component({
   selector: 'app-conversation',
@@ -36,10 +33,7 @@ export class ConversationComponent implements OnChanges {
   newMessage: string = '';
   messages: Message[] = [];
 
-  constructor(
-    private messagingService: MessagingService,
-    private errorInterceptorService: ErrorInterceptorService
-  ) {}
+  constructor(private messagingService: MessagingService) {}
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['conversationUserId']) {
@@ -49,13 +43,11 @@ export class ConversationComponent implements OnChanges {
   async loadConversation() {
     if (this.conversationUserId) {
       try {
-        this.messages = await this.messagingService.getMessagesForConversation(
-          this.conversationUserId
-        );
+      this.messages = await this.messagingService.getMessagesForConversation(
+        this.conversationUserId
+      );
 
-      } catch (error) {
-        this.errorInterceptorService.handleError(error as AxiosError);
-      }
+      } catch (error) {}
 
       setTimeout(() => {
         this.scrollToBottom();
@@ -70,14 +62,12 @@ export class ConversationComponent implements OnChanges {
 
   async sendMessage() {
     try {
-      await this.messagingService.sendMessage({
-        recipientId: this.conversationUserId as number,
-        content: this.newMessage
-      });
-      this.newMessage = '';
-      await this.loadConversation();
-    } catch (error) {
-      this.errorInterceptorService.handleError(error as AxiosError);
-    }
+    await this.messagingService.sendMessage({
+      recipientId: this.conversationUserId as number,
+      content: this.newMessage
+    });
+    this.newMessage = '';
+    await this.loadConversation();
+    } catch (error) {}
   }
 }

@@ -49,7 +49,7 @@ export class ProfileComponent implements OnInit {
     lastName: ['', Validators.required],
     email: ['', [Validators.required, Validators.email]],
     avatarUrl: [''],
-    biography: ['', Validators.maxLength(500)],
+    biography: [''],
     cityId: [null, Validators.required]
   });
 

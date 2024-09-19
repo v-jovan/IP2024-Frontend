@@ -26,6 +26,7 @@ import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service'
 import { AuthService } from 'src/app/services/Auth/auth.service';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { PasswordModule } from 'primeng/password';
+import { UserService } from 'src/app/services/User/user.service';
 
 @Component({
   selector: 'app-login',
@@ -68,7 +69,8 @@ export class LoginComponent implements OnInit {
     private fb: FormBuilder,
     private formUtils: FormUtilsService,
     private authService: AuthService,
-    private tokenStore: TokenStoreService
+    private tokenStore: TokenStoreService,
+    private userService: UserService
   ) {}
 
   ngOnInit() {
@@ -94,7 +96,10 @@ export class LoginComponent implements OnInit {
         const response = await this.authService.login(loginData);
         this.tokenStore.setToken(response.token);
         this.loginSuccess.emit();
-        window.location.reload(); // Reload the page to apply the session
+        const isActivated = (await this.userService.isUserActive()) as boolean;
+        if (isActivated) {
+          window.location.reload(); // Reload the page to apply the session
+        }
       } catch (error) {
         this.loginForm.reset(); // Reset form on login failure
       }

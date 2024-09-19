@@ -286,5 +286,6 @@ export class CreateProgramComponent implements OnInit {
       detail: 'Promjene su odbačene.'
     });
     this.topElement.nativeElement.scrollIntoView({ behavior: 'smooth' });
+    this.router.navigate(['/dashboard/view-programs']);
   }
 }

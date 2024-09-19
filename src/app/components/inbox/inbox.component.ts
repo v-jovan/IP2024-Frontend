@@ -15,7 +15,7 @@ import { FormsModule } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { MessagingService } from 'src/app/services/Messaging/messaging.service';
 import { UserService } from 'src/app/services/User/user.service';
-import { environment } from 'src/environments/environment.development';
+import { UrlPipe } from "../../pipes/url.pipe";
 
 @Component({
   selector: 'app-inbox',
@@ -31,13 +31,13 @@ import { environment } from 'src/environments/environment.development';
     InputGroupAddonModule,
     DropdownModule,
     FormsModule,
-    InputTextareaModule
-  ],
+    InputTextareaModule,
+    UrlPipe
+],
   templateUrl: './inbox.component.html',
   styleUrl: './inbox.component.scss'
 })
 export class InboxComponent implements OnInit {
-  apiUrl: string = environment.apiUrl;
   selectedConversationId: number | null = null;
   showNewConversationDialog: boolean = false;
   users: CommunicationUser[] = [];
@@ -94,7 +94,7 @@ export class InboxComponent implements OnInit {
 
   getAvatarImage(conversation: Conversation): string | undefined {
     return conversation.avatarUrl
-      ? this.apiUrl + conversation.avatarUrl
+      ? conversation.avatarUrl
       : undefined;
   }
 

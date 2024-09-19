@@ -191,8 +191,8 @@
       <p-fileUpload
         name="files"
         [multiple]="true"
-        accept="image/*"
-        maxFileSize="1000000"
+        accept="image/png, image/jpeg"
+        maxFileSize="10000000"
         [customUpload]="true"
         (uploadHandler)="uploadImage($event)"
       >

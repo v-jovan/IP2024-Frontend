@@ -139,7 +139,7 @@ export class SearchHeaderComponent implements OnInit {
         this.messageService.add({
           severity: 'success',
           summary: 'Nalog aktiviran',
-          detail: 'Uspješno ste aktivirali nalog. Sada se možete prijaviti.'
+          detail: 'Uspješno ste aktivirali nalog!'
         });
         this.loginComponent.showDialog();
       }

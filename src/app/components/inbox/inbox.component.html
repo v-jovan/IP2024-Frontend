@@ -19,7 +19,7 @@
           (click)="selectConversation(conversation.userId)"
         >
           <p-avatar
-            [image]="getAvatarImage(conversation)"
+            [image]="getAvatarImage(conversation) | url"
             [icon]="getAvatarIcon(conversation)"
             size="xlarge"
             shape="circle"

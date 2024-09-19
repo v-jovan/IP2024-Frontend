@@ -37,11 +37,11 @@ import { LocationService } from 'src/app/services/Location/location.service';
 import { UserService } from 'src/app/services/User/user.service';
 import { UserInfo } from 'src/app/interfaces/misc/user-info';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
-import { UrlPipe } from "../../../pipes/url.pipe";
+import { UrlPipe } from '../../../pipes/url.pipe';
 import { PanelModule } from 'primeng/panel';
-import { ErrorComponent } from "../../../components/error/error.component";
+import { ErrorComponent } from '../../../components/error/error.component';
 
 @Component({
   selector: 'app-edit-program',
@@ -66,7 +66,7 @@ import { ErrorComponent } from "../../../components/error/error.component";
     UrlPipe,
     PanelModule,
     ErrorComponent
-],
+  ],
   templateUrl: './edit-program.component.html',
   styleUrl: './edit-program.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -127,7 +127,8 @@ export class EditProgramComponent implements OnInit {
     private userService: UserService,
     private formUtils: FormUtilsService,
     private fitnessProgramService: FitnessProgramService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   async ngOnInit() {
@@ -360,6 +361,7 @@ export class EditProgramComponent implements OnInit {
             summary: 'Uspjeh',
             detail: 'Program uspješno ažuriran!'
           });
+          this.router.navigate(['/dashboard/view-programs']);
         } else {
           await this.fitnessProgramService.createProgram(
             programData,
@@ -389,5 +391,7 @@ export class EditProgramComponent implements OnInit {
     return [...originalImages].filter((image) => !currentImages.has(image));
   }
 
-  discardChanges() {}
+  discardChanges() {
+    this.router.navigate(['/dashboard/view-programs']);
+  }
 }

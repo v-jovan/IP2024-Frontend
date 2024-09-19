@@ -9,7 +9,6 @@ import { ConvertMinutesPipe } from '@pipes/convert-minutes.pipe';
 import { CurrencyPipe, Location } from '@angular/common';
 import { FitnessProgramService } from 'src/app/services/FitnessProgram/fitness-program.service';
 import { FitnessProgram } from 'src/app/interfaces/misc/fitness-program';
-import { environment } from 'src/environments/environment.development';
 import { TokenStoreService } from 'src/app/store/TokenStore/token-store.service';
 import { CommentsComponent } from '@components/comments/comments.component';
 import { CartStoreService } from 'src/app/store/CartStore/cart-store.service';
@@ -22,7 +21,8 @@ import { DialogModule } from 'primeng/dialog';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { OrderService } from 'src/app/services/Order/order.service';
 import { DifficultyPipe } from '../../pipes/difficulty.pipe';
-import { ErrorComponent } from "../../components/error/error.component";
+import { ErrorComponent } from '../../components/error/error.component';
+import { UrlPipe } from '../../pipes/url.pipe';
 
 @Component({
   selector: 'app-details',
@@ -40,19 +40,20 @@ import { ErrorComponent } from "../../components/error/error.component";
     CommentsComponent,
     DialogModule,
     DifficultyPipe,
-    ErrorComponent
-],
+    ErrorComponent,
+    UrlPipe
+  ],
   encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
   programId!: string;
   images: string[] = [];
-  apiUrl: string = environment.apiUrl;
   isInCart: boolean = false;
   isProgramPurchased: boolean = false;
   cartSubscription!: Subscription;
   myId: number = 0;
   fetchError: boolean = false;
+  isLoading: boolean = false;
 
   instructorDialogVisibility: boolean = false;
   instructorBiography: string = '';
@@ -88,6 +89,7 @@ export class DetailsComponent implements OnInit {
   async ngOnInit() {
     this.route.paramMap.subscribe(async (params) => {
       this.loaderService.show();
+      this.isLoading = true;
       this.programId = params.get('id') as string;
       await this.loadProgramDetails();
       this.checkIfInCart();
@@ -95,6 +97,7 @@ export class DetailsComponent implements OnInit {
       if (this.isLoggedIn) {
         this.myId = await this.userService.getUserId();
       }
+      this.isLoading = false;
     });
 
     this.cartSubscription = this.cartStoreService
@@ -144,7 +147,7 @@ export class DetailsComponent implements OnInit {
         this.programId
       );
       this.program.images.forEach((image) => {
-        this.images.push(`${this.apiUrl}${image}`);
+        this.images.push(image);
       });
     } catch (error) {
       this.fetchError = true;
@@ -163,7 +166,7 @@ export class DetailsComponent implements OnInit {
         id: this.program.id,
         name: this.program.name,
         price: this.program.price,
-        imgURL: this.images[0]
+        imgURL: this.program?.images[0]
       };
 
       const success = this.cartStoreService.addToCart(cartItem);

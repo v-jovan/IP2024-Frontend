@@ -55,7 +55,7 @@ export class FilterMenuComponent {
       this.categories = categories.map((category: Category) => ({
         label: category.name,
         key: category.id,
-        expanded: true,
+        expanded: false,
         data: {
           categoryId: category.id,
           attributeId: null,
@@ -93,12 +93,7 @@ export class FilterMenuComponent {
       attributeId: null,
       attributeValueId: null
     });
-    this.categories.forEach((category) => {
-      category.expanded = true;
-      if (category.children) {
-        this.setExpansion(category.children, false);
-      }
-    });
+    this.setExpansion(this.categories, false);
     this.selectedNode = null;
   }
 

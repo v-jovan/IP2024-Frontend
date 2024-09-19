@@ -1,6 +1,8 @@
 <div class="details">
-  @if (fetchError) {
+ @if (fetchError) {
     <app-error />
+  } @else if (isLoading) {
+    <p>Učitavanje...</p>
   } @else {
     <div class="details__back">
       <p-button
@@ -25,10 +27,10 @@
             [autoPlay]="true"
           >
             <ng-template pTemplate="item" let-item>
-              <img [src]="item" class="preview__main" />
+              <img [src]="item | url" class="preview__main" />
             </ng-template>
             <ng-template pTemplate="thumbnail" let-item>
-              <img [src]="item" class="preview__mini" />
+              <img [src]="item | url" class="preview__mini" />
             </ng-template>
             <ng-template pTemplate="caption" let-item>
               <p i18n="@@details.categoryFull">
@@ -92,6 +94,7 @@
     }
   }
 </div>
+@if (program?.instructorName) {
 <p-dialog
   [header]="program.instructorName"
   [modal]="true"
@@ -100,3 +103,4 @@
 >
   <p>{{ instructorBiography }}</p>
 </p-dialog>
+}

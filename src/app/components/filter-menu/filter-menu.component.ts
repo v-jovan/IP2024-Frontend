@@ -93,7 +93,12 @@ export class FilterMenuComponent {
       attributeId: null,
       attributeValueId: null
     });
-    this.setExpansion(this.categories, false);
+    this.categories.forEach((category) => {
+      category.expanded = true;
+      if (category.children) {
+        this.setExpansion(category.children, false);
+      }
+    });
     this.selectedNode = null;
   }
 

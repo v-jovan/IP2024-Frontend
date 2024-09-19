@@ -1,0 +1,28 @@
+.not-found {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+
+  .p-panel {
+    .p-panel-content {
+      background-color: var(--red-50);
+    }
+    .p-panel-header {
+      background-color: var(--red-100);
+      color: var(--red-500);
+    }
+  }
+
+  &--message {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    font-size: x-large;
+    .pi {
+      font-size: x-large;
+    }
+    color: var(--red-500);
+  }
+}

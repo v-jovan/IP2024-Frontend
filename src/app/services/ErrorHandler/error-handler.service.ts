@@ -1,6 +1,5 @@
 import { Injectable, Injector } from '@angular/core';
 import { MessageService } from 'primeng/api';
-import { Router } from '@angular/router';
 import { AuthService } from '../Auth/auth.service';
 import { AxiosError } from 'axios';
 
@@ -8,10 +7,7 @@ import { AxiosError } from 'axios';
   providedIn: 'root'
 })
 export class ErrorHandlerService {
-  constructor(
-    private injector: Injector,
-    private router: Router
-  ) {}
+  constructor(private injector: Injector) {}
 
   handleError(error: AxiosError): void {
     const messageService = this.injector.get(MessageService); // Lazy load MessageService
@@ -80,7 +76,6 @@ export class ErrorHandlerService {
           summary: 'Nije pronađeno',
           detail: errorResponse.data?.message || 'Traženi resurs nije pronađen.'
         });
-        this.router.navigate(['/not-found']);
         break;
       case 409:
         messageService.add({

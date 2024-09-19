@@ -22,6 +22,7 @@ import { DialogModule } from 'primeng/dialog';
 import { LoginService } from 'src/app/services/LoginForm/login.service';
 import { OrderService } from 'src/app/services/Order/order.service';
 import { DifficultyPipe } from '../../pipes/difficulty.pipe';
+import { ErrorComponent } from "../../components/error/error.component";
 
 @Component({
   selector: 'app-details',
@@ -38,8 +39,9 @@ import { DifficultyPipe } from '../../pipes/difficulty.pipe';
     CurrencyPipe,
     CommentsComponent,
     DialogModule,
-    DifficultyPipe
-  ],
+    DifficultyPipe,
+    ErrorComponent
+],
   encapsulation: ViewEncapsulation.None
 })
 export class DetailsComponent implements OnInit {
@@ -50,6 +52,7 @@ export class DetailsComponent implements OnInit {
   isProgramPurchased: boolean = false;
   cartSubscription!: Subscription;
   myId: number = 0;
+  fetchError: boolean = false;
 
   instructorDialogVisibility: boolean = false;
   instructorBiography: string = '';
@@ -143,7 +146,9 @@ export class DetailsComponent implements OnInit {
       this.program.images.forEach((image) => {
         this.images.push(`${this.apiUrl}${image}`);
       });
-    } catch (error) {}
+    } catch (error) {
+      this.fetchError = true;
+    }
   }
 
   get isLoggedIn(): boolean {

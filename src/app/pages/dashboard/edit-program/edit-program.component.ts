@@ -39,7 +39,9 @@ import { UserInfo } from 'src/app/interfaces/misc/user-info';
 import { FormUtilsService } from 'src/app/services/FormUtils/form-utils.service';
 import { ActivatedRoute } from '@angular/router';
 import { GalleriaModule } from 'primeng/galleria';
-import { environment } from 'src/environments/environment.development';
+import { UrlPipe } from "../../../pipes/url.pipe";
+import { PanelModule } from 'primeng/panel';
+import { ErrorComponent } from "../../../components/error/error.component";
 
 @Component({
   selector: 'app-edit-program',
@@ -60,8 +62,11 @@ import { environment } from 'src/environments/environment.development';
     SliderModule,
     TooltipModule,
     GalleriaModule,
-    FieldsetModule
-  ],
+    FieldsetModule,
+    UrlPipe,
+    PanelModule,
+    ErrorComponent
+],
   templateUrl: './edit-program.component.html',
   styleUrl: './edit-program.component.scss',
   encapsulation: ViewEncapsulation.None
@@ -72,6 +77,7 @@ export class EditProgramComponent implements OnInit {
   locations: CategoryLocation[] = [];
   selectedCategoryAttributes: CategoryAttribute[] = [];
   userInfo: UserInfo | undefined;
+  fetchError: boolean = false;
 
   canAddAttribute: boolean = false;
   filteredAttributesLength: number = 0;
@@ -93,7 +99,6 @@ export class EditProgramComponent implements OnInit {
   uploadedFiles: File[] = [];
   programImages: string[] = [];
   originalImages: string[] = [];
-  envUrl = environment.apiUrl;
 
   responsiveOptions: any[] = [
     {
@@ -138,6 +143,7 @@ export class EditProgramComponent implements OnInit {
       );
       this.populateForm(programData);
     } catch (error) {
+      this.fetchError = true;
     } finally {
       this.loaderService.hide();
     }

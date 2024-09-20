@@ -1,9 +1,9 @@
-<div class="details">
- @if (fetchError) {
-    <app-error />
-  } @else if (isLoading) {
-    <p>Učitavanje...</p>
-  } @else {
+@if (fetchError) {
+  <app-error />
+} @else if (isLoading) {
+  <p>Učitavanje...</p>
+} @else {
+  <div class="details">
     <div class="details__back">
       <p-button
         icon="pi pi-arrow-left"
@@ -92,15 +92,15 @@
         <app-comments [programId]="programId"></app-comments>
       </div>
     }
+  </div>
+  @if (program.instructorName) {
+    <p-dialog
+      [header]="program.instructorName"
+      [modal]="true"
+      [(visible)]="instructorDialogVisibility"
+      [style]="{ width: '50vw', height: '50vh' }"
+    >
+      <p>{{ instructorBiography }}</p>
+    </p-dialog>
   }
-</div>
-@if (program?.instructorName) {
-<p-dialog
-  [header]="program.instructorName"
-  [modal]="true"
-  [(visible)]="instructorDialogVisibility"
-  [style]="{ width: '50vw', height: '50vh' }"
->
-  <p>{{ instructorBiography }}</p>
-</p-dialog>
 }

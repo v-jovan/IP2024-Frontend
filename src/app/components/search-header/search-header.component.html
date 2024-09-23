@@ -23,6 +23,7 @@
           class="header__toolbar--search"
           (onSelect)="goToDetails($event)"
           [showClear]="true"
+          emptyMessage="Nema rezultata"
         >
           <ng-template let-item pTemplate="item">
             <div class="autocomplete__result">

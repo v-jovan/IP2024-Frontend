@@ -101,10 +101,10 @@ export class LoginComponent implements OnInit {
           window.location.reload(); // Reload the page to apply the session
         }
       } catch (error) {
-        this.loginForm.reset(); // Reset form on login failure
+        this.loginForm.reset();
       }
     } else {
-      this.loginForm.markAllAsTouched(); // Mark fields as touched to show validation errors
+      this.loginForm.markAllAsTouched();
     }
   }
 

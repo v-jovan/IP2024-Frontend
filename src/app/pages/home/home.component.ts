@@ -157,6 +157,7 @@ export class HomeComponent implements OnInit {
     this.first = event.first!;
     this.rows = event.rows!;
     this.loadPrograms([]);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   // Event handler for filter change

@@ -166,6 +166,34 @@ export class SearchHeaderComponent implements OnInit {
     this.userFullName = this.tokenService.getUserSubject();
   }
 
+  async login() {
+    if (this.username?.trim() !== this.tokenService.getUserSubject()) {
+      this.userSecondTimeLoggedIn = false;
+      this.username = '';
+      this.password = '';
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Greška',
+        detail: 'Unesite ispravne kredencijale.'
+      });
+      return;
+    }
+    const loginData = {
+      emailOrUsername: this.username,
+      password: this.password
+    };
+    try {
+      const response = await this.authService.login(loginData);
+      if (response) {
+        this.userSecondTimeLoggedIn = true;
+        this.resendActivationEmail();
+      }
+    } finally {
+      this.username = '';
+      this.password = '';
+    }
+  }
+
   logout() {
     this.userIsLoggedIn = false;
     this.mobileSidebarVisible = false;
@@ -205,33 +233,6 @@ export class SearchHeaderComponent implements OnInit {
         this.buttonDisabled = false;
       }
     }, 1000);
-  }
-
-  async login() {
-    if (this.username?.trim() !== this.tokenService.getUserSubject()) {
-      this.userSecondTimeLoggedIn = false;
-      this.username = '';
-      this.password = '';
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Greška',
-        detail: 'Unesite ispravne kredencijale.'
-      });
-    }
-    const loginData = {
-      emailOrUsername: this.username,
-      password: this.password
-    };
-    try {
-      const response = await this.authService.login(loginData);
-      if (response) {
-        this.userSecondTimeLoggedIn = true;
-        this.resendActivationEmail();
-      }
-    } finally {
-      this.username = '';
-      this.password = '';
-    }
   }
 
   get loginButtonDisabled() {

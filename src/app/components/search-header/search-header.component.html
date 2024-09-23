@@ -116,20 +116,45 @@
   [draggable]="false"
   [resizable]="false"
   [closable]="false"
+  styleClass="resend-dialog"
 >
   <p i18n="@@searchHeader.dialogMessage">
     Vaš nalog nije aktiviran.
     <br />
     Prilikom registracije niste otvorili mejl sa akctivacionim linkom.
     <br />
-    Molimo Vas da proverite Vašu email adresu i aktivirate nalog.
+    Molimo Vas da unesete Vaše pristupne podatke i kliknete na dugme za ponovno
+    slanje aktivacionog linka.
   </p>
+  <div class="resend-dialog__inputs">
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="username"
+      placeholder="Korisničko ime"
+    />
+    <p-password
+      [(ngModel)]="password"
+      [feedback]="false"
+      placeholder="Lozinka"
+      [toggleMask]="true"
+    />
+  </div>
   <p-footer>
-    <p-button
-      [label]="resendLabel"
-      [disabled]="buttonDisabled"
-      size="small"
-      (onClick)="resendActivationEmail()"
-    ></p-button>
+    @if (!userSecondTimeLoggedIn) {
+      <p-button
+        label="Prijava"
+        [disabled]="loginButtonDisabled"
+        size="small"
+        (onClick)="login()"
+      ></p-button>
+    } @else {
+      <p-button
+        [label]="resendLabel"
+        [disabled]="buttonDisabled"
+        size="small"
+        (onClick)="resendActivationEmail()"
+      ></p-button>
+    }
   </p-footer>
 </p-dialog>

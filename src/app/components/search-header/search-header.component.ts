@@ -33,6 +33,8 @@ import { Attribute } from 'src/app/interfaces/misc/attribute';
 import { AttributeValue } from 'src/app/interfaces/misc/attribute-value';
 import { SidebarService } from 'src/app/services/FilterSidebar/sidebar.service';
 import { UrlPipe } from '../../pipes/url.pipe';
+import { InputTextModule } from 'primeng/inputtext';
+import { PasswordModule } from 'primeng/password';
 
 @Component({
   selector: 'app-search-header',
@@ -52,7 +54,9 @@ import { UrlPipe } from '../../pipes/url.pipe';
     CurrencyPipe,
     UserAvatarComponent,
     TreeModule,
-    UrlPipe
+    UrlPipe,
+    InputTextModule,
+    PasswordModule
   ]
 })
 export class SearchHeaderComponent implements OnInit {
@@ -64,7 +68,10 @@ export class SearchHeaderComponent implements OnInit {
   userMenuItems: MenuItem[] | undefined;
   userAvatar: string | undefined;
   userNotActivated: boolean = false;
-  userName: string | undefined;
+  userFullName: string | undefined;
+  username: string | undefined;
+  password: string | undefined;
+  userSecondTimeLoggedIn: boolean = false;
 
   // UI related
   isDesktopToolbar: boolean = true;
@@ -108,6 +115,9 @@ export class SearchHeaderComponent implements OnInit {
     await this.loadPrograms();
     this.initUserMenuItems();
     this.userIsLoggedIn = this.tokenService.isLoggedIn();
+    if (this.userIsLoggedIn) {
+      await this.checkUserActivation();
+    }
   }
 
   // User related methods
@@ -153,7 +163,7 @@ export class SearchHeaderComponent implements OnInit {
   }
 
   private setMobileUsername() {
-    this.userName = this.tokenService.getUserSubject();
+    this.userFullName = this.tokenService.getUserSubject();
   }
 
   logout() {
@@ -195,6 +205,37 @@ export class SearchHeaderComponent implements OnInit {
         this.buttonDisabled = false;
       }
     }, 1000);
+  }
+
+  async login() {
+    if (this.username?.trim() !== this.tokenService.getUserSubject()) {
+      this.userSecondTimeLoggedIn = false;
+      this.username = '';
+      this.password = '';
+      this.messageService.add({
+        severity: 'error',
+        summary: 'Greška',
+        detail: 'Unesite ispravne kredencijale.'
+      });
+    }
+    const loginData = {
+      emailOrUsername: this.username,
+      password: this.password
+    };
+    try {
+      const response = await this.authService.login(loginData);
+      if (response) {
+        this.userSecondTimeLoggedIn = true;
+        this.resendActivationEmail();
+      }
+    } finally {
+      this.username = '';
+      this.password = '';
+    }
+  }
+
+  get loginButtonDisabled() {
+    return !this.username || !this.password;
   }
 
   goToProfile() {

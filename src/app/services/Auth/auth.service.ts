@@ -38,11 +38,11 @@ export class AuthService {
     return response.data;
   }
 
-  logout() {
+  async logout() {
+    await this.router.navigate(['/']);
     window.location.reload();
     this.tokenService.clearToken();
     this.cartStoreService.clearCart();
-    this.router.navigate(['/']);
   }
 
   /**
